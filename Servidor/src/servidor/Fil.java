@@ -1,12 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package servidor;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.Socket;
 
 /**
  *
@@ -14,16 +11,18 @@ import java.io.IOException;
  */
 public class Fil extends Thread{
     
+    private BufferUsuaris bf;  
     private DataInputStream in;
     private DataOutputStream out;
-    private String user;
-    private String pass;
+    private Usuari u;
+    private Socket s;
 
-    public Fil(DataInputStream in, DataOutputStream out, String user, String pass) {
+    public Fil(Socket s, DataInputStream in, DataOutputStream out, Usuari u, BufferUsuaris b) {
+        this.s = s;
+        this.bf = b;
         this.in = in;
         this.out = out;
-        this.user = user;
-        this.pass = pass;
+        this.u = u;
     }
 
     
@@ -31,13 +30,19 @@ public class Fil extends Thread{
     public void run() {
         Eines eines = new Eines();
         boolean estat = true;
-        String opcio;
+        String opcio, codi = "";
+        boolean afegit = false;
+        
         try {
-            
-            String codi = eines.generarCodi(); 
-            System.out.println("El codi es: "+ codi);
-            out.writeBoolean(true);
-            out.writeUTF(codi);
+            while(!afegit){
+                codi = eines.generarCodi(); 
+                afegit = bf.afegir(codi, u.getTipus());
+                if(afegit){
+                    System.out.println("El codi es: "+ codi);
+                    out.writeBoolean(true);
+                    out.writeUTF(codi);
+                }
+            }        
             System.out.println("Esperant ordres");
             while(estat){
                
@@ -45,8 +50,12 @@ public class Fil extends Thread{
                 
                 switch(opcio){
                     case "sortir":
-                        System.out.println("Has triat sortir");
+                        System.out.println("L'usuari " + u.getUser() + "ha sortit");
+                        bf.borrar(codi);
+                        s.close();
                         break;
+                    case "consultar":
+                         System.out.println(bf.hash);
                     default:
                         System.out.println("Esperant ordres");
                 }

@@ -1,8 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package servidor;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  *
@@ -10,11 +13,62 @@ package servidor;
  */
 public class Servidor {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    private static ArrayList<Usuari> usuaris = new ArrayList<Usuari>();
+
+    @SuppressWarnings("empty-statement")
+    public static void main(String[] args) throws IOException {
+        
+        BufferUsuaris bf = new BufferUsuaris();
+        
+        Eines eines = new Eines();
+        Fil fil;
+        
+        usuaris.add(new Usuari("user1", "pass1","admin"));
+        usuaris.add(new Usuari("user2", "pass2","alumne"));
+        usuaris.add(new Usuari("user3", "pass3","professor"));
+       
+            ServerSocket serverSocket = new ServerSocket(12345);
+            Socket socket;
+           
+            System.out.println("Servidor iniciat");
+
+            while (true) {
+                socket = serverSocket.accept();
+                System.out.println("Usuari conectat desde " + socket.getInetAddress().getHostName());
+
+                DataInputStream in = new DataInputStream(socket.getInputStream());
+                DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+
+                String user = in.readUTF();
+                String pass = in.readUTF();
+               
+                boolean usuarioValido = false;
+                
+                        int i=0;
+                        while(i<=usuaris.size()) {
+                            if ((usuaris.get(i).getUser().equals(user))&&(usuaris.get(i).getPass().equals(pass)) ) {
+                                usuarioValido = true;
+                                break;
+                            }
+                            i++;
+                        }
+
+                        if (usuarioValido) {
+                            fil = new Fil(socket, in,out,usuaris.get(i),bf);
+                            fil.start();
+                        } else {
+                            out.writeBoolean(false);
+                            out.writeUTF("Error");
+                        }
+
+               
+
+
+
+
+        }
     }
-    
+   
 }
+    
+

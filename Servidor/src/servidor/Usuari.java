@@ -1,4 +1,3 @@
-
 package servidor;
 
 /**
@@ -6,10 +5,10 @@ package servidor;
  * @author Aleix
  */
 public class Usuari {
-    String user;
-    String pass;
-    String tipus;
-    String codi;
+    private String user;
+    private String pass;
+    private String tipus;
+    private String codi;
 
     public Usuari(String user, String pass, String tipus) {
         this.user = user;

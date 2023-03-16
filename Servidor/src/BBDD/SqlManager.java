@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package BBDD;
     
 import java.sql.*;
@@ -9,9 +6,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import servidor.Usuari;
-
- 
-
 
 /**
  *
@@ -165,7 +159,7 @@ public void crearUsuari(Usuari usuari)  {
         try {
             conn = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/biblioteca", "ioc", "ioc12345");
             
-            String query = "SELECT * FROM usuaris WHERE nom = ? AND contrasenya = ?";
+            String query = "SELECT id, nom_usuari, contrasenya, rol, nom,  primer_cognom, segon_cognom, email, data_alta  FROM usuaris WHERE nom_usuari = ? AND contrasenya = ?";
             stmt = conn.prepareStatement(query);
             stmt.setString(1, nomUsuari);
             stmt.setString(2, pass);
@@ -174,19 +168,21 @@ public void crearUsuari(Usuari usuari)  {
             if (rs.next()) {
                 usuari = new Usuari();
                 usuari.setId(rs.getInt("id"));
-                usuari.setUser(rs.getString("nom"));
+                usuari.setUser(rs.getString("nom_usuari"));
                 usuari.setPass(rs.getString("contrasenya"));
                 usuari.setRol(rs.getString("rol"));
-                usuari.setDataNaixement(formatter.parse(rs.getString("data_naixement")));
+               // usuari.setDataNaixement(formatter.parse(rs.getString("data_naixement")));
+                usuari.setNom(rs.getString("nom"));
                 usuari.setPrimerCognom(rs.getString("primer_cognom"));
                 usuari.setSegonCognom(rs.getString("segon_cognom"));
                 usuari.setEmail(rs.getString("email"));
                 usuari.setDataAlta(formatter.parse(rs.getString("data_alta")));
-                usuari.setDataBaixa(formatter.parse(rs.getString("data_baixa")));
-                usuari.setMulta(rs.getFloat("multa"));
-                usuari.setSuspensio(rs.getBoolean("suspensio"));
-                usuari.setDataFinalSuspensio(formatter.parse(rs.getString("data_final_suspensio")));
-                usuari.setRutaFoto(rs.getString("ruta_foto"));
+                //usuari.setDataBaixa(formatter.parse(rs.getString("data_baixa")));
+                //usuari.setMulta(rs.getFloat("multa"));
+                //usuari.setSuspensio(rs.getBoolean("suspensio"));
+                //usuari.setDataFinalSuspensio(formatter.parse(rs.getString("data_final_suspensio")));
+                //usuari.setRutaFoto(rs.getString("ruta_foto"));
+
             }
             stmt.close();
             rs.close();

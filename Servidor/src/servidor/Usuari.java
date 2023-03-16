@@ -42,6 +42,11 @@ public class Usuari {
         this.nom = nom;
     }
     private String primerCognom;
+
+    @Override
+    public String toString() {
+        return "Usuari{" + "id=" + id + ", user=" + user + ", pass=" + pass + ", rol=" + rol + ", dataNaixement=" + dataNaixement + ", nom=" + nom + ", primerCognom=" + primerCognom + ", segonCognom=" + segonCognom + '}';
+    }
     private String segonCognom;
     private String email;
     private Date dataAlta;

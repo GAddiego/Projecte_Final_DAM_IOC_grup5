@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
+
 package Altres;
 
 import BBDD.SqlManager;
@@ -20,7 +17,7 @@ public class ConfiguracioBBDD {
 
         SqlManager sql = new SqlManager();
         
-        //sql.crearTaulaUsuaris();
+        sql.crearTaulaUsuaris();
         //Usuari u = new Usuari("algibo","pass1","admin","aleix","giralt","borrell","aleixgibo@gmail.com");
         Usuari u = new Usuari("pepito","pass2","bibliotecaria","pepe","molins","estruch","pepemoes@gmail.com");
         sql.crearUsuari(u);

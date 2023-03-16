@@ -11,6 +11,11 @@ public class BufferUsuaris {
     HashMap<String, Usuari> hash = new HashMap<>();
 
     public BufferUsuaris() {
+        Usuari u = new Usuari();
+        u.setUser("admin");
+        u.setPass("1234");
+        u.setRol("admin");
+        hash.put("12345678", u);
     }
     
     public synchronized  boolean afegir(String clau, Usuari user){

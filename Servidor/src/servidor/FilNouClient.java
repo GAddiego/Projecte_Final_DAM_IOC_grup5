@@ -15,11 +15,11 @@ import java.util.logging.Logger;
  * @author Aleix
  */
 public class FilNouClient extends Thread{
-    private ServerSocket sv;
-    private BufferUsuaris bf;  
-    private DataInputStream in;
-    private DataOutputStream out;
-    private Socket s;
+    private final ServerSocket sv;
+    private final BufferUsuaris bf;  
+    private final DataInputStream in;
+    private final DataOutputStream out;
+    private final Socket s;
 
     public FilNouClient(ServerSocket sv, Socket s, DataInputStream in, DataOutputStream out, BufferUsuaris b) {
         this.sv = sv;
@@ -41,7 +41,6 @@ public class FilNouClient extends Thread{
         
         try {
             System.out.println("esperant usuari i contraseña ");
-            out.writeBoolean(true);
             usuari = in.readUTF();
             pass = in.readUTF();
             boolean b = sq.existeixUsuari(usuari, pass);
@@ -50,8 +49,9 @@ public class FilNouClient extends Thread{
                 while(!afegit){
                     codi = eines.generarCodi(); 
                     afegit = bf.afegir(codi, user );
+                    System.out.println(user.toString());
                     if(afegit){
-                    System.out.println("El codi es: "+ codi);
+                    System.out.println("El codi es: "+ codi + "el rol es " + user.getRol());
                     out.writeBoolean(true);
 
                     out.writeUTF(codi);

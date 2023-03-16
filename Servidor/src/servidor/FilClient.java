@@ -15,14 +15,17 @@ public class FilClient extends Thread{
     private DataInputStream in;
     private DataOutputStream out;
     private Usuari u;
+    private String codiEntrada;
     private Socket s;
 
 
-    FilClient(Socket s, BufferUsuaris bf, DataInputStream in, DataOutputStream out, Usuari usuari) {
+    FilClient(Socket s, BufferUsuaris bf, DataInputStream in, DataOutputStream out, String codiEntrada) {
         this.s = s;
         this.in = in;
         this.out = out;
-        this.u = usuari;
+        this.bf = bf;
+        this.codiEntrada = codiEntrada;
+        this.u = bf.recuperarUsuari(codiEntrada);
     }
 
     
@@ -40,12 +43,17 @@ public class FilClient extends Thread{
                 
                 switch(opcio){
                     case "sortir":
-                        System.out.println("L'usuari " + u.getUser() + "ha sortit");
-                        bf.borrar(codi);
+                        System.out.println("L'usuari " + u.getUser() + " amb codi "+ codiEntrada + " ha sortit");
+                        bf.borrar(codiEntrada);
                         s.close();
                         break;
-                    case "consultar":
-                         System.out.println(bf.hash);
+                    case "llistar_usuaris":
+                        if(u.getRol().equals("admin")){
+                            System.out.println(bf.hash);
+                            out.writeUTF("fet");
+                        }else{
+                            out.writeUTF("no tens permisos");
+                        }
                     default:
                         System.out.println("Esperant ordres");
                 }
@@ -53,7 +61,7 @@ public class FilClient extends Thread{
             
 
         } catch (IOException e) {
-                e.printStackTrace();
+                
                 }  
     }
     

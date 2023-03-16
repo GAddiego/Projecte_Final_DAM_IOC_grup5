@@ -9,7 +9,7 @@ import java.net.Socket;
  *
  * @author Aleix
  */
-public class Fil extends Thread{
+public class FilClient extends Thread{
     
     private BufferUsuaris bf;  
     private DataInputStream in;
@@ -17,32 +17,22 @@ public class Fil extends Thread{
     private Usuari u;
     private Socket s;
 
-    public Fil(Socket s, DataInputStream in, DataOutputStream out, Usuari u, BufferUsuaris b) {
+
+    FilClient(Socket s, BufferUsuaris bf, DataInputStream in, DataOutputStream out, Usuari usuari) {
         this.s = s;
-        this.bf = b;
         this.in = in;
         this.out = out;
-        this.u = u;
+        this.u = usuari;
     }
 
     
     @Override
     public void run() {
-        Eines eines = new Eines();
         boolean estat = true;
         String opcio, codi = "";
-        boolean afegit = false;
         
         try {
-            while(!afegit){
-                codi = eines.generarCodi(); 
-                afegit = bf.afegir(codi, u.getTipus());
-                if(afegit){
-                    System.out.println("El codi es: "+ codi);
-                    out.writeBoolean(true);
-                    out.writeUTF(codi);
-                }
-            }        
+  
             System.out.println("Esperant ordres");
             while(estat){
                

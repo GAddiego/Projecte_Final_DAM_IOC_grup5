@@ -3,11 +3,13 @@ package Altres;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import servidor.Usuari;
 
 /**
  *
@@ -35,7 +37,8 @@ public class ProvaClient {
             System.out.println("1- Registrar-te");
             System.out.println("2- Fer logout");
             System.out.println("3- Llistar usuaris al servidor");
-            System.out.println("4- Sortir");
+            System.out.println("4- Qui soc");
+            System.out.println("5- Sortir");
             
             int opcio = sc.nextInt();
             
@@ -50,6 +53,10 @@ public class ProvaClient {
                     veureUsuaris(array);
                     break;
                 case 4:
+                    rebreUsuariAcual(array);
+                    
+                    break;
+                case 5:
                     array=logout(array);
                     sortir=true;
                     break;
@@ -143,6 +150,29 @@ public class ProvaClient {
             in.close();
             socket.close();
         } catch (IOException ex) {
+            Logger.getLogger(ProvaClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private static void rebreUsuariAcual(String[] array) {
+        try {
+            Socket socket = new Socket("localhost", 12345);
+            System.out.println("Conectat al servidor per rebre usuari");
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());            
+            out.writeUTF(array[0]);
+            out.writeUTF("dades_usuari");
+            ObjectInputStream oin = new ObjectInputStream(socket.getInputStream());
+            System.out.println("fet");
+            // Recibir el objeto Usuario enviado por el servidor
+            Usuari u = (Usuari) oin.readObject();
+            System.out.println(u.toString());
+            out.close();
+            in.close();
+            socket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ProvaClient.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(ProvaClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

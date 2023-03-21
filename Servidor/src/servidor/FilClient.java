@@ -3,7 +3,10 @@ package servidor;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -54,6 +57,9 @@ public class FilClient extends Thread{
                         }else{
                             out.writeUTF("no tens permisos");
                         }
+                    case "dades_usuari":
+                        enviarDadesUsuari(u);
+                        break;
                     default:
                         System.out.println("Esperant ordres");
                 }
@@ -63,6 +69,18 @@ public class FilClient extends Thread{
         } catch (IOException e) {
                 
                 }  
+    }
+
+    private void enviarDadesUsuari(Usuari u) {
+        try {
+            // Crear un ObjectOutputStream a partir del OutputStream del socket
+            ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
+            System.out.println("enviar dades usuari " + u.getUser());
+            // Enviar el objeto Usuario al cliente
+            out.writeObject(u);
+        } catch (IOException ex) {
+            Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

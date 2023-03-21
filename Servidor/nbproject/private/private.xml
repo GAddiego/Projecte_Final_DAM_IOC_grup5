@@ -3,13 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Aleix/Documents/GitHub/provasql/GestorSQL/Servidor/Servidor/src/servidor/FilClient.java</file>
-            <file>file:/C:/Users/Aleix/Documents/GitHub/provasql/GestorSQL/Servidor/Servidor/src/servidor/FilNouClient.java</file>
-            <file>file:/C:/Users/Aleix/Documents/GitHub/provasql/GestorSQL/Servidor/Servidor/src/BBDD/SqlManager.java</file>
-            <file>file:/C:/Users/Aleix/Documents/GitHub/provasql/GestorSQL/Servidor/Servidor/src/servidor/Servidor.java</file>
-            <file>file:/C:/Users/Aleix/Documents/GitHub/provasql/GestorSQL/Servidor/Servidor/src/Altres/ConfiguracioBBDD.java</file>
-            <file>file:/C:/Users/Aleix/Documents/GitHub/provasql/GestorSQL/Servidor/Servidor/src/Altres/ProvaClient.java</file>
-            <file>file:/C:/Users/Aleix/Documents/GitHub/provasql/GestorSQL/Servidor/Servidor/src/servidor/BufferUsuaris.java</file>
+            <file>file:/C:/Users/Aleix/Documents/GitHub/Projecte_Final_DAM_IOC_grup5/Servidor/src/servidor/BufferUsuaris.java</file>
+            <file>file:/C:/Users/Aleix/Documents/GitHub/Projecte_Final_DAM_IOC_grup5/Servidor/src/BBDD/SqlManager.java</file>
         </group>
     </open-files>
 </project-private>

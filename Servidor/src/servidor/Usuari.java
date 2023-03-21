@@ -1,12 +1,13 @@
 package servidor;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author Aleix
  */
-public class Usuari {
+public class Usuari implements Serializable {
     
     java.util.Date data = new Date();
     

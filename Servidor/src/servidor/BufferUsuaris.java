@@ -14,8 +14,8 @@ public class BufferUsuaris {
         Usuari u = new Usuari();
         u.setUser("admin");
         u.setPass("1234");
-        u.setRol("admin");
-        hash.put("12345678", u);
+        u.setRol("ghost");
+        hash.put("00000000", u);
     }
     
     public synchronized  boolean afegir(String clau, Usuari user){

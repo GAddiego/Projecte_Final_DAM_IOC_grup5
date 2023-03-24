@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText etUser;
     EditText etPass;
     final private String codiInicial = "00000000";
-    final private String ip = "192.168.1.55";
+    final private String ip = "ip"; //ip local de xarxa, no localhost
     final private int port = 12345;
     String codi;
     String rol;

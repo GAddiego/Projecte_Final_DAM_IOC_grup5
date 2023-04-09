@@ -1,5 +1,6 @@
 package servidor;
 
+import objectes.Usuari;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;

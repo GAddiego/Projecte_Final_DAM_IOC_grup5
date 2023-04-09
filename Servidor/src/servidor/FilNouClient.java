@@ -1,5 +1,7 @@
 package servidor;
 
+import objectes.Eines;
+import objectes.Usuari;
 import BBDD.SqlManager;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

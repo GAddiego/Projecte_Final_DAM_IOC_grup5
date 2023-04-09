@@ -1,4 +1,4 @@
-package Altres;
+package suport;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import servidor.Usuari;
+import objectes.Usuari;
 
 /**
  *

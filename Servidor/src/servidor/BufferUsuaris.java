@@ -1,5 +1,6 @@
 package servidor;
 
+import objectes.Usuari;
 import java.util.HashMap;
 
 /**

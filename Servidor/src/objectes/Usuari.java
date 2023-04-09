@@ -1,4 +1,4 @@
-package servidor;
+package objectes;
 
 import java.io.Serializable;
 import java.util.Date;

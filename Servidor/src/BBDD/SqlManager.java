@@ -5,13 +5,19 @@ import java.sql.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import servidor.Usuari;
+import objectes.Configuracio;
+import objectes.Usuari;
 
 /**
  *
  * @author Aleix
  */
 public class SqlManager {
+    Configuracio conf = new Configuracio();
+    
+    String connexio = conf.getDada("bbdd.url");
+    String user = conf.getDada("bbdd.usuari");
+    String pasw = conf.getDada("bbdd.contrasenya");
     
 
 public String verificarUsuari(String usuari, String pass) {
@@ -21,7 +27,7 @@ public String verificarUsuari(String usuari, String pass) {
     String tipusUsuari = null;
 
     try {
-        conn = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/biblioteca", "ioc", "ioc12345");
+        conn = DriverManager.getConnection(connexio, user, pasw);
         stmt = conn.prepareStatement("SELECT tipus FROM usuaris WHERE usuari = ? AND contrasenya = ?");
         stmt.setString(1, usuari);
         stmt.setString(2, pass);
@@ -56,7 +62,7 @@ public void crearTaulaUsuaris() {
     Statement stmt = null;
 
     try {
-        conn = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/biblioteca", "ioc", "ioc12345");
+        conn = DriverManager.getConnection(connexio, user, pasw);
         stmt = conn.createStatement();
 
         // Comprobar si la tabla ya existe
@@ -112,7 +118,7 @@ public void crearUsuari(Usuari usuari)  {
     PreparedStatement pstmt = null;
     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     try {
-        conn = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/biblioteca", "ioc", "ioc12345");
+        conn = DriverManager.getConnection(connexio, user, pasw);
 
         // Preparar la sentencia SQL
         String query = "INSERT INTO usuaris (nom_usuari, nom, contrasenya, rol, primer_cognom, segon_cognom, email, data_alta ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -157,7 +163,7 @@ public void crearUsuari(Usuari usuari)  {
         Usuari usuari = null;
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            conn = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/biblioteca", "ioc", "ioc12345");
+            conn = DriverManager.getConnection(connexio, user, pasw);
             
             String query = "SELECT id, nom_usuari, contrasenya, rol, nom,  primer_cognom, segon_cognom, email, data_alta  FROM usuaris WHERE nom_usuari = ? AND contrasenya = ?";
             stmt = conn.prepareStatement(query);
@@ -171,7 +177,7 @@ public void crearUsuari(Usuari usuari)  {
                 usuari.setUser(rs.getString("nom_usuari"));
                 usuari.setPass(rs.getString("contrasenya"));
                 usuari.setRol(rs.getString("rol"));
-               // usuari.setDataNaixement(formatter.parse(rs.getString("data_naixement")));
+                // usuari.setDataNaixement(formatter.parse(rs.getString("data_naixement")));
                 usuari.setNom(rs.getString("nom"));
                 usuari.setPrimerCognom(rs.getString("primer_cognom"));
                 usuari.setSegonCognom(rs.getString("segon_cognom"));
@@ -198,7 +204,7 @@ public void crearUsuari(Usuari usuari)  {
         
         boolean existeix = false;
         try {
-            conn = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/biblioteca", "ioc", "ioc12345");
+            conn = DriverManager.getConnection(connexio, user, pasw);
             
             String query = "SELECT COUNT(*) FROM usuaris WHERE nom_usuari = ? AND contrasenya = ?";
             stmt = conn.prepareStatement(query);

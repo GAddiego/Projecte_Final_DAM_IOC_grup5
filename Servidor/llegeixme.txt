@@ -1,0 +1,39 @@
+Configuració del fitxer configuracio.conf
+
+ - Introducció
+
+El fitxer configuracio.conf és un fitxer de configuració que s'utilitza per a especificar les opcions de configuració per a una aplicació Java que utilitza una base de dades POSTGRESQL. Aquest fitxer conté les opcions de configuració bàsiques, com ara el nom del servidor de base de dades, el nom d'usuari i la contrasenya.
+
+Aquest document descriu com configurar el fitxer configuracio.conf per a l'aplicació Java.
+
+ - Requisits
+
+Per configurar el fitxer configuracio.conf, necessitarem conèixer els següents paràmetres:
+
+database.url: L'adreça del servidor de base de dades POSTGRESQL.
+database.usuari: El nom d'usuari per connectar-se a la base de dades.
+database.password: La contrasenya per connectar-se a la base de dades.
+
+ - Configuració del fitxer
+Per configurar el fitxer configuracio.conf, segueixi els passos següents:
+
+Obriu el fitxer configuracio.conf amb un editor de text.
+Introduïu les següents línies:
+
+database.url=jdbc:mysql://localhost:3306/mydatabase
+database.usuari=myusername
+database.contrasenya=mypassword
+
+Desa el fitxer configuracio.conf.
+
+ - Verificació
+
+Per verificar si el fitxer configuracio.conf s'ha configurat correctament, podeu executar l'aplicació Java i comprovar si es connecta a la base de dades correctament.
+
+Si es produeixen errors durant la connexió a la base de dades, reviseu les opcions de configuració i assegureu-vos que són correctes.
+
+Solució de problemes
+A continuació, es presenten alguns problemes comuns que es poden produir durant la configuració del fitxer configuracio.conf i com solucionar-los:
+
+No es pot connectar a la base de dades: Assegureu-vos que l'adreça del servidor de base de dades, el nom d'usuari i la contrasenya siguin correctes i que el servidor de base de dades estigui en línia.
+No es pot llegir el fitxer: Assegureu-vos que es troba en la ubicació correcta.

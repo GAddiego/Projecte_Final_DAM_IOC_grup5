@@ -2,7 +2,7 @@
 package Altres;
 
 import BBDD.SqlManager;
-import servidor.Usuari;
+import objectes.Usuari;
 
 /**
  *

@@ -23,11 +23,14 @@ public class Servidor {
 
         FilNouClient fil;
         FilClient filClient;
+        FilEliminador filEliminador = new FilEliminador(bf);
+        filEliminador.start();
         
             ServerSocket serverSocket = new ServerSocket(12345);
             Socket socket;
            
             System.out.println("Servidor iniciat");
+            
 
             while (true) {
                 socket = serverSocket.accept();

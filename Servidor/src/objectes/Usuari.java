@@ -8,11 +8,44 @@ import java.util.Date;
  * @author Aleix
  */
 public class Usuari implements Serializable {
-    
     java.util.Date data = new Date();
     
     private int id;
+    private String user;
+    private String pass;
+    private String rol;
+    private String codi;//codi alfanumeric per si es torna a conectar no haver de buscar-lo a la BBDD
+    private java.util.Date dataNaixement;
+    private String nom;
+    private String primerCognom;
+    private String segonCognom;
+    private String email;
+    private Date dataAlta;
+    private Date dataBaixa;
+    private double multa;
+    private boolean suspensio;
+    private Date dataFinalSuspensio;
+    private String rutaFoto;
+    private long ultimaActualitzacio;
 
+    public Usuari(String user, String pass, String rol, String nom, String primerCognom, String segonCognom, String email) {
+        this.user = user;
+        this.pass = pass;
+        this.rol = rol;
+        this.nom = nom;
+        this.primerCognom = primerCognom;
+        this.segonCognom = segonCognom;
+        this.email = email;
+        this.dataAlta = data;
+        this.ultimaActualitzacio = System.currentTimeMillis();
+    }
+
+    public Usuari() {
+        
+        this.ultimaActualitzacio = System.currentTimeMillis();
+    }
+    
+   
     public int getId() {
         return id;
     }
@@ -27,13 +60,7 @@ public class Usuari implements Serializable {
 
     public void setDataNaixement(java.util.Date dataNaixement) {
         this.dataNaixement = dataNaixement;
-    }
-    private String user;
-    private String pass;
-    private String rol;
-    private String codi;//codi alfanumeric per si es torna a conectar no haver de buscar-lo a la BBDD
-    private java.util.Date dataNaixement;
-    private String nom;
+    }   
 
     public String getNom() {
         return nom;
@@ -42,38 +69,7 @@ public class Usuari implements Serializable {
     public void setNom(String nom) {
         this.nom = nom;
     }
-    private String primerCognom;
-
-    @Override
-    public String toString() {
-        return "Usuari{" + "id=" + id + ", user=" + user + ", pass=" + pass + ", rol=" + rol + ", dataNaixement=" + dataNaixement + ", nom=" + nom + ", primerCognom=" + primerCognom + ", segonCognom=" + segonCognom + '}';
-    }
-    private String segonCognom;
-    private String email;
-    private Date dataAlta;
-    private Date dataBaixa;
-    private double multa;
-    private boolean suspensio;
-    private Date dataFinalSuspensio;
-    private String rutaFoto;
-
-    public Usuari(String user, String pass, String rol, String nom, String primerCognom, String segonCognom, String email) {
-        this.user = user;
-        this.pass = pass;
-        this.rol = rol;
-        this.nom = nom;
-        this.primerCognom = primerCognom;
-        this.segonCognom = segonCognom;
-        this.email = email;
-        this.dataAlta = data;
-    }
-
-    public Usuari() {
-        
-    }
     
-   
-
     public Date getData() {
         return data;
     }
@@ -184,6 +180,19 @@ public class Usuari implements Serializable {
 
     public void setRutaFoto(String rutaFoto) {
         this.rutaFoto = rutaFoto;
+    }
+
+    public long getUltimaActualitzacio() {
+        return ultimaActualitzacio;
+    }
+
+    public void setUltimaActualitzacio() {
+        this.ultimaActualitzacio = System.currentTimeMillis();
+    }
+       
+    @Override
+    public String toString() {
+        return "Usuari{" + "data=" + data + ", id=" + id + ", user=" + user + ", pass=" + pass + ", rol=" + rol + ", codi=" + codi + ", dataNaixement=" + dataNaixement + ", nom=" + nom + ", primerCognom=" + primerCognom + ", segonCognom=" + segonCognom + ", email=" + email + ", dataAlta=" + dataAlta + ", dataBaixa=" + dataBaixa + ", multa=" + multa + ", suspensio=" + suspensio + ", dataFinalSuspensio=" + dataFinalSuspensio + ", rutaFoto=" + rutaFoto + ", ultimaActualitzacio=" + ultimaActualitzacio + '}';
     }
 
 

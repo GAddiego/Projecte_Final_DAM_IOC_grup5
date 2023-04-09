@@ -12,11 +12,14 @@ public class BufferUsuaris {
     HashMap<String, Usuari> hash = new HashMap<>();
 
     public BufferUsuaris() {
-        Usuari u = new Usuari();
-        u.setUser("admin");
-        u.setPass("1234");
-        u.setRol("ghost");
-        hash.put("00000000", u);
+       // Usuari u = new Usuari();
+        //u.setUser("admin");
+        //u.setUser("ghost");
+        //u.setPass("1234");
+        //u.setRol("ghost");
+        //u.setCodi("00000000");
+       // hash.put("00000000", u);
+       // this.actualitzarTempsUsuari("00000000");
     }
     
     public synchronized  boolean afegir(String clau, Usuari user){
@@ -49,5 +52,13 @@ public class BufferUsuaris {
         }
         
     } 
+    
+    public synchronized  void actualitzarTempsUsuari(String clau){
+        this.hash.get(clau).setUltimaActualitzacio();
+    }
+
+    public synchronized HashMap<String, Usuari> getHash() {
+        return hash;
+    }
     
 }

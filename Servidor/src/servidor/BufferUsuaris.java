@@ -12,14 +12,7 @@ public class BufferUsuaris {
     HashMap<String, Usuari> hash = new HashMap<>();
 
     public BufferUsuaris() {
-       // Usuari u = new Usuari();
-        //u.setUser("admin");
-        //u.setUser("ghost");
-        //u.setPass("1234");
-        //u.setRol("ghost");
-        //u.setCodi("00000000");
-       // hash.put("00000000", u);
-       // this.actualitzarTempsUsuari("00000000");
+
     }
     
     public synchronized  boolean afegir(String clau, Usuari user){
@@ -36,8 +29,7 @@ public class BufferUsuaris {
             return true;
         } else {           
             return false;
-        }
-        
+        }  
     } 
     
     public synchronized  void borrar(String clau){
@@ -49,8 +41,7 @@ public class BufferUsuaris {
             return hash.get(clau);
         } else {           
             return null;
-        }
-        
+        }   
     } 
     
     public synchronized  void actualitzarTempsUsuari(String clau){

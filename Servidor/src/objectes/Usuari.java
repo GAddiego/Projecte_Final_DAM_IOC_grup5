@@ -1,7 +1,13 @@
 package objectes;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -9,6 +15,7 @@ import java.util.Date;
  */
 public class Usuari implements Serializable {
     java.util.Date data = new Date();
+    Eines eines = new Eines();
     
     private int id;
     private String user;
@@ -27,6 +34,7 @@ public class Usuari implements Serializable {
     private Date dataFinalSuspensio;
     private String rutaFoto;
     private long ultimaActualitzacio;
+    private byte[] imageData;
 
     public Usuari(String user, String pass, String rol, String nom, String primerCognom, String segonCognom, String email) {
         this.user = user;
@@ -43,6 +51,12 @@ public class Usuari implements Serializable {
     public Usuari() {
         
         this.ultimaActualitzacio = System.currentTimeMillis();
+    }
+
+    public Usuari(int aInt, String string, String string0, Date convertirDataString, String string1, String string2, String string3, String string4, Date convertirDataString0, float aFloat, boolean aBoolean, Date convertirDataString1, String string5) {
+    }
+
+    public Usuari(String username, String newpass, String newrol, String newnom, String newprimerCognom, String newsegonCognom, String newemail, String string) {
     }
     
    
@@ -189,6 +203,21 @@ public class Usuari implements Serializable {
     public void setUltimaActualitzacio() {
         this.ultimaActualitzacio = System.currentTimeMillis();
     }
+
+    public byte[] getImageData() {
+        return imageData;
+    }
+
+    public void setImageData(String ruta) {
+        
+        File file = new File(ruta);
+        if (eines.comprovarRuta(ruta)) {
+            byte[] imageData = new byte[(int) file.length()];
+            this.imageData = imageData;
+        }
+
+    }
+    
        
     @Override
     public String toString() {

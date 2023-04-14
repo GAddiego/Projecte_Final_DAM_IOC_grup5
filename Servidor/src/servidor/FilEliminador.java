@@ -7,8 +7,13 @@ import java.util.logging.Logger;
 import objectes.Usuari;
 
 /**
- *
- * @author aleix
+ * Classe que representa un fil de client per gestionar la connexió amb el servidor.
+ * Aquest fil s'encarrega d'establir una connexió amb el servidor, enviar l'usuari i
+ * contrasenya al servidor, rebre el codi i el rol d'usuari assignat pel servidor,
+ * i tancar la connexió.
+ * Hereta de la classe Thread per permetre l'execució concurrent d'aquesta funcionalitat.
+ * 
+ * @author Aleix
  */
 public class FilEliminador extends Thread {
     private static final long TEMPS_INACTIU=300000;   
@@ -17,7 +22,8 @@ public class FilEliminador extends Thread {
     public FilEliminador(BufferUsuaris bf) {
         this.bf = bf;
     }
- 
+    
+
     @Override
     public void run() {
         while(true){

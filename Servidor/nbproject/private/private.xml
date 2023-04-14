@@ -3,7 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Aleix/Documents/GitHub/Projecte_Final_DAM_IOC_grup5/Servidor/src/servidor/BufferUsuaris.java</file>
+            <file>file:/C:/Users/Aleix/Documents/GitHub/Projecte_Final_DAM_IOC_grup5/Servidor/src/servidor/FilClient.java</file>
+            <file>file:/C:/Users/Aleix/Documents/GitHub/Projecte_Final_DAM_IOC_grup5/Servidor/test/BBDD/SqlManagerTest.java</file>
+            <file>file:/C:/Users/Aleix/Documents/GitHub/Projecte_Final_DAM_IOC_grup5/Servidor/src/objectes/Eines.java</file>
+            <file>file:/C:/Users/Aleix/Documents/GitHub/Projecte_Final_DAM_IOC_grup5/Servidor/src/objectes/Llibre.java</file>
             <file>file:/C:/Users/Aleix/Documents/GitHub/Projecte_Final_DAM_IOC_grup5/Servidor/src/BBDD/SqlManager.java</file>
         </group>
     </open-files>

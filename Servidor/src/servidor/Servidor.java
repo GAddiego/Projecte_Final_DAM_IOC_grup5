@@ -51,7 +51,7 @@ public class Servidor {
                     fil.start();
                 } else if (bf.comprovar(codiEntrada)) { 
                     System.out.println("entrem al fil conegut");
-                    filClient = new FilClient(socket,bf, in,out,codiEntrada);
+                    filClient = new FilClient(socket,bf,codiEntrada);
                     filClient.start();
                 } else{
                     out.writeUTF("USER_ERROR");

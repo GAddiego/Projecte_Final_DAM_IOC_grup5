@@ -1,5 +1,5 @@
 
-package Altres;
+package suport;
 
 import BBDD.SqlManager;
 import objectes.Usuari;
@@ -17,7 +17,7 @@ public class ConfiguracioBBDD {
 
         SqlManager sql = new SqlManager();
         
-        sql.crearTaulaUsuaris();
+        sql.crearTaula(0);
         //Usuari u = new Usuari("algibo","pass1","admin","aleix","giralt","borrell","aleixgibo@gmail.com");
         Usuari u = new Usuari("pepito","pass2","bibliotecaria","pepe","molins","estruch","pepemoes@gmail.com");
         sql.crearUsuari(u);

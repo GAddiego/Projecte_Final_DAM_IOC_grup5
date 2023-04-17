@@ -1,0 +1,10 @@
+servidor\FilNouClient.class
+BBDD\SqlManager.class
+servidor\FilClient.class
+objectes\Configuracio.class
+objectes\Llibre.class
+servidor\FilEliminador.class
+objectes\Usuari.class
+servidor\Servidor_maven.class
+objectes\Eines.class
+servidor\BufferUsuaris.class

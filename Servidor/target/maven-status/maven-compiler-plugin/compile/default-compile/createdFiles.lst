@@ -1,4 +1,5 @@
 servidor\FilNouClient.class
+objectes\UsuariIntern.class
 BBDD\SqlManager.class
 servidor\FilClient.class
 objectes\Configuracio.class

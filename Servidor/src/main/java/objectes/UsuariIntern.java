@@ -50,8 +50,23 @@ public class UsuariIntern implements Serializable {
         this.ultimaActualitzacio = System.currentTimeMillis();
     }
 
-    public UsuariIntern(int aInt, String string, String string0, Date convertirDataString, String string1, String string2, String string3, String string4, Date convertirDataString0, float aFloat, boolean aBoolean, Date convertirDataString1, String string5) {
+    public UsuariIntern(int id, String user, String rol, Date dataNaixement, String nom, String primerCognom, String segonCognom, String email, Date dataAlta, double multa, boolean suspensio, Date dataFinalSuspensio, String rutaFoto) {
+        this.id = id;
+        this.user = user;
+        this.rol = rol;
+        this.dataNaixement = dataNaixement;
+        this.nom = nom;
+        this.primerCognom = primerCognom;
+        this.segonCognom = segonCognom;
+        this.email = email;
+        this.dataAlta = dataAlta;
+        this.multa = multa;
+        this.suspensio = suspensio;
+        this.dataFinalSuspensio = dataFinalSuspensio;
+        this.rutaFoto = rutaFoto;
     }
+
+
 
     public UsuariIntern(String username, String newpass, String newrol, String newnom, String newprimerCognom, String newsegonCognom, String newemail, String string) {
     }

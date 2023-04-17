@@ -48,6 +48,11 @@ public class Usuari implements Serializable{
         this.ultimaActualitzacio = u.getUltimaActualitzacio();
         this.imageData = u.getImageData();
     }
+
+    @Override
+    public String toString() {
+        return "Usuari{" + "id=" + id + ", user=" + user + ", pass=" + pass + ", rol=" + rol + ", dataNaixement=" + dataNaixement + ", nom=" + nom + ", primerCognom=" + primerCognom + ", segonCognom=" + segonCognom + ", email=" + email + ", dataAlta=" + dataAlta + ", dataBaixa=" + dataBaixa + ", multa=" + multa + ", suspensio=" + suspensio + ", dataFinalSuspensio=" + dataFinalSuspensio + ", ultimaActualitzacio=" + ultimaActualitzacio + '}';
+    }
     
     
 }

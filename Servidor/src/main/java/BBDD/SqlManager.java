@@ -494,27 +494,28 @@ public void crearUsuari(UsuariIntern usuari)  {
             filtres = true;
         }
         if (args[1] != null && !args[1].isEmpty()) {
-            consulta += (filtres ? " AND" : "") + " nom ILIKE '%" + args[1] + "%'";
+            consulta += (filtres ? " AND" : "") + " nom LIKE '%" + args[1] + "%'";
             filtres = true;
         }
         if (args[2] != null && !args[2].isEmpty()) {
-            consulta += (filtres ? " AND" : "") + " primer_cognom ILIKE '%" + args[2] + "%'";
+            consulta += (filtres ? " AND" : "") + " primer_cognom LIKE '%" + args[2] + "%'";
         }
         if (args[3] != null && !args[3].isEmpty()) {
-            consulta += (filtres ? " AND" : "") + " segon_cognom ILIKE '%" + args[3] + "%'";
+            consulta += (filtres ? " AND" : "") + " segon_cognom LIKE '%" + args[3] + "%'";
         }
         if (args[4] != null && !args[4].isEmpty()) {
-            consulta += (filtres ? " AND" : "") + " rol ILIKE '%" + args[4] + "%'";
+            consulta += (filtres ? " AND" : "") + " rol LIKE '%" + args[4] + "%'";
         }
         if (args[5] != null && !args[5].isEmpty()) {
-            consulta += (filtres ? " AND" : "") + " data_naixement ILIKE '%" + args[5] + "%'";
+            consulta += (filtres ? " AND" : "") + " data_naixement LIKE '%" + args[5] + "%'";
         }
         if (args[6] != null && !args[6].isEmpty()) {
-            consulta += (filtres ? " AND" : "") + " email ILIKE '%" + args[6] + "%'";
+            consulta += (filtres ? " AND" : "") + " email LIKE '%" + args[6] + "%'";
         }
         // Execució de la consulta
         conn = DriverManager.getConnection(connexio, user, pasw);
         stmt = conn.createStatement();
+        System.out.println(consulta);
         ResultSet rs = stmt.executeQuery(consulta);
         // Guardem els resultats
         while (rs.next()) {
@@ -533,9 +534,10 @@ public void crearUsuari(UsuariIntern usuari)  {
                     eines.convertirDataString(rs.getString("data_final_suspensio")),               
                     rs.getString("ruta_foto")
             );
-            Usuari u = new Usuari(usuari);           
+            System.out.println("UsuariIntern : " + usuari.toString());
+            Usuari u = new Usuari(usuari); 
+            System.out.println("Usuari : " + u.toString());
             usuaris.add(u);
-            System.out.println("Usuari : " + usuari.toString());
         }
         // Tancar les connexions i recursos
         if (stmt != null) {

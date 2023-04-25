@@ -5,11 +5,16 @@
 package UI;
 
 import clientescriptori.Connection;
+import objectes.Usuari;
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.JOptionPane;
 
@@ -19,10 +24,16 @@ import javax.swing.JOptionPane;
  */
 public class LoginScreen extends javax.swing.JFrame {
 
-    public static String usuari, codi, rol;
+    public static String idUsuari, codi, rol;
     private String contrassenya;
     private Connection connexio;
     PerfilUsuari perfilUsuariPanel;
+    private Usuari usuari;
+    private BuscaLlibre buscaLlibrePanel;
+    private BuscaUsuari buscaUsuariPanel;
+    private LlistaLlibres llistaLlibresPanel;
+    private LlistaUsuaris llistaUsuarisPanel;
+    private String[] arrayUsuaris;
     
     /**
      * Creates new form loginScreen
@@ -50,7 +61,7 @@ public class LoginScreen extends javax.swing.JFrame {
         jLabelBenvinguda = new javax.swing.JLabel();
         jButtonPerfil = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jButtonBuscar = new javax.swing.JButton();
         jPanelBibliotecari1 = new javax.swing.JPanel();
         jPanelBibliotecari = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
@@ -59,7 +70,7 @@ public class LoginScreen extends javax.swing.JFrame {
         jPanelAdmin1 = new javax.swing.JPanel();
         jPanelAdmin = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
+        jButtonBuscaUsuaris = new javax.swing.JButton();
         jButtonLogout = new javax.swing.JButton();
         jPanelMenus = new javax.swing.JPanel();
         jPanelLogin = new javax.swing.JPanel();
@@ -74,8 +85,9 @@ public class LoginScreen extends javax.swing.JFrame {
         jPasswordField1 = new javax.swing.JPasswordField();
         jPanelPrincipal = new javax.swing.JPanel();
         jLabelTitolRol = new javax.swing.JLabel();
-        jLabelTitolMenu = new javax.swing.JLabel();
         jPanelContenedorMenus = new javax.swing.JPanel();
+        jPanelContenedorMenus.setVisible(true);
+        jLabelTitolMenu = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de gestió de prèstecs BiblioEdu");
@@ -130,8 +142,13 @@ public class LoginScreen extends javax.swing.JFrame {
         jButton2.setText("Les meves reserves");
         jPanelUsuario.add(jButton2);
 
-        jButton3.setText("Buscar");
-        jPanelUsuario.add(jButton3);
+        jButtonBuscar.setText("Buscar");
+        jButtonBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBuscarActionPerformed(evt);
+            }
+        });
+        jPanelUsuario.add(jButtonBuscar);
 
         jPanelUsuario1.add(jPanelUsuario);
 
@@ -183,8 +200,13 @@ public class LoginScreen extends javax.swing.JFrame {
         jLabel8.setText("  Administrador:");
         jPanelAdmin.add(jLabel8);
 
-        jButton5.setText("Administrar usuaris");
-        jPanelAdmin.add(jButton5);
+        jButtonBuscaUsuaris.setText("Administrar usuaris");
+        jButtonBuscaUsuaris.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBuscaUsuarisActionPerformed(evt);
+            }
+        });
+        jPanelAdmin.add(jButtonBuscaUsuaris);
 
         jPanelAdmin1.add(jPanelAdmin);
 
@@ -281,7 +303,7 @@ public class LoginScreen extends javax.swing.JFrame {
         jPanelLogin.add(jLabel4, gridBagConstraints);
 
         jTextFieldUsuari.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextFieldUsuari.setText("userTest");
+        jTextFieldUsuari.setText("admin1");
         jTextFieldUsuari.setToolTipText("Usuari");
         jTextFieldUsuari.setBorder(null);
         jTextFieldUsuari.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -328,7 +350,7 @@ public class LoginScreen extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(17, 0, 80, 0);
         jPanelLogin.add(ButtonIniciarSessio, gridBagConstraints);
 
-        jPasswordField1.setText("userTest");
+        jPasswordField1.setText("admin1");
         jPasswordField1.setBorder(null);
         jPasswordField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -349,49 +371,49 @@ public class LoginScreen extends javax.swing.JFrame {
         jPanelPrincipal.setBackground(new java.awt.Color(204, 255, 255));
         jPanelPrincipal.setMinimumSize(new java.awt.Dimension(410, 295));
         jPanelPrincipal.setPreferredSize(new java.awt.Dimension(410, 295));
-        jPanelPrincipal.setLayout(new java.awt.GridBagLayout());
 
         jLabelTitolRol.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabelTitolRol.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabelTitolRol.setText("Rol actual: ");
         jLabelTitolRol.setMaximumSize(new java.awt.Dimension(50, 20));
         jLabelTitolRol.setMinimumSize(new java.awt.Dimension(0, 20));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.ipadx = 220;
-        gridBagConstraints.ipady = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 180, 0, 0);
-        jPanelPrincipal.add(jLabelTitolRol, gridBagConstraints);
-
-        jLabelTitolMenu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabelTitolMenu.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabelTitolMenu.setText("Menú principal");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.ipadx = 319;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        jPanelPrincipal.add(jLabelTitolMenu, gridBagConstraints);
 
         jPanelContenedorMenus.setBackground(new java.awt.Color(204, 255, 255));
-        jPanelContenedorMenus.setLayout(new java.awt.CardLayout());
+        jPanelContenedorMenus.setLayout(new javax.swing.OverlayLayout(jPanelContenedorMenus));
 
         perfilUsuariPanel = new PerfilUsuari();
         jPanelContenedorMenus.add(perfilUsuariPanel, "perfilUsuariPanel");
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.ipadx = 410;
-        gridBagConstraints.ipady = 350;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
-        jPanelPrincipal.add(jPanelContenedorMenus, gridBagConstraints);
+        jLabelTitolMenu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabelTitolMenu.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabelTitolMenu.setText("Menú principal");
+
+        javax.swing.GroupLayout jPanelPrincipalLayout = new javax.swing.GroupLayout(jPanelPrincipal);
+        jPanelPrincipal.setLayout(jPanelPrincipalLayout);
+        jPanelPrincipalLayout.setHorizontalGroup(
+            jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelPrincipalLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanelContenedorMenus, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(jPanelPrincipalLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelTitolRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelTitolMenu)
+                .addGap(31, 31, 31))
+        );
+        jPanelPrincipalLayout.setVerticalGroup(
+            jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelPrincipalLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelTitolRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelTitolMenu))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanelContenedorMenus, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         jPanelMenus.add(jPanelPrincipal, "cardPrincipal");
 
@@ -406,21 +428,27 @@ public class LoginScreen extends javax.swing.JFrame {
 
         boolean loginCorrecte = false;
 
-        usuari = jTextFieldUsuari.getText();
+        idUsuari = jTextFieldUsuari.getText();
         contrassenya = obtenirContrassenya();
 
         //comprovem que s'hagi introduit usuari i contrassenya i iniciem la connexió
-        boolean userPassIntroduits = comprovacio(usuari, contrassenya);
-
-        System.out.println(usuari + " " + contrassenya);
+        boolean userPassIntroduits = comprovacio(idUsuari, contrassenya);
 
         if (userPassIntroduits) {
 
-            connexio = new Connection(usuari, contrassenya, jPanel1);
-            loginCorrecte = connexio.iniciarSessio();
+            System.out.println("iniciando conexion");
+            connexio = new Connection(idUsuari, contrassenya, jPanel1);
+            try {
+                System.out.println("iniciando sesion...");
+                loginCorrecte = connexio.iniciarSessio();
+                usuari = connexio.getUsuari();
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(LoginScreen.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         if (loginCorrecte) {
+
             rol = connexio.getRol();
             codi = connexio.getCodi();
 
@@ -428,6 +456,7 @@ public class LoginScreen extends javax.swing.JFrame {
 
             System.out.println(codi);
             System.out.println(rol);
+//            jLabelBenvinguda.setText("Benvingut/da, " + usuari.getNom());
 
             mostrarMenuPrincipal();
         }
@@ -449,7 +478,7 @@ public class LoginScreen extends javax.swing.JFrame {
         int logout = JOptionPane.showConfirmDialog(jPanel1, "Desitja tancar la sessió actual?", "Tancar sessió", JOptionPane.OK_CANCEL_OPTION);
         if (logout == 0) {
             connexio.logOut();
-            usuari = "";
+            idUsuari = "";
             contrassenya = "";
             jButtonLogout.setVisible(false);
             jPanelPrincipal.setVisible(false);
@@ -473,26 +502,66 @@ public class LoginScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButtonPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPerfilActionPerformed
-        
+
+        connexio.rebreUsuariAcual(connexio.getCodi());
+        usuari = connexio.getUsuari();
+
+        jPanelContenedorMenus.removeAll();
         jPanelContenedorMenus.setVisible(true);
-        perfilUsuariPanel.setIdTextField(usuari);
-        
+        perfilUsuariPanel.setVisible(true);
+        jPanelContenedorMenus.add(perfilUsuariPanel);
+        jPanelContenedorMenus.revalidate();
+        jPanelContenedorMenus.repaint();
+
+        perfilUsuariPanel.setIdTextField(usuari.getUser());
+        perfilUsuariPanel.setjTextFieldNomUsuari(usuari.getNom());
+        perfilUsuariPanel.setjTextFielCognoms(usuari.getPrimerCognom() + " " + usuari.getSegonCognom());
+        perfilUsuariPanel.setjTextFielIdEmail(usuari.getEmail());
+        perfilUsuariPanel.setConnection(connexio);
 //        Container contenedor = jPanelContenedorMenus.getParent();
 //        Dimension dimensionContenedor = contenedor.getSize();
 //        perfilUsuariPanel.setPreferredSize(dimensionContenedor);
 //        
 //        CardLayout cl = (CardLayout)jPanelContenedorMenus.getLayout();
 //        cl.show(jPanelContenedorMenus, "perfilUsuariPanel");
+
     }//GEN-LAST:event_jButtonPerfilActionPerformed
+
+    private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
+        // Activem el panell de recerca d'elements
+        buscaLlibrePanel = new BuscaLlibre();
+        buscaLlibrePanel.setConnexio(connexio);
+        buscaLlibrePanel.setLoginScreen(this);
+        
+        jPanelContenedorMenus.setVisible(true);
+        buscaLlibrePanel.setVisible(true);
+        jPanelContenedorMenus.removeAll();
+        jPanelContenedorMenus.add(buscaLlibrePanel);
+        jPanelContenedorMenus.revalidate();
+        jPanelContenedorMenus.repaint();
+
+    }//GEN-LAST:event_jButtonBuscarActionPerformed
+
+    private void jButtonBuscaUsuarisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscaUsuarisActionPerformed
+        buscaUsuariPanel = new BuscaUsuari();
+        buscaUsuariPanel.setConnexio(connexio);
+        buscaUsuariPanel.setLoginScreen(this);
+
+        jPanelContenedorMenus.removeAll();
+        jPanelContenedorMenus.setVisible(true);
+        jPanelContenedorMenus.add(buscaUsuariPanel);
+        jPanelContenedorMenus.revalidate();
+        jPanelContenedorMenus.repaint();
+    }//GEN-LAST:event_jButtonBuscaUsuarisActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ButtonIniciarSessio;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButtonBuscaUsuaris;
+    private javax.swing.JButton jButtonBuscar;
     private javax.swing.JButton jButtonLogout;
     private javax.swing.JButton jButtonPerfil;
     private javax.swing.JLabel jLabel1;
@@ -561,24 +630,28 @@ public class LoginScreen extends javax.swing.JFrame {
         jPanelPrincipal.setVisible(true);
         jPanelPrincipal.repaint();
         jPanelPrincipal.revalidate();
-        
+
         jPanelContenedorMenus.setVisible(false);
 
         jLabelTitolRol.setText("Rol actual: " + rol);
-        jLabelBenvinguda.setText(jLabelBenvinguda + usuari);
-        
-        jLabelBenvinguda.setText("  Benvingut/da, " + usuari);
+        jLabelBenvinguda.setText(jLabelBenvinguda + idUsuari);
+
+        jLabelBenvinguda.setText("  Benvingut/da, " + idUsuari);
         jPanelUsuario.setVisible(true);
-        
+
         jPanel2ContenedorBotones.setVisible(true);
-        if(rol.equals("bibliotecari") || rol.equals("bibliotecaria")){
+        if (rol.equals("bibliotecari") || rol.equals("bibliotecaria")) {
             jPanelBibliotecari.setVisible(true);
         }
-        if(rol.equals("admin")){
+        if (rol.equals("admin")) {
             jPanelBibliotecari.setVisible(true);
             jPanelAdmin.setVisible(true);
         }
 
+    }
+
+    public Connection getConnexio() {
+        return connexio;
     }
 
     public static void main(String args[]) {
@@ -616,5 +689,53 @@ public class LoginScreen extends javax.swing.JFrame {
 
             }
         });
+    }
+
+    private void setUsuari(Usuari usuari) {
+        this.usuari = usuari;
+    }
+
+    public void showBookList() {
+        buscaLlibrePanel.setVisible(false);
+        llistaLlibresPanel = new LlistaLlibres();
+       
+       
+      //  buscaLlibrePanel.setConnexio(connexio);
+
+        jPanelContenedorMenus.setVisible(true);
+        llistaLlibresPanel.setVisible(true);
+        jPanelContenedorMenus.removeAll();
+        jPanelContenedorMenus.add(llistaLlibresPanel);
+        jPanelContenedorMenus.revalidate();
+        jPanelContenedorMenus.repaint();
+
+    }
+    
+    public void showUsersList(ArrayList<Usuari> usuarisTrobats, String[] arrayUsuaris){
+        
+        this.arrayUsuaris = arrayUsuaris;
+        llistaUsuarisPanel = new LlistaUsuaris(usuarisTrobats, this);
+        buscaUsuariPanel.setVisible(false);
+        jPanelContenedorMenus.setVisible(true);
+        llistaUsuarisPanel.setVisible(true);
+        jPanelContenedorMenus.removeAll();
+        jPanelContenedorMenus.add(llistaUsuarisPanel);
+        jPanelContenedorMenus.revalidate();
+        jPanelContenedorMenus.repaint();
+    }
+    
+    public void showSearchUser(){
+        llistaUsuarisPanel.setVisible(false);
+        buscaUsuariPanel.setVisible(true);
+        jPanelContenedorMenus.removeAll();
+        jPanelContenedorMenus.add(buscaUsuariPanel);
+        jPanelContenedorMenus.revalidate();
+        jPanelContenedorMenus.repaint();
+        
+        buscaUsuariPanel.setText(arrayUsuaris);
+    }
+    
+    public LoginScreen getLoginScreen(){
+       return this; 
     }
 }

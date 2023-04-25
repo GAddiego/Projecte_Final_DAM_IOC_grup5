@@ -7,6 +7,15 @@ package UI;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
+import clientescriptori.Connection;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import objectes.Usuari;
 
 /**
  *
@@ -14,11 +23,17 @@ import javax.swing.JOptionPane;
  */
 public class PerfilUsuari extends javax.swing.JPanel {
 
+    private Usuari usuari;
+    private Connection connexio;
     /**
      * Creates new form PerfilUsuari
      */
     public PerfilUsuari() {
         initComponents();
+    }
+
+    public void setUsuari(Usuari user) {
+        this.usuari = user;
     }
 
     /**
@@ -40,15 +55,16 @@ public class PerfilUsuari extends javax.swing.JPanel {
         jPasswordFieldNovaConf = new javax.swing.JPasswordField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextFieldIdUsuari = new javax.swing.JTextField();
-        jTextFielIdUsuari2 = new javax.swing.JTextField();
+        jTextFieldId = new javax.swing.JTextField();
+        jTextFielCognoms = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jTextFielIdUsuari3 = new javax.swing.JTextField();
+        jTextFielIdDataNaixement = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jTextFielIdUsuari4 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jTextFielIdEmail = new javax.swing.JTextField();
+        jButtonDesferCanvis = new javax.swing.JButton();
+        jButtonGuardarCanvis = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
 
         jCheckBox1.setText("jCheckBox1");
 
@@ -61,13 +77,7 @@ public class PerfilUsuari extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("Id d'usuari:");
         add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, -1, -1));
-
-        jTextFieldNomUsuari.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                none(evt);
-            }
-        });
-        add(jTextFieldNomUsuari, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 190, 150, -1));
+        add(jTextFieldNomUsuari, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 190, 250, -1));
 
         jLabel2.setText("Contrassenya:");
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, -1, -1));
@@ -93,22 +103,15 @@ public class PerfilUsuari extends javax.swing.JPanel {
         jLabel5.setText("Nom:");
         add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, -1, -1));
 
-        jTextFieldIdUsuari.setEditable(false);
-        jTextFieldNomUsuari.setText(LoginScreen.usuari);
-        jTextFieldIdUsuari.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldIdUsuariActionPerformed(evt);
-            }
-        });
-        add(jTextFieldIdUsuari, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 40, 140, -1));
+        jTextFieldId.setEditable(false);
+        add(jTextFieldId, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 40, 140, -1));
 
-        jTextFieldNomUsuari.setText(LoginScreen.usuari);
-        jTextFielIdUsuari2.addActionListener(new java.awt.event.ActionListener() {
+        jTextFielCognoms.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFielIdUsuari2ActionPerformed(evt);
+                jTextFielCognomsActionPerformed(evt);
             }
         });
-        add(jTextFielIdUsuari2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 220, 130, -1));
+        add(jTextFielCognoms, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 220, 230, -1));
 
         jLabel6.setText("Cognoms:");
         add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, -1, -1));
@@ -116,65 +119,146 @@ public class PerfilUsuari extends javax.swing.JPanel {
         jLabel7.setText("Data naixement:");
         add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, -1, -1));
 
-        jTextFieldNomUsuari.setText(LoginScreen.usuari);
-        jTextFielIdUsuari3.addActionListener(new java.awt.event.ActionListener() {
+        jTextFielIdDataNaixement.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFielIdUsuari3ActionPerformed(evt);
+                jTextFielIdDataNaixementActionPerformed(evt);
             }
         });
-        add(jTextFielIdUsuari3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 250, 100, -1));
+        add(jTextFielIdDataNaixement, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 250, 200, -1));
 
         jLabel8.setText("Email:");
-        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, -1, -1));
+        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, -1, -1));
 
-        jTextFieldNomUsuari.setText(LoginScreen.usuari);
-        jTextFielIdUsuari4.addActionListener(new java.awt.event.ActionListener() {
+        jTextFielIdEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFielIdUsuari4ActionPerformed(evt);
+                jTextFielIdEmailActionPerformed(evt);
             }
         });
-        add(jTextFielIdUsuari4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 280, 150, -1));
+        add(jTextFielIdEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 280, 250, -1));
 
-        jButton1.setText("Desfer canvis");
-        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 320, -1, -1));
+        jButtonDesferCanvis.setText("Desfer canvis");
+        add(jButtonDesferCanvis, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 320, -1, -1));
 
-        jButton2.setText("Guardar canvis");
-        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 320, -1, -1));
+        jButtonGuardarCanvis.setText("Guardar canvis");
+        jButtonGuardarCanvis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGuardarCanvisActionPerformed(evt);
+            }
+        });
+        add(jButtonGuardarCanvis, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 320, -1, -1));
+
+        jLabel9.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
+        jLabel9.setText("El meu perfil:");
+        add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
-
-    private void none(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_none
-        // TODO add your handling code here:
-    }//GEN-LAST:event_none
     private void jTextFielIdUsuari1ActionPerformed(java.awt.event.ActionEvent evt) {
 
     }
-    private void jTextFielIdUsuari2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFielIdUsuari2ActionPerformed
+    private void jTextFielCognomsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFielCognomsActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFielIdUsuari2ActionPerformed
+    }//GEN-LAST:event_jTextFielCognomsActionPerformed
 
-    private void jTextFielIdUsuari3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFielIdUsuari3ActionPerformed
+    private void jTextFielIdDataNaixementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFielIdDataNaixementActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFielIdUsuari3ActionPerformed
+    }//GEN-LAST:event_jTextFielIdDataNaixementActionPerformed
 
-    private void jTextFielIdUsuari4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFielIdUsuari4ActionPerformed
+    private void jTextFielIdEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFielIdEmailActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFielIdUsuari4ActionPerformed
+    }//GEN-LAST:event_jTextFielIdEmailActionPerformed
 
     private void jPasswordFieldNovaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordFieldNovaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jPasswordFieldNovaActionPerformed
 
+    private void jButtonGuardarCanvisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarCanvisActionPerformed
+
+        String newPass = obtenirContrassenya(jPasswordFieldNova);
+        String newPassConf = obtenirContrassenya(jPasswordFieldNovaConf);
+        if (newPass.equals(newPassConf)) {
+            usuari.setPass(newPass);
+            usuari.setNom(jTextFieldNomUsuari.getText());
+            String cognoms = jTextFielCognoms.getText();
+            String[] arrayCognoms = cognoms.split(" ");
+            if (arrayCognoms.length > 0) {
+                usuari.setPrimerCognom(arrayCognoms[0]);
+            }
+            if (arrayCognoms.length > 1) {
+                usuari.setSegonCognom(arrayCognoms[1]);
+            }
+            try {
+                usuari.setDataNaixement(convertirDataString(jTextFielIdDataNaixement.getText()));
+            } catch (ParseException ex) {
+                Logger.getLogger(PerfilUsuari.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            usuari.setEmail(jTextFielIdEmail.getText());
+            
+            JOptionPane.showMessageDialog(jCheckBox1, "Informació actualitzada amb éxit");
+            System.out.println("Informació no actualitzada, falta petició al servidor per canviar informació personal (només poden admins i bibliotecaris)");
+            
+        } else {
+            JOptionPane.showMessageDialog(jCheckBox1, "La nova contrassenya introduïda no és correcta.", "Error", JOptionPane.ERROR_MESSAGE);
+
+        }
+
+    }//GEN-LAST:event_jButtonGuardarCanvisActionPerformed
+
     public void setIdTextField(String id) {
-        jTextFieldIdUsuari.setText(id);
+        jTextFieldId.setText(id);
+    }
+
+    public void setjTextFieldNomUsuari(String nom) {
+        jTextFieldNomUsuari.setText(nom);
+    }
+
+    public void setjTextFielCognoms(String cognoms) {
+        jTextFielCognoms.setText(cognoms);
+    }
+
+    public void setjTextFielIdDataNaixement(Date data) {
+        jTextFielIdDataNaixement.setText(data.toString());
+    }
+
+    public void setjTextFielIdEmail(String email) {
+        jTextFielIdEmail.setText(email);
+    }
+
+    public void setjTextFieldId(JTextField jTextFieldId) {
+        this.jTextFieldId = jTextFieldId;
     }
 
     public void jTextFieldIdUsuariActionPerformed(java.awt.event.ActionEvent evt) {
 
     }
 
+    private String obtenirContrassenya(JPasswordField jpf) {
+
+        char[] contrassenyaChar = jpf.getPassword();
+        StringBuilder contrassenyaSB = new StringBuilder();
+        for (char c : contrassenyaChar) {
+            contrassenyaSB.append(c);
+        }
+        String contrassenya = contrassenyaSB.toString();
+
+        return contrassenya;
+    }
+
+    public static Date convertirDataString(String data) throws ParseException {
+        Date r;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date dataConvertida = null;
+
+        if (data == null) {
+            r = null;
+        } else {
+            r = dateFormat.parse(data);
+        }
+
+        return r;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButtonDesferCanvis;
+    private javax.swing.JButton jButtonGuardarCanvis;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -184,13 +268,18 @@ public class PerfilUsuari extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JPasswordField jPasswordFieldNova;
     private javax.swing.JPasswordField jPasswordFieldNovaConf;
-    private javax.swing.JTextField jTextFielIdUsuari2;
-    private javax.swing.JTextField jTextFielIdUsuari3;
-    private javax.swing.JTextField jTextFielIdUsuari4;
-    private javax.swing.JTextField jTextFieldIdUsuari;
+    private javax.swing.JTextField jTextFielCognoms;
+    private javax.swing.JTextField jTextFielIdDataNaixement;
+    private javax.swing.JTextField jTextFielIdEmail;
+    private javax.swing.JTextField jTextFieldId;
     private javax.swing.JTextField jTextFieldNomUsuari;
     // End of variables declaration//GEN-END:variables
+
+    public void setConnection(Connection connexio) {
+        this.connexio = connexio;
+    }
 }

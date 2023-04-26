@@ -12,23 +12,24 @@ import java.util.Date;
  * @author aleix
  */
 public class Usuari implements Serializable{
-    private static final long serialVersionUID = 1436768778619850352L;
-    private final int id;
-    private final String user;
-    private final String pass;
-    private final String rol;
-    private final java.util.Date dataNaixement;
-    private final String nom;
-    private final String primerCognom;
-    private final String segonCognom;
-    private final String email;
-    private final Date dataAlta;
-    private final Date dataBaixa;
-    private final double multa;
-    private final boolean suspensio;
-    private final Date dataFinalSuspensio;
-    private final long ultimaActualitzacio;
-    private final byte[] imageData;
+    private static long serialVersionUID = 1436768778619850352L;
+    private int id;
+    private String user;
+    private String pass;
+    private String rol;
+    private java.util.Date dataNaixement;
+    private String nom;
+    private String primerCognom;
+    private String segonCognom;
+    private String email;
+    private Date dataAlta;
+    private Date dataBaixa;
+    private double multa;
+    private boolean suspensio;
+    private  Date dataFinalSuspensio;
+    private long ultimaActualitzacio;
+    private byte[] imageData;
+
 
     public Usuari(UsuariIntern u) {
         this.id = u.getId();
@@ -49,10 +50,106 @@ public class Usuari implements Serializable{
         this.imageData = u.getImageData();
     }
 
-    @Override
-    public String toString() {
-        return "Usuari{" + "id=" + id + ", user=" + user + ", pass=" + pass + ", rol=" + rol + ", dataNaixement=" + dataNaixement + ", nom=" + nom + ", primerCognom=" + primerCognom + ", segonCognom=" + segonCognom + ", email=" + email + ", dataAlta=" + dataAlta + ", dataBaixa=" + dataBaixa + ", multa=" + multa + ", suspensio=" + suspensio + ", dataFinalSuspensio=" + dataFinalSuspensio + ", ultimaActualitzacio=" + ultimaActualitzacio + '}';
+    public Usuari(String user, String pass, String rol, String nom, String primerCognom, String segonCognom, String email) {
+        
+        this.user = user;
+        this.pass = pass;
+        this.rol = rol;
+        this.nom = nom;
+        this.primerCognom = primerCognom;
+        this.segonCognom = segonCognom;
+        this.email = email;
+        
+        //Pq no dongui error al crear un usuari. No es graba a la base de dades.
+        this.id = 0; 
+        this.dataNaixement = null;
+        this.dataAlta = null;
+        this.dataBaixa = null;
+        this.multa = 0;
+        this.suspensio = false;
+        this.dataFinalSuspensio = null;
+        this.ultimaActualitzacio = 0;
+        this.imageData = null;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public Date getDataNaixement() {
+        return dataNaixement;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public String getPrimerCognom() {
+        return primerCognom;
+    }
+
+    public String getSegonCognom() {
+        return segonCognom;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Date getDataAlta() {
+        return dataAlta;
+    }
+
+    public Date getDataBaixa() {
+        return dataBaixa;
+    }
+
+    public double getMulta() {
+        return multa;
+    }
+    
+    public void setMulta(double multa) {
+        this.multa = multa;
+    }
+
+    public boolean isSuspensio() {
+        return suspensio;
+    }
+
+    public Date getDataFinalSuspensio() {
+        return dataFinalSuspensio;
+    }
+
+    public long getUltimaActualitzacio() {
+        return ultimaActualitzacio;
+    }
+
+    public byte[] getImageData() {
+        return imageData;
     }
     
     
+
+    @Override
+    public String toString() {
+        return "Usuari{" + "id=" + id + ", user=" + user + ", pass=" + pass + ", rol=" + rol + ", dataNaixement=" + dataNaixement + ", nom=" + nom + ", primerCognom=" + primerCognom + ", segonCognom=" + segonCognom + ", email=" + email + ", dataAlta=" + dataAlta + ", dataBaixa=" + dataBaixa + ", multa=" + multa + ", suspensio=" + suspensio + ", dataFinalSuspensio=" + dataFinalSuspensio + ", ultimaActualitzacio=" + ultimaActualitzacio + ", imageData=" + imageData + '}';
+    }
+    
+ 
 }

@@ -1,11 +1,13 @@
 servidor\FilNouClient.class
-objectes\UsuariIntern.class
 BBDD\SqlManager.class
-servidor\FilClient.class
 objectes\Configuracio.class
-objectes\Llibre.class
 servidor\FilEliminador.class
+suport\ConfiguracioBBDD.class
+servidor\BufferUsuaris.class
+suport\ProvaClient.class
+objectes\UsuariIntern.class
+servidor\FilClient.class
+objectes\Llibre.class
 objectes\Usuari.class
 servidor\Servidor_maven.class
 objectes\Eines.class
-servidor\BufferUsuaris.class

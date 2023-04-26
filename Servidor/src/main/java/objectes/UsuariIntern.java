@@ -68,7 +68,16 @@ public class UsuariIntern implements Serializable {
 
 
 
-    public UsuariIntern(String username, String newpass, String newrol, String newnom, String newprimerCognom, String newsegonCognom, String newemail, String string) {
+    public UsuariIntern(Usuari u) {
+        this.user = u.getUser();
+        this.pass = u.getPass();
+        this.rol = u.getRol();
+        this.nom = u.getNom();
+        this.primerCognom = u.getPrimerCognom();
+        this.segonCognom = u.getSegonCognom();
+        this.email = u.getEmail();
+        this.dataAlta = data;
+        this.ultimaActualitzacio = System.currentTimeMillis();
     }
     
    

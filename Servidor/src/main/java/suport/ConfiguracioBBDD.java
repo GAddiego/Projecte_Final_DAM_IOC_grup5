@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import objectes.Llibre;
+import objectes.UsuariIntern;
 
 
 
@@ -22,8 +23,19 @@ public class ConfiguracioBBDD {
     public static void main(String[] args) {
 
         SqlManager sql = new SqlManager();
+        CreadorFaker cf = new CreadorFaker();
         
-        sql.crearTaula(1);
+        //Llibre llibre = cf.crearLlibre();
+        //sql.crearLlibre(llibre);
+        //llibre.setDescripcio("modificat");
+        //sql.modificarLlibre(llibre);
+        
+        UsuariIntern ui = cf.crearUsuariIntern();
+        sql.crearUsuari(ui);
+        ui.setMulta(1000);
+        sql.modificarUsuari(ui);
+        
+        //sql.crearTaula(1);
         //Usuari u = new Usuari("algibo","pass1","admin","aleix","giralt","borrell","aleixgibo@gmail.com");
         //Usuari u = new Usuari("pepito","pass2","bibliotecaria","pepe","molins","estruch","pepemoes@gmail.com");
         //sql.crearUsuari(u);
@@ -42,7 +54,7 @@ public class ConfiguracioBBDD {
     for (int i = 1; i <= 50; i++) { // Bucle para crear 50 libros
         Llibre llibre = new Llibre(); // Crea una instancia de la clase Llibre
 
-        // Genera datos aleatorios para los atributos del libro utilizando la librería Faker
+       
         llibre.setTitol(faker.book().title());
         llibre.setAutor(faker.book().author());
         llibre.setIsbn(faker.code().isbn10());
@@ -51,7 +63,7 @@ public class ConfiguracioBBDD {
         llibre.setDescripcio(faker.lorem().paragraph());
         llibre.setSinopsi(faker.lorem().sentence());
         llibre.setIllustrador(faker.name().fullName());
-        llibre.setRutaPortada("ruta_de_la_portada"); // Asigna la ruta de la portada adecuadamente
+        llibre.setRutaPortada("ruta_de_la_portada"); 
         llibre.setPagines(faker.number().numberBetween(100, 500));
         llibre.setIdioma(faker.nation().language());
         llibre.setExemplar(faker.number().numberBetween(1, 10));
@@ -60,7 +72,7 @@ public class ConfiguracioBBDD {
         llibre.setTraductor(faker.name().fullName());
 
         try {
-            sqlManager.crearLlibre(llibre); // Llama al método "crearLlibre" de la clase SQLManager para guardar el libro en la base de datos
+            sqlManager.crearLlibre(llibre); 
         } catch (SQLException ex) {
             Logger.getLogger(ConfiguracioBBDD.class.getName()).log(Level.SEVERE, null, ex);
         }

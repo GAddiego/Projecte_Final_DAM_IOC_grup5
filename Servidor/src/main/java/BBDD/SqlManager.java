@@ -64,7 +64,8 @@ public class SqlManager {
     static final String CREAR_LLIBRE = "INSERT INTO llibres (titol, autor, isbn, editorial, any_publicacio, descripcio, sinopsi, illustrador, ruta_portada, pagines, idioma, exemplar, nota, titol_original, traductor) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" ;
     static final String BORRAR_LLIBRE = "DELETE FROM llibres WHERE isbn=?"  ;
-    static final String MODIFICAR_LLIBRE = "UPDATE llibres SET titol=?, autor=?, isbn=?, editorial=?, any_publicacio=?, descripcio=?, sinopsi=?, illustrador=?, ruta_portada=?, pagines=?, idioma=?, exemplar=?, nota=?, titol_original=?, traductor=?, llista_reserva=? WHERE id=?" ;
+    static final String MODIFICAR_LLIBRE = "UPDATE llibres SET titol=?, autor=?, editorial=?, any_publicacio=?, descripcio=?, sinopsi=?, illustrador=?, ruta_portada=?, pagines=?, idioma=?, exemplar=?, nota=?, titol_original=?, traductor=? WHERE isbn=?" ;
+    static final String MODIFICAR_USUARI_OLD =  "UPDATE usuaris SET nom = ?, rol = ?, primer_cognom = ?, segon_cognom = ?, email = ?, data_alta = ?, data_baixa = ?, multa = ?, suspensio = ?, data_final_suspensio = ?, ruta_foto = ? WHERE nom_usuari = ?";
     
     Configuracio conf = new Configuracio();
     Eines eines = new Eines();
@@ -72,7 +73,24 @@ public class SqlManager {
     String connexio = conf.getDada("bbdd.url");
     String user = conf.getDada("bbdd.usuari");
     String pasw = conf.getDada("bbdd.contrasenya");
+
+public void provarConexio(){
+    Connection conn = null;
+    try {
+        conn = DriverManager.getConnection(connexio, user, pasw);
+    } catch (SQLException ex) {
+        Logger.getLogger(SqlManager.class.getName()).log(Level.SEVERE, null, ex);
+    }
     
+    if (conn != null)
+   {
+      System.out.println("Connection Successful! Enjoy. Now it's time to push data");
+   }
+   else
+   {
+      System.out.println("Failed to make connection!");
+   }
+}
 
 public void crearTaula(int taula) {
     Connection conn = null;
@@ -314,10 +332,10 @@ public void crearUsuari(UsuariIntern usuari)  {
         try {       
             conn = DriverManager.getConnection(connexio, user, pasw);
             
-            String query = "UPDATE usuaris SET contrasenya = ?, rol = ?, primer_cognom = ?, segon_cognom = ?, email = ?, data_alta = ?, data_baixa = ?, multa = ?, suspensio = ?, data_final_suspensio = ?, ruta_foto = ? WHERE nom_usuari = ?";
+            String query = MODIFICAR_USUARI_OLD;
             stmt = conn.prepareStatement(query);
-
-            stmt.setString(1, usuari.getPass());
+            
+            stmt.setString(1, usuari.getNom());
             stmt.setString(2, usuari.getRol());
             stmt.setString(3, usuari.getPrimerCognom());
             stmt.setString(4, usuari.getSegonCognom());
@@ -328,7 +346,7 @@ public void crearUsuari(UsuariIntern usuari)  {
             stmt.setBoolean(9, usuari.isSuspensio());
             stmt.setString(10, eines.convertirStringData(usuari.getDataFinalSuspensio()));
             stmt.setString(11, usuari.getRutaFoto());
-            stmt.setString(12, usuari.getNom());
+            stmt.setString(12, usuari.getUser());
             stmt.executeUpdate();
             
         }   catch (SQLException e) {
@@ -438,7 +456,7 @@ public void crearUsuari(UsuariIntern usuari)  {
             }else{
                 primer = false;
             }
-            consulta += " multa = " + (float) usuari.getMulta() + "'";
+            consulta += " multa = " + (float) usuari.getMulta() + " ";
         }
 
         //if (usuari.isSuspensio()!= null && !usuari.getSuspensio().isEmpty()){
@@ -610,21 +628,19 @@ public void crearUsuari(UsuariIntern usuari)  {
             // Establir els valors dels paràmetres de la consulta
             stmt.setString(1, llibre.getTitol());
             stmt.setString(2, llibre.getAutor());
-            stmt.setString(3, llibre.getIsbn());
-            stmt.setString(4, llibre.getEditorial());
-            stmt.setInt(5, llibre.getAnyPublicacio());
-            stmt.setString(6, llibre.getDescripcio());
-            stmt.setString(7, llibre.getSinopsi());
-            stmt.setString(8, llibre.getIllustrador());
-            stmt.setString(9, llibre.getRutaPortada());
-            stmt.setInt(10, llibre.getPagines());
-            stmt.setString(11, llibre.getIdioma());
-            stmt.setInt(12, llibre.getExemplar());
-            stmt.setString(13, llibre.getNota());
-            stmt.setString(14, llibre.getTitolOriginal());
-            stmt.setString(15, llibre.getTraductor());
-            //stmt.setInt(16, llibre.getLlistaReserva());
-            //stmt.setInt(17, llibre.getId()); // Establir l'ID del llibre a modificar
+            stmt.setString(3, llibre.getEditorial());
+            stmt.setInt(4, llibre.getAnyPublicacio());
+            stmt.setString(5, llibre.getDescripcio());
+            stmt.setString(6, llibre.getSinopsi());
+            stmt.setString(7, llibre.getIllustrador());
+            stmt.setString(8, llibre.getRutaPortada());
+            stmt.setInt(9, llibre.getPagines());
+            stmt.setString(10, llibre.getIdioma());
+            stmt.setInt(11, llibre.getExemplar());
+            stmt.setString(12, llibre.getNota());
+            stmt.setString(13, llibre.getTitolOriginal());
+            stmt.setString(14, llibre.getTraductor());
+            stmt.setString(15, llibre.getIsbn());
 
             // Executar la consulta
             stmt.executeUpdate();

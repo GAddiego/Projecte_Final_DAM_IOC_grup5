@@ -8,8 +8,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <exec.mainClass>com.mycompany.servidor_maven.Servidor_maven</exec.mainClass>
     </properties>
 
@@ -27,6 +27,7 @@
             <version>1.0.2</version>
             <type>jar</type>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
     </dependencies>
     <build>
       <plugins>

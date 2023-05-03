@@ -39,7 +39,8 @@ public class ProvaClient {
         boolean estat = true;
         String adeu;
         boolean sortir = false;
-        while(!sortir){            
+        while(!sortir){        
+            
             System.out.println("Benvingut al client");
             System.out.println("el teu codi actual es: "+ array[0]);
             System.out.println("Que vols fer?");
@@ -52,17 +53,49 @@ public class ProvaClient {
             System.out.println("5- Modificar usuari");
             System.out.println("6- Borrar usuari");
             System.out.println("7- Buscar usuaris");
+            System.out.println("8- Usuari amb imatge");
             
             System.out.println();
             System.out.println("Operacions Llibres:");
-            System.out.println("8- Crear llibre");
-            System.out.println("9- Modificar llibre");
-            System.out.println("10- Borrar llibre");
-            System.out.println("11- Buscar llibres");
+            System.out.println("9- Crear llibre");
+            System.out.println("10- Modificar llibre");
+            System.out.println("11- Borrar llibre");
+            System.out.println("12- Buscar llibres");
             
             System.out.println();
-            System.out.println("12- Sortir");
+            System.out.println("Operacions Prestec:");
+            System.out.println("13- Crear prestec");
+            System.out.println("14- Modificar prestec");
+            System.out.println("15- Finalitzar prestec");
+            System.out.println("16- Buscar prestecs per usuari");
+            System.out.println("17- Buscar prestecs per isbn");
             
+            System.out.println();
+            System.out.println("Operacions Reserves:");
+            System.out.println("18- Crear reserva");
+            System.out.println("19- Finalitzar reserva");
+            System.out.println("20- Buscar reserva usuari");
+            System.out.println("21- Buscar resserva llibre");
+            
+            System.out.println();
+            System.out.println("Operacions Comentaris:");
+            System.out.println("22- Crear Comentari");
+            System.out.println("23- Modificar Comentari");
+            System.out.println("24- Borrar comentari");
+            System.out.println("25- Buscar comentaris llibre");
+            
+            System.out.println();
+            System.out.println("Operacions Avisos:");
+            System.out.println("26- Crear avís");
+            System.out.println("27- Borrar avís");
+            System.out.println("28- Buscar avisos usuari");
+
+            
+            System.out.println();
+            System.out.println("29- Sortir");
+            
+            //printMenu(array);
+                    
             int opcio = sc.nextInt();
             
             switch(opcio){
@@ -89,19 +122,21 @@ public class ProvaClient {
                     llistarUsuaria(array,llista);
                     break;
                 case 8:
+                    veureUsuariImatge(array);
+                case 9:
                     crearLlibre(array, llibre);
                     break;
-                case 9:
+                case 10:
                     modificarLlibre(array, llibre);
                     break;
-                case 10:
+                case 11:
                     borrarLlibre(array, llibre);               
                     break;
-                case 11:
+                case 12:
                     String[] llistaLlibre = {null,"a",null,null,null,null,null,null,null,null,null,null,null,null};
                     llistarLlibres(array,llistaLlibre);
                     break;
-                case 12:
+                case 13:
                     array=logout(array);
                     sortir=true;
                     break;
@@ -112,6 +147,36 @@ public class ProvaClient {
         }
 
     }
+    public static void printMenu(String[] array) {
+        String[] menuItems = {
+            "Operacions Usuaris:", "Operacions Llibres:", "Operacions Prestec:", 
+            "Operacions Reserves:", "Operacions Comentaris:", "Operacions Avisos:"
+        };
+        String[][] subMenuItems = {
+            {"Registrar-te", "Fer logout", "Qui soc", "Crear usuari", "Modificar usuari", "Borrar usuari", "Buscar usuaris", "Usuari amb imatge", ""},
+            {"Crear llibre", "Modificar llibre", "Borrar llibre", "Buscar llibres","",""},
+            {"Crear prestec", "Modificar prestec", "Finalitzar prestec", "Buscar prestecs per usuari", "Buscar prestecs per isbn",""},
+            {"Crear reserva", "Finalitzar reserva", "Buscar reserva usuari", "Buscar resserva llibre","",""},
+            {"Crear Comentari", "Modificar Comentari", "Borrar comentari", "Buscar comentaris llibre","",""},
+            {"Crear avís", "Borrar avís", "Buscar avisos usuari"}
+        };
+
+        System.out.println("Benvingut al client");
+        System.out.println("el teu codi actual es: " + array[0]);
+        System.out.println("Que vols fer?");
+        System.out.println();
+
+        for (int i = 0; i < menuItems.length; i++) {
+            System.out.printf("%-25s%-25s%-25s%n", menuItems[i], "", "");
+            for (int j = 0; j < subMenuItems[i].length; i +=3 ) {
+                System.out.printf("%-25s%-25s%-25s%n", (j+1) + "- " + subMenuItems[i][j], (j+2) + "- " + subMenuItems[i][j+1], (j+3) + "- " + subMenuItems[i][j+3]);
+            }
+            System.out.println();
+        }
+
+        System.out.println("29- Sortir");
+    }
+
     public static String[] nouClient(){
         String array[] = {"buit","buit"};
         try {    
@@ -372,6 +437,30 @@ public class ProvaClient {
             System.out.println("Hem trobat :" + llibres.size() + " llibres");
             for(int i=0; i<llibres.size(); i++)
             System.out.println("i= "+ i + " : " +llibres.get(i).toString());
+            out.close();
+            in.close();
+            socket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ProvaClient.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ProvaClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private static void veureUsuariImatge(String[] array) {
+
+        try {
+            Socket socket = new Socket(HOST, PORT);
+            System.out.println("Conectat al servidor per rebre usuari");
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());            
+            out.writeUTF(array[0]);
+            out.writeUTF("dades_usuari_imatge");
+            ObjectInputStream oin = new ObjectInputStream(socket.getInputStream());
+            // Recibir el objeto Usuario enviado por el servidor
+            Usuari u = (Usuari) oin.readObject();
+            System.out.println(u.toString());
+            UsuariProfileFrame upf = new UsuariProfileFrame(u);
             out.close();
             in.close();
             socket.close();

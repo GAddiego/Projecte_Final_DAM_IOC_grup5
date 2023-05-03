@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import objectes.Eines;
 
 /**
  *
@@ -18,7 +19,7 @@ public class Servidor_maven {
     public static void main(String[] args) throws IOException {
         
         BufferUsuaris bf = new BufferUsuaris();
-        
+        Eines eines = new Eines();
 
         FilNouClient fil;
         FilClient filClient;
@@ -27,6 +28,9 @@ public class Servidor_maven {
         
             ServerSocket serverSocket = new ServerSocket(12345);
             Socket socket;
+            if(!Eines.ComprovarArxius()){
+                System.exit(0);
+            }
            
             System.out.println("Servidor iniciat");
             

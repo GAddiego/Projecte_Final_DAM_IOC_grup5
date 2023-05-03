@@ -4,7 +4,10 @@
  */
 package objectes;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  *
@@ -28,6 +31,7 @@ public class Llibre implements Serializable {
     private String nota;
     private String titolOriginal;
     private String traductor;
+    private byte[] portada;
 
     public Llibre(int id, String titol, String autor, String isbn, String editorial, int anyPublicacio, String descripcio, String sinopsi, String illustrador, String rutaPortada, int pagines, String idioma, int exemplar, String nota, String titolOriginal, String traductor) {
         this.id = id;
@@ -182,6 +186,15 @@ public class Llibre implements Serializable {
 
     public void setTraductor(String traductor) {
         this.traductor = traductor;
+    }
+
+    public byte[] getPortada() {
+        return portada;
+    }
+
+    public void setPortada(byte[] b) throws IOException {
+        
+            this.portada = b;
     }
 
     @Override

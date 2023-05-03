@@ -1,13 +1,14 @@
 package suport;
 
 import BBDD.SqlManager;
-import objectes.Usuari;
 import com.github.javafaker.Faker;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import objectes.Eines;
 import objectes.Llibre;
-import objectes.UsuariIntern;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 
@@ -22,26 +23,44 @@ public class ConfiguracioBBDD {
      */
     public static void main(String[] args) {
 
-        SqlManager sql = new SqlManager();
-        CreadorFaker cf = new CreadorFaker();
-        
-        //Llibre llibre = cf.crearLlibre();
-        //sql.crearLlibre(llibre);
-        //llibre.setDescripcio("modificat");
-        //sql.modificarLlibre(llibre);
-        
-        UsuariIntern ui = cf.crearUsuariIntern();
-        sql.crearUsuari(ui);
-        ui.setMulta(1000);
-        sql.modificarUsuari(ui);
-        
-        //sql.crearTaula(1);
-        //Usuari u = new Usuari("algibo","pass1","admin","aleix","giralt","borrell","aleixgibo@gmail.com");
-        //Usuari u = new Usuari("pepito","pass2","bibliotecaria","pepe","molins","estruch","pepemoes@gmail.com");
-        //sql.crearUsuari(u);
-        //sql.crearUsuari("marc", "marc1234", "professor", "1992-10-15");
-        //sql.crearUsuari("pere", "pere1234", "alumne", "2018-09-01");
-        //crear50Llibres();
+
+        try {
+            SqlManager sql = new SqlManager();
+            CreadorFaker cf = new CreadorFaker();
+            Eines eines = new Eines();
+            
+            //sql.crearTaula(4);
+            String data = "30/04/2023";
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate dataReserva = LocalDate.parse(data, formatter);
+            LocalDate mesSeguent = dataReserva.plusMonths(1);
+            String expiracioData = mesSeguent.format(formatter);
+            sql.reserves.crearReserva(1, 10, data, expiracioData );
+            
+            
+            //sql.crearTaula(3);
+            
+            //Llibre llibre = cf.crearLlibre();
+            //sql.crearLlibre(llibre);
+            //llibre.setDescripcio("modificat");
+            //sql.modificarLlibre(llibre);
+            
+            //UsuariIntern ui = sql.getUsuari("jucomo", "jucó9957");
+            //ui.setRutaFoto("imatges_usuaris/DefaultUser1.png");
+            //sql.modificarUsuari(ui);
+            
+ 
+            //sql.crearTaula(1);
+            //Usuari u = new Usuari("algibo","pass1","admin","aleix","giralt","borrell","aleixgibo@gmail.com");
+            //Usuari u = new Usuari("pepito","pass2","bibliotecaria","pepe","molins","estruch","pepemoes@gmail.com");
+            //sql.crearUsuari(u);
+            //sql.crearUsuari("marc", "marc1234", "professor", "1992-10-15");
+            //sql.crearUsuari("pere", "pere1234", "alumne", "2018-09-01");
+            //crear50Llibres();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConfiguracioBBDD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
 
         
 
@@ -71,11 +90,7 @@ public class ConfiguracioBBDD {
         llibre.setTitolOriginal(faker.book().title());
         llibre.setTraductor(faker.name().fullName());
 
-        try {
-            sqlManager.crearLlibre(llibre); 
-        } catch (SQLException ex) {
-            Logger.getLogger(ConfiguracioBBDD.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }
 }
 

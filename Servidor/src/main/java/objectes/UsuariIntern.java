@@ -1,8 +1,8 @@
 package objectes;
 
-import java.io.File;
-
-import java.io.Serializable;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 
 
@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * @author Aleix
  */
-public class UsuariIntern implements Serializable {
+public class UsuariIntern {
     java.util.Date data = new Date();
     Eines eines = new Eines();
     
@@ -229,12 +229,10 @@ public class UsuariIntern implements Serializable {
         return imageData;
     }
 
-    public void setImageData(String ruta) {
+    public void setImageData(String ruta) throws IOException {
         
-        File file = new File(ruta);
         if (eines.comprovarRuta(ruta)) {
-            byte[] imageData = new byte[(int) file.length()];
-            this.imageData = imageData;
+            this.imageData = Files.readAllBytes(Paths.get(ruta));
         }
 
     }

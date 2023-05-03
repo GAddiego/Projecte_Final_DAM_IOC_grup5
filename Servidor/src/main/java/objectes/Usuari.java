@@ -71,6 +71,10 @@ public class Usuari implements Serializable{
         this.ultimaActualitzacio = 0;
         this.imageData = null;
     }
+    
+    public Usuari(){
+        
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -142,6 +146,70 @@ public class Usuari implements Serializable{
 
     public byte[] getImageData() {
         return imageData;
+    }
+
+    public static void setSerialVersionUID(long serialVersionUID) {
+        Usuari.serialVersionUID = serialVersionUID;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
+    public void setDataNaixement(Date dataNaixement) {
+        this.dataNaixement = dataNaixement;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public void setPrimerCognom(String primerCognom) {
+        this.primerCognom = primerCognom;
+    }
+
+    public void setSegonCognom(String segonCognom) {
+        this.segonCognom = segonCognom;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setDataAlta(Date dataAlta) {
+        this.dataAlta = dataAlta;
+    }
+
+    public void setDataBaixa(Date dataBaixa) {
+        this.dataBaixa = dataBaixa;
+    }
+
+    public void setSuspensio(boolean suspensio) {
+        this.suspensio = suspensio;
+    }
+
+    public void setDataFinalSuspensio(Date dataFinalSuspensio) {
+        this.dataFinalSuspensio = dataFinalSuspensio;
+    }
+
+    public void setUltimaActualitzacio(long ultimaActualitzacio) {
+        this.ultimaActualitzacio = ultimaActualitzacio;
+    }
+
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
     }
     
     

@@ -20,11 +20,11 @@ import objectes.Avis;
  */
 public class SqlAvisos implements Sql {
     final static String CREAR_AVIS = "INSERT INTO avis (id_usuari, titol, missatge, data_creacio, llegit) VALUES (?, ?, ?, ?, ?)";
-    final static String LLEGIR_AVIS = "UPDATE INTO avis SET llegit WHERE id VALUES (?, ?)";
+    final static String LLEGIR_AVIS = "UPDATE INTO avis SET llegit = true WHERE id VALUES (?)";
     final static String LLISTAR_AVISOS_NOUS= "SELECT * FROM avis WHERE llegit = true AND id VALUES (?)";
     final static String LLISTAR_AVISOS_HISTORIC="SELECT * FROM avis WHERE id = ? VALUES (?)";
     
-    public void createAvis(Avis avis, int idUsuari) throws SQLException {
+    public void crearAvis(Avis avis, int idUsuari) throws SQLException {
 
         Connection conn = DriverManager.getConnection(connexio, user, pasw);  
         String query = CREAR_AVIS;
@@ -39,7 +39,7 @@ public class SqlAvisos implements Sql {
         }
     }
 
-    public void llegit(Avis avis) throws SQLException {
+    public void llegit(int idAvis) throws SQLException {
         
         Connection conn = DriverManager.getConnection(connexio, user, pasw);  
         String query = LLEGIR_AVIS;

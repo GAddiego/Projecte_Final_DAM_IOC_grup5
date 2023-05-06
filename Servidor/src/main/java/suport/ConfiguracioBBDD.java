@@ -3,12 +3,14 @@ package suport;
 import BBDD.SqlManager;
 import com.github.javafaker.Faker;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import objectes.Eines;
 import objectes.Llibre;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import objectes.UsuariIntern;
 
 
 
@@ -21,45 +23,44 @@ public class ConfiguracioBBDD {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
 
 
-        try {
-            SqlManager sql = new SqlManager();
-            CreadorFaker cf = new CreadorFaker();
-            Eines eines = new Eines();
-            
-            //sql.crearTaula(4);
-            String data = "30/04/2023";
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate dataReserva = LocalDate.parse(data, formatter);
-            LocalDate mesSeguent = dataReserva.plusMonths(1);
-            String expiracioData = mesSeguent.format(formatter);
-            sql.reserves.crearReserva(1, 10, data, expiracioData );
-            
-            
-            //sql.crearTaula(3);
-            
-            //Llibre llibre = cf.crearLlibre();
-            //sql.crearLlibre(llibre);
-            //llibre.setDescripcio("modificat");
-            //sql.modificarLlibre(llibre);
-            
-            //UsuariIntern ui = sql.getUsuari("jucomo", "jucó9957");
-            //ui.setRutaFoto("imatges_usuaris/DefaultUser1.png");
-            //sql.modificarUsuari(ui);
-            
- 
-            //sql.crearTaula(1);
-            //Usuari u = new Usuari("algibo","pass1","admin","aleix","giralt","borrell","aleixgibo@gmail.com");
-            //Usuari u = new Usuari("pepito","pass2","bibliotecaria","pepe","molins","estruch","pepemoes@gmail.com");
-            //sql.crearUsuari(u);
-            //sql.crearUsuari("marc", "marc1234", "professor", "1992-10-15");
-            //sql.crearUsuari("pere", "pere1234", "alumne", "2018-09-01");
-            //crear50Llibres();
-        } catch (SQLException ex) {
-            Logger.getLogger(ConfiguracioBBDD.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        SqlManager sql = new SqlManager();
+        CreadorFaker cf = new CreadorFaker();
+        Eines eines = new Eines();
+        //sql.crearTaula(4);
+        /*String data = "30/04/2023";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dataReserva = LocalDate.parse(data, formatter);
+        LocalDate mesSeguent = dataReserva.plusMonths(1);
+        String expiracioData = mesSeguent.format(formatter);
+        sql.reserves.crearReserva(1, 10, data, expiracioData );
+        
+        */
+        UsuariIntern ui = new UsuariIntern();
+        ui = sql.uIntern.getUsuari("algibo", "pass1");
+        sql.uIntern.crearUsuari2(ui);
+        //sql.crearTaula(0);
+        //sql.crearTaula(1);
+        
+        //Llibre llibre = cf.crearLlibre();
+        //sql.crearLlibre(llibre);
+        //llibre.setDescripcio("modificat");
+        //sql.modificarLlibre(llibre);
+        
+        //UsuariIntern ui = sql.getUsuari("jucomo", "jucó9957");
+        //ui.setRutaFoto("imatges_usuaris/DefaultUser1.png");
+        //sql.modificarUsuari(ui);
+        
+        
+        //sql.crearTaula(1);
+        //Usuari u = new Usuari("algibo","pass1","admin","aleix","giralt","borrell","aleixgibo@gmail.com");
+        //Usuari u = new Usuari("pepito","pass2","bibliotecaria","pepe","molins","estruch","pepemoes@gmail.com");
+        //sql.crearUsuari(u);
+        //sql.crearUsuari("marc", "marc1234", "professor", "1992-10-15");
+        //sql.crearUsuari("pere", "pere1234", "alumne", "2018-09-01");
+        //crear50Llibres();
 
 
         

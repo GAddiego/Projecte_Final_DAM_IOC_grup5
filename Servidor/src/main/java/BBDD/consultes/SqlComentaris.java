@@ -20,7 +20,7 @@ public class SqlComentaris implements Sql{
         final static String LLISTAR_COMENTARIS_LIBRE= "SELECT * FROM comentaris WHERE id_llibre ORDER BY data_creacioVALUES (?)";
         final static String LLISTAR_COMENTARIS_USUARI= "SELECT * FROM comentaris WHERE id_llibre VALUES (?)";
         
-    public void createAvis(Comentari comentari) throws SQLException {
+    public void crearComentari(Comentari comentari) throws SQLException {
         Connection conn = DriverManager.getConnection(connexio, user, pasw);  
         String query = CREAR_COMENTARI;
 

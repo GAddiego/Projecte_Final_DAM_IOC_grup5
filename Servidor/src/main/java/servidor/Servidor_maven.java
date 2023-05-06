@@ -29,7 +29,7 @@ public class Servidor_maven {
             ServerSocket serverSocket = new ServerSocket(12345);
             Socket socket;
             if(!Eines.ComprovarArxius()){
-                System.exit(0);
+               System.exit(0);
             }
            
             System.out.println("Servidor iniciat");

@@ -115,7 +115,48 @@ public void crearUsuari(UsuariIntern usuari)  {
         }
     }
 }
+public void crearUsuari2(UsuariIntern usuari)  {
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    try {
+        conn = DriverManager.getConnection("jdbc:postgresql://192.168.1.219:5432/biblioteca", user, pasw);
 
+        // Preparar la sentencia SQL
+        String query = CREAR_USUARI;
+            pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, usuari.getUser());
+            pstmt.setString(2, usuari.getNom());
+            pstmt.setString(3, usuari.getPass());
+            pstmt.setString(4, usuari.getRol());
+            pstmt.setString(5, usuari.getPrimerCognom());
+            pstmt.setString(6, usuari.getSegonCognom());
+            pstmt.setString(7, usuari.getEmail());
+            pstmt.setString(8, formatter.format(usuari.getDataAlta()));
+
+        // Ejecutar la sentencia SQL
+        int filasAfectadas = pstmt.executeUpdate();
+
+        if (filasAfectadas > 0) {
+            System.out.println("Usuari creat correctament.");
+        } else {
+            System.out.println("No s'ha pogut crear l'usuari.");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
     public UsuariIntern getUsuari(String nomUsuari, String pass) throws ParseException {
         Connection conn = null;
         PreparedStatement stmt = null;

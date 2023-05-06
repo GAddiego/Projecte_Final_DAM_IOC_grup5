@@ -94,7 +94,7 @@ public class ProvaClient {
             System.out.println();
             System.out.println("29- Sortir");
             
-            //printMenu(array);
+ 
                     
             int opcio = sc.nextInt();
             
@@ -147,35 +147,7 @@ public class ProvaClient {
         }
 
     }
-    public static void printMenu(String[] array) {
-        String[] menuItems = {
-            "Operacions Usuaris:", "Operacions Llibres:", "Operacions Prestec:", 
-            "Operacions Reserves:", "Operacions Comentaris:", "Operacions Avisos:"
-        };
-        String[][] subMenuItems = {
-            {"Registrar-te", "Fer logout", "Qui soc", "Crear usuari", "Modificar usuari", "Borrar usuari", "Buscar usuaris", "Usuari amb imatge", ""},
-            {"Crear llibre", "Modificar llibre", "Borrar llibre", "Buscar llibres","",""},
-            {"Crear prestec", "Modificar prestec", "Finalitzar prestec", "Buscar prestecs per usuari", "Buscar prestecs per isbn",""},
-            {"Crear reserva", "Finalitzar reserva", "Buscar reserva usuari", "Buscar resserva llibre","",""},
-            {"Crear Comentari", "Modificar Comentari", "Borrar comentari", "Buscar comentaris llibre","",""},
-            {"Crear avís", "Borrar avís", "Buscar avisos usuari"}
-        };
 
-        System.out.println("Benvingut al client");
-        System.out.println("el teu codi actual es: " + array[0]);
-        System.out.println("Que vols fer?");
-        System.out.println();
-
-        for (int i = 0; i < menuItems.length; i++) {
-            System.out.printf("%-25s%-25s%-25s%n", menuItems[i], "", "");
-            for (int j = 0; j < subMenuItems[i].length; i +=3 ) {
-                System.out.printf("%-25s%-25s%-25s%n", (j+1) + "- " + subMenuItems[i][j], (j+2) + "- " + subMenuItems[i][j+1], (j+3) + "- " + subMenuItems[i][j+3]);
-            }
-            System.out.println();
-        }
-
-        System.out.println("29- Sortir");
-    }
 
     public static String[] nouClient(){
         String array[] = {"buit","buit"};

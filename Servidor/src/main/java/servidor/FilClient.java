@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import objectes.Avis;
+import objectes.Comentari;
 import objectes.Eines;
 import objectes.Llibre;
 import objectes.Prestec;
@@ -113,6 +115,86 @@ public class FilClient extends Thread {
                     case "llistar_llibres":
                         if (usuari.getRol().equals("admin") || usuari.getRol().equals("bibliotecaria")) {
                             consultarLlistaLlibres();
+                        }
+                        break; 
+                    case "crear_prestec":
+                        if (usuari.getRol().equals("admin") || usuari.getRol().equals("bibliotecaria")) {
+                            crearPrestec();
+                        }
+                        break;
+                    case "modificar_prestec":
+                        if (usuari.getRol().equals("admin") || usuari.getRol().equals("bibliotecaria")) {
+                            modificarPrestec();
+                        }
+                        break;
+                    case "finalitzar_prestec":
+                        if (usuari.getRol().equals("admin") || usuari.getRol().equals("bibliotecaria")) {
+                            finalitzarPrestec();
+                        }
+                        break;      
+                    case "buscar_prestec_usuari":
+                        if (usuari.getRol().equals("admin") || usuari.getRol().equals("bibliotecaria")) {
+                            buscarPrestecUsuari();
+                        }
+                        break;
+                    case "buscar_prestec_isbn":
+                        if (usuari.getRol().equals("admin") || usuari.getRol().equals("bibliotecaria")) {
+                            buscarPrestecIsbn();
+                        }
+                        break;
+                    case "crear_reserva":
+                        if (usuari.getRol().equals("admin") || usuari.getRol().equals("bibliotecaria") || usuari.getRol().equals("usuari")) {
+                            crearReserva();
+                        }
+                        break;
+                    case "finalitzar_reserva":
+                        if (usuari.getRol().equals("admin") || usuari.getRol().equals("bibliotecaria") || usuari.getRol().equals("usuari")) {
+                            finalitzarReserva();
+                        }
+                        break;
+                    case "buscar_reserva_usuari":
+                        if (usuari.getRol().equals("admin") || usuari.getRol().equals("bibliotecaria")) {
+                            buscarReservaUsuari();
+                        }
+                        break;
+                    case "buscar_reserva_llibre":
+                        if (usuari.getRol().equals("admin") || usuari.getRol().equals("bibliotecaria")) {
+                            buscarReservaLlibre();
+                        }
+                        break;
+                    case "crear_comentari":
+                        if (usuari.getRol().equals("admin") || usuari.getRol().equals("bibliotecaria") || usuari.getRol().equals("usuari")) {
+                            crearComentari();
+                        }
+                        break;
+                    case "modificar_comentari":
+                        if (usuari.getRol().equals("admin") || usuari.getRol().equals("bibliotecaria") || usuari.getRol().equals("usuari")) {
+                            modificarComentari();
+                        }
+                        break;
+                    case "borrar_comentari":
+                        if (usuari.getRol().equals("admin") || usuari.getRol().equals("bibliotecaria")) {
+                            borrarComentari();
+                        }
+                        break;
+                    case "buscar_comentari_llibre":
+                        if (usuari.getRol().equals("admin") || usuari.getRol().equals("bibliotecaria")) {
+                            buscarComentariLlibre();
+                        }
+                        break;
+                    case "crear_avis":
+                        if (usuari.getRol().equals("admin") || usuari.getRol().equals("bibliotecaria")) {
+                            crearAvis();
+                        }
+                        break;
+                    case "avis_llegit":
+                        if (usuari.getRol().equals("admin") || usuari.getRol().equals("bibliotecaria")) {
+                            avisLlegit();
+                        }
+                        break;
+                    case "buscar_avisos_usuari":
+                        if (usuari.getRol().equals("admin") || usuari.getRol().equals("bibliotecaria") || usuari.getRol().equals("usuari")) {
+                            buscarAvisosUsuaris();
                         }
                         break;
                 }
@@ -281,7 +363,7 @@ public class FilClient extends Thread {
         try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream())) {
             Llibre llibre = (Llibre) ois.readObject();
             
-            Prestec prestec = new Prestec(sqlManager.prestec.obtenirPrestecLlibre(llibre.getId()));
+            Prestec prestec = new Prestec((List<Prestec>) sqlManager.prestec.obtenirPrestecLlibre(llibre.getId()));
             System.out.println(llibre.toString() );
             sqlManager.prestec.modificarPrestec(llibre.getId(), (Date) eines.convertirDataString(eines.ampliacióRetorn(prestec.getDataRetorn())));
             ois.close();
@@ -293,7 +375,7 @@ public class FilClient extends Thread {
     private void tancarPrestec() {
         try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream())) {
             String idPrestec = (String) ois.readObject();
-            sqlManager.prestec.tancarPrestac(Integer.parseInt(idPrestec), (Date) eines.convertirDataString(eines.diaAvui()));
+            sqlManager.prestec.tancarPrestec(Integer.parseInt(idPrestec), (Date) eines.convertirDataString(eines.diaAvui()));
         }catch (IOException | ClassNotFoundException | ParseException  ex) {
             Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -323,7 +405,8 @@ public class FilClient extends Thread {
     private void tancarReserva() {
         try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream())) {
             String idPrestec = (String) ois.readObject();
-            sqlManager.prestec.tancarPrestac(Integer.parseInt(idPrestec), (Date) eines.convertirDataString(eines.diaAvui()));
+            sqlManager.prestec.tancarPrestec(Integer.parseInt(idPrestec), (Date) eines.convertirDataString(eines.diaAvui()));
+            ois.close();
         }catch (IOException | ClassNotFoundException | ParseException  ex) {
             Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -334,9 +417,160 @@ public class FilClient extends Thread {
              ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
             String dadesConsulta = (String) ois.readObject();           
             oos.writeObject(sqlManager.prestec.llistaPrestecsActius(Integer.parseInt(dadesConsulta)));
+            ois.close();
+            oos.close();
         }catch (IOException | ClassNotFoundException  ex) {
             Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void buscarAvisosUsuaris() {
+       try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
+             ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
+            Usuari usuari = (Usuari) ois.readObject();           
+            oos.writeObject(sqlManager.avisos.llistarNous(usuari.getId()));
+            ois.close();
+            oos.close();
+        }catch (IOException | ClassNotFoundException | SQLException  ex) {
+            Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void avisLlegit() {
+        try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
+             ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
+            String avis = (String) ois.readObject();           
+            sqlManager.avisos.llegit(Integer.parseInt(avis));
+        }catch (IOException | ClassNotFoundException | SQLException  ex) {
+            Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void crearAvis() {
+        try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
+             ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
+            Avis avis = (Avis) ois.readObject();           
+            //sqlManager.avisos.crearAvis(avis);
+        }catch (IOException | ClassNotFoundException   ex) {
+            Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void buscarComentariLlibre() {
+        try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
+            ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
+            int idLlibre = (int) ois.readObject();           
+            oos.writeObject(sqlManager.comentaris.llistarComentarisLlibre(idLlibre));
+        }catch (IOException | ClassNotFoundException | SQLException   ex) {
+            Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void borrarComentari() {
+        try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
+            ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
+            //int idLlibre = (int) ois.readObject();           
+            //sqlManager.comentaris
+        }catch (IOException   ex) {
+            Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+
+    private void modificarComentari() {
+        try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
+            ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
+            int idLlibre = (int) ois.readObject();           
+            //sqlManager.comentaris
+        }catch (IOException | ClassNotFoundException   ex) {
+            Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void crearComentari() {
+        try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
+            ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
+            Comentari com = (Comentari) ois.readObject();           
+            sqlManager.comentaris.crearComentari(com);        
+        }catch (IOException | ClassNotFoundException | SQLException   ex) {
+            Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void buscarReservaLlibre() {
+        try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
+            ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
+            int idLlibre = (int) ois.readObject();
+            oos.writeObject(sqlManager.reserves.llistarReservesLlibre(idLlibre));           
+        }catch (IOException | ClassNotFoundException | SQLException   ex) {
+            Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
+        }    }
+
+    private void buscarReservaUsuari() {
+        try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
+            ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
+            int idUsuari = (int) ois.readObject();           
+            oos.writeObject(sqlManager.reserves.llistarReservesUsuari(idUsuari));
+        }catch (IOException | ClassNotFoundException | SQLException   ex) {
+            Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void finalitzarReserva() {
+        try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
+            ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
+            int idReserva = (int) ois.readObject();     
+            java.util.Date dataRecollida = new java.util.Date();
+            sqlManager.reserves.finalitzarReserva(idReserva, (Date) dataRecollida);
+        }catch (IOException | ClassNotFoundException | SQLException   ex) {
+            Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void buscarPrestecIsbn() {
+        try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
+            ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
+            int isbn = (int) ois.readObject();           
+            oos.writeObject(sqlManager.prestec.obtenirPrestecLlibre(isbn));
+        }catch (IOException | ClassNotFoundException    ex) {
+            Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void buscarPrestecUsuari() {
+        try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
+            ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
+            int idUsuari = (int) ois.readObject();           
+            oos.writeObject(sqlManager.prestec.llistaPrestecsActius(idUsuari));
+        }catch (IOException | ClassNotFoundException    ex) {
+            Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void finalitzarPrestec() {
+        try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
+            ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
+            int idUsuari = (int) ois.readObject();     
+            java.util.Date dataRetorn = new java.util.Date();
+            sqlManager.prestec.tancarPrestec(idUsuari, (Date) dataRetorn);
+        }catch (IOException | ClassNotFoundException    ex) {
+            Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void modificarPrestec() {
+        try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
+            ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
+            int idPrestec = (int) ois.readObject();     
+            java.util.Date dataRetorn = new java.util.Date();
+            sqlManager.prestec.tancarPrestec(idPrestec, (Date) (dataRetorn));
+        }catch (IOException | ClassNotFoundException    ex) {
+            Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void crearPrestec() {
+        
     }
 
 }

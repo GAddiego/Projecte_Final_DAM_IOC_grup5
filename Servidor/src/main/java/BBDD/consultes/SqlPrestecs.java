@@ -93,10 +93,9 @@ public class SqlPrestecs implements Sql{
         return prestecsActius;
         
     }
-    public List<Prestec> obtenirPrestecLlibre(int idLlibre) {
+    public Prestec obtenirPrestecLlibre(int idLlibre) {
         Connection conn = null;
         PreparedStatement ps = null;
-        List<Prestec> prestecsActius = new ArrayList<>();
 
         try  {
             conn = DriverManager.getConnection(connexio, user, pasw);
@@ -106,34 +105,34 @@ public class SqlPrestecs implements Sql{
 
             ResultSet rs = statement.executeQuery();
 
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                int idUsuariResultat = rs.getInt("id_usuari");
-                    idLlibre = rs.getInt("id_llibre");
-                Date dataPrestec = rs.getDate("data_prestec");
-                Date dataRetorn = rs.getDate("data_retorn");
-                boolean prolongacio = rs.getBoolean("prolongacio");
+            int id = rs.getInt("id");
+            int idUsuariResultat = rs.getInt("id_usuari");
+                idLlibre = rs.getInt("id_llibre");
+            Date dataPrestec = rs.getDate("data_prestec");
+            Date dataRetorn = rs.getDate("data_retorn");
+            boolean prolongacio = rs.getBoolean("prolongacio");
 
-                Prestec prestec = new Prestec(id, idUsuariResultat, idLlibre, dataPrestec, dataRetorn, prolongacio);
-                prestecsActius.add(prestec);
-            }
-
+            Prestec prestec = new Prestec(id, idUsuariResultat, idLlibre, dataPrestec, dataRetorn, prolongacio);
+            return prestec;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return prestecsActius;
+        return null;
+        
     }
     
-    public void modificarPrestec(int idPrestec, Date dataRetorn) {
+  
+    public void modificarPrestec(int idLlibre, java.util.Date dataRenovacio) {
     Connection conn = null;
     PreparedStatement ps = null;
     try {
         conn = DriverManager.getConnection(connexio, user, pasw);
         String sql = MODIFICAR_PRESTEC;
+        Prestec prestec = obtenirPrestecLlibre(idLlibre);
+        java.sql.Date aux = new java.sql.Date(dataRenovacio.getTime());
         ps = conn.prepareStatement(sql);
-        ps.setDate(1, dataRetorn);
-        ps.setInt(2, idPrestec);
+        ps.setDate(1, aux );
+        ps.setInt(2, prestec.getId());
         ps.executeUpdate(); // Ejecutar la consulta de actualización
     } catch (SQLException e) {
         e.printStackTrace();
@@ -151,7 +150,7 @@ public class SqlPrestecs implements Sql{
         }
     }
     
-    public void tancarPrestac(int idPrestec, Date dataRetorn) {
+    public void tancarPrestec(int idPrestec, Date dataRetorn) {
     Connection conn = null;
     PreparedStatement ps = null;
     try {

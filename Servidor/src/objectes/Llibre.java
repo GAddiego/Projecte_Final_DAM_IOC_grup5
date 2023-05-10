@@ -4,11 +4,17 @@
  */
 package objectes;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 /**
  *
  * @author aleix
  */
-public class Llibre {
+public class Llibre implements Serializable {
+    private static final long serialVersionUID = 1436768778619850352L;
     private int id;
     private String titol;
     private String autor;
@@ -25,6 +31,7 @@ public class Llibre {
     private String nota;
     private String titolOriginal;
     private String traductor;
+    private byte[] portada;
 
     public Llibre(int id, String titol, String autor, String isbn, String editorial, int anyPublicacio, String descripcio, String sinopsi, String illustrador, String rutaPortada, int pagines, String idioma, int exemplar, String nota, String titolOriginal, String traductor) {
         this.id = id;
@@ -44,6 +51,8 @@ public class Llibre {
         this.titolOriginal = titolOriginal;
         this.traductor = traductor;
     }
+    
+
 
     public Llibre() {
         
@@ -177,6 +186,20 @@ public class Llibre {
 
     public void setTraductor(String traductor) {
         this.traductor = traductor;
+    }
+
+    public byte[] getPortada() {
+        return portada;
+    }
+
+    public void setPortada(byte[] b) throws IOException {
+        
+            this.portada = b;
+    }
+
+    @Override
+    public String toString() {
+        return "Llibre{" + "id=" + id + ", titol=" + titol + ", autor=" + autor + ", isbn=" + isbn + ", editorial=" + editorial + ", anyPublicacio=" + anyPublicacio + ", descripcio=" + descripcio + ", sinopsi=" + sinopsi + ", illustrador=" + illustrador + ", rutaPortada=" + rutaPortada + ", pagines=" + pagines + ", idioma=" + idioma + ", exemplar=" + exemplar + ", nota=" + nota + ", titolOriginal=" + titolOriginal + ", traductor=" + traductor + '}';
     }
     
     

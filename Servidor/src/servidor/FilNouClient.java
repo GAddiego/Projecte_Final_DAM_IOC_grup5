@@ -1,7 +1,8 @@
-package servidor;
+package  servidor;
+
 
 import objectes.Eines;
-import objectes.Usuari;
+import objectes.UsuariIntern;
 import BBDD.SqlManager;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -57,16 +58,16 @@ public class FilNouClient extends Thread {
         Eines eines = new Eines();
         boolean afegit = false;
         String codi = "";
-        Usuari user = new Usuari();
-        SqlManager sq = new SqlManager();
+        UsuariIntern user = new UsuariIntern();
+        SqlManager sqlManager = new SqlManager();
 
         try {
             System.out.println("Esperant usuari i contrasenya...");
             String usuari = in.readUTF();
             String pass = in.readUTF();
-            boolean existeixUsuari = sq.existeixUsuari(usuari, pass);
+            boolean existeixUsuari = sqlManager.uIntern.existeixUsuari(usuari, pass);
             if (existeixUsuari) {
-                user = sq.getUsuari(usuari, pass);
+                user = sqlManager.uIntern.getUsuari(usuari, pass);
                 while (!afegit) {
                     codi = eines.generarCodi();
                     afegit = bf.afegir(codi, user);

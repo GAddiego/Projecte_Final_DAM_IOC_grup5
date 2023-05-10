@@ -1,0 +1,13 @@
+"id","nom_usuari","nom","contrasenya","rol","data_naixement","primer_cognom","segon_cognom","email","data_alta","data_baixa","multa","suspensio","data_final_suspensio","ruta_foto"
+17,"algibo","aleix","pass1","admin",NULL,"Giralt","Borrell","aleixgibo@gmail.com","2023-03-30",NULL,NULL,NULL,NULL,"imatges_usuaris/DefaultUser.png"
+18,"pepito","pepe","pass2","bibliotecaria",NULL,"Molins","Estruch","pepemoes@gmail.com","2023-03-30",NULL,NULL,NULL,NULL,"imatges_usuaris/DefaultUser.png"
+19,"analor","Anna","anal4139","bibliotecaria",NULL,"López","Ortega","anna_lopez@example.com","2022-01-01",NULL,NULL,NULL,NULL,"imatges_usuaris/DefaultUser.png"
+20,"arpées","Arnau","arpé6687","bibliotecaria",NULL,"Pérez","Espinosa","arnau_perez@example.com","2022-01-02",NULL,NULL,NULL,NULL,NULL
+21,"mibllo","Miquel","mibl2965","alumne",NULL,"Blanc","López","miquel_blanc@example.com","2022-01-03",NULL,NULL,NULL,NULL,NULL
+22,"maalga","Maria","maal4883","alumne",NULL,"Alvarez","Garcia","maria_alvarez@example.com","2022-01-04",NULL,NULL,NULL,NULL,NULL
+23,"jucomo","Joan","jucó9957","alumne",NULL,"Cortés","Molina","joan_cortes@example.com","2022-01-05",NULL,NULL,NULL,NULL,NULL
+24,"paluca","Paola","palu2046","alumne",NULL,"Lucena","Castro","paola_lucena@example.com","2022-01-06",NULL,NULL,NULL,NULL,NULL
+25,"jelogu","Jesús","jelo2375","alumne",NULL,"López","Gutiérrez","jesus_lopez@example.com","2022-01-07",NULL,NULL,NULL,NULL,NULL
+26,"lolofe","Lola","lolo6058","alumne",NULL,"López","Ferran","lola_lopez@example.com","2022-01-08",NULL,NULL,NULL,NULL,NULL
+27,"dabape","David","daba2974","alumne",NULL,"Bartra","Pérez","david_barragan@example.com","2022-01-09",NULL,NULL,NULL,NULL,NULL
+28,"vijuga","Vicent","viju5078","alumne",NULL,"Jurado","Garcia","vicent_jurado@example.com","2022-01-10",NULL,NULL,NULL,NULL,NULL

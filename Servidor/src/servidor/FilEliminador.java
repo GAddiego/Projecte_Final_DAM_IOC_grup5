@@ -1,10 +1,12 @@
-package servidor;
+package  servidor;
+
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import objectes.Usuari;
+import objectes.UsuariIntern;
+
 
 /**
  * Classe que representa un fil de client per gestionar la connexió amb el servidor.
@@ -31,7 +33,7 @@ public class FilEliminador extends Thread {
                 sleep(50000);
                 System.out.println("He entrar al eliminador de usuaris. " + bf.getHash().size());               
                 if (!bf.getHash().isEmpty()){
-                    Iterator<Map.Entry<String, Usuari>> it = bf.getHash().entrySet().iterator();
+                    Iterator<Map.Entry<String, UsuariIntern>> it = bf.getHash().entrySet().iterator();
                     while(it.hasNext()){
                         if((System.currentTimeMillis() - it.next().getValue().getUltimaActualitzacio())>TEMPS_INACTIU){
                              System.out.println("Borro usuari" );

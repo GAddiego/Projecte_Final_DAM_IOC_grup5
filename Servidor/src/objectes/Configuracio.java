@@ -2,9 +2,12 @@
 package objectes;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,7 +24,17 @@ public class Configuracio {
             prop.load(fis);
             fis.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            FileInputStream fis;
+            try {
+                fis = new FileInputStream("../configuracio.conf");
+                prop.load(fis);
+                fis.close();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Configuracio.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Configuracio.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
         
         dades.put("bbdd.url", prop.getProperty("bbdd.url"));

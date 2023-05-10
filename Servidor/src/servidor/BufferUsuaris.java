@@ -1,6 +1,6 @@
-package servidor;
+package  servidor;
 
-import objectes.Usuari;
+import objectes.UsuariIntern;
 import java.util.HashMap;
 
 /**
@@ -9,13 +9,13 @@ import java.util.HashMap;
  */
 public class BufferUsuaris {
     
-    HashMap<String, Usuari> hash = new HashMap<>();
+    HashMap<String, UsuariIntern> hash = new HashMap<>();
 
     public BufferUsuaris() {
 
     }
     
-    public synchronized  boolean afegir(String clau, Usuari user){
+    public synchronized  boolean afegir(String clau, UsuariIntern user){
         if (hash.containsKey(clau)) {
             return false;
         } else {
@@ -36,7 +36,7 @@ public class BufferUsuaris {
         hash.remove(clau);
     }
     
-        public synchronized Usuari recuperarUsuari(String clau){
+        public synchronized UsuariIntern recuperarUsuari(String clau){
         if (hash.containsKey(clau)) {
             return hash.get(clau);
         } else {           
@@ -48,7 +48,7 @@ public class BufferUsuaris {
         this.hash.get(clau).setUltimaActualitzacio();
     }
 
-    public synchronized HashMap<String, Usuari> getHash() {
+    public synchronized HashMap<String, UsuariIntern> getHash() {
         return hash;
     }
     

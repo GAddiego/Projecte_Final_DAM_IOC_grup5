@@ -71,7 +71,6 @@ public class FilNouClient extends Thread {
                 while (!afegit) {
                     codi = eines.generarCodi();
                     afegit = bf.afegir(codi, user);
-                    System.out.println(user.toString());
                     if (afegit) {
                         System.out.println("El codi es: " + codi + " el rol es " + user.getRol());
                         out.writeBoolean(true);

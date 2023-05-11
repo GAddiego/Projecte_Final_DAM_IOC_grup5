@@ -4,6 +4,7 @@
  */
 package objectes;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
@@ -11,7 +12,8 @@ import java.util.List;
  *
  * @author aleix
  */
-public class Prestec {
+public class Prestec implements Serializable{
+        private static final long serialVersionUID = 1436768778619850352L;
         private int id;
         private int idUsuari;
         private int idLlibre;

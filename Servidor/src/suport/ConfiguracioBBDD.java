@@ -28,18 +28,19 @@ public class ConfiguracioBBDD {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws SQLException, ParseException {
-
+        List<Avis> avisosNous = new ArrayList();
 
         SqlManager sql = new SqlManager();
         Eines eines = new Eines();
         eines.convertirABytes("imatges_usuaris/DefaultUser.png");
-        
+        avisosNous = sql.avisos.llistarNous(21);
+        System.out.println(avisosNous.size());
         //sql.crearTaula(5);
         java.util.Date data = new java.util.Date();
-        Avis a = new Avis(17,"avis retard","et retades en la entrega", data, false, 99999);
+        //Avis a = new Avis(17,"avis retard","et retades en la entrega", data, false, 99999);
         //sql.avisos.crearAvis(a, 999999);
         
-        sql.avisos.marcarllegit(1);
+        //sql.avisos.marcarllegit(1);
         /*String data = "30/04/2023";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate dataReserva = LocalDate.parse(data, formatter);

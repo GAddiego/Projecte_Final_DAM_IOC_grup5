@@ -1,12 +1,14 @@
 package objectes;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author aleix
  */
-public class Comentari {
+public class Comentari implements Serializable {
+    private static final long serialVersionUID = 1436768778619850352L;
         private int id;
         private int idUsuari;
         private int idLlibre;

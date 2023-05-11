@@ -7,6 +7,7 @@ import static BBDD.Sql.user;
 import BBDD.SqlManager;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -33,6 +34,7 @@ public class SqlUsuariIntern implements Sql{
     static final String VERIFICAR_USUARI = "SELECT tipus FROM usuaris WHERE usuari = ? AND contrasenya = ?";
     static final String CREAR_USUARI = "INSERT INTO usuaris ( nom_usuari , nom, contrasenya , rol , data_naixement , primer_cognom , segon_cognom, email , data_alta , foto ) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?, ?)";
     static final String RECUPERAR_USUARI = "SELECT id, nom_usuari, contrasenya, rol, nom,  primer_cognom, segon_cognom, email, data_alta, foto FROM usuaris WHERE nom_usuari = ? AND contrasenya = ?";
+    static final String RECUPERAR_USUARI_TOT = "SELECT * FROM usuaris WHERE nom_usuari = ? AND contrasenya = ?";
     static final String BORRAR_USUARI = "DELETE FROM usuaris WHERE nom_usuari = ?";
     static final String MODIFICAR_USUARI_OLD =  "UPDATE usuaris SET nom = ?, rol = ?, primer_cognom = ?, segon_cognom = ?, email = ?, data_alta = ?, data_baixa = ?, multa = ?, suspensio = ?, data_final_suspensio = ?, ruta_foto = ? WHERE nom_usuari = ?";
 
@@ -117,14 +119,13 @@ public void crearUsuari(UsuariIntern usuari)  {
         }
     }
 }
-public void crearUsuari2(UsuariIntern usuari)  {
+public void crearUsuariExtens(UsuariIntern usuari)  {
    Connection conn = null;
     PreparedStatement pstmt = null;
     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     try {
         conn = DriverManager.getConnection(connexio, user, pasw);
 
-//( nom_usuari , nom, contrasenya , rol , data_naixement , primer_cognom , segon_cognom, email , data_alta , foto ) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?, ?)";
         // Preparar la sentencia SQL
         String query = CREAR_USUARI;
             pstmt = conn.prepareStatement(query);
@@ -138,7 +139,6 @@ public void crearUsuari2(UsuariIntern usuari)  {
             pstmt.setString(8, usuari.getEmail());
             pstmt.setDate(9, new java.sql.Date(usuari.getDataAlta().getTime()));
             pstmt.setBytes(10, usuari.getImageData());
-
         // Ejecutar la sentencia SQL
         int filasAfectadas = pstmt.executeUpdate();
 
@@ -170,30 +170,32 @@ public void crearUsuari2(UsuariIntern usuari)  {
         try {
             conn = DriverManager.getConnection(connexio, user, pasw);
 
-            String query = RECUPERAR_USUARI;
+            String query = RECUPERAR_USUARI_TOT;
             stmt = conn.prepareStatement(query);
             stmt.setString(1, nomUsuari);
             stmt.setString(2, pass);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
+                
                 usuari = new UsuariIntern();
                 usuari.setId(rs.getInt("id"));
                 usuari.setUser(rs.getString("nom_usuari"));
                 usuari.setPass(rs.getString("contrasenya"));
                 usuari.setRol(rs.getString("rol"));
-                //usuari.setDataNaixement(rs.getDate("data_naixement"));
+                usuari.setDataNaixement(rs.getDate("data_naixement"));
                 usuari.setNom(rs.getString("nom"));
                 usuari.setPrimerCognom(rs.getString("primer_cognom"));
                 usuari.setSegonCognom(rs.getString("segon_cognom"));
                 usuari.setEmail(rs.getString("email"));
                 usuari.setDataAlta(rs.getDate("data_alta"));
-                //usuari.setDataBaixa(rs.getDate("data_baixa"));
-                //usuari.setMulta(rs.getFloat("multa"));
-                //usuari.setSuspensio(rs.getBoolean("suspensio"));
-                //usuari.setDataFinalSuspensio(rs.getDate("data_final_suspensio"));
+                usuari.setDataBaixa(rs.getDate("data_baixa"));
+                usuari.setMulta(rs.getFloat("multa"));
+                usuari.setSuspensio(rs.getBoolean("suspensio"));
+                usuari.setDataFinalSuspensio(rs.getDate("data_final_suspensio"));
                 usuari.setImageData(rs.getBytes("foto"));
-
+                
+                System.out.println(usuari.toString());
             }
             stmt.close();
             rs.close();
@@ -202,8 +204,49 @@ public void crearUsuari2(UsuariIntern usuari)  {
         }
         return usuari;
     }
+     public UsuariIntern getUsuariNomesUserName(String nomUsuari) throws ParseException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        UsuariIntern usuari = null;
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            conn = DriverManager.getConnection(connexio, user, pasw);
 
-    public boolean existeixUsuari(String nomUsuari, String contrasenya) {
+            String query = RECUPERAR_USUARI_TOT;
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1, nomUsuari);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                
+                usuari = new UsuariIntern();
+                usuari.setId(rs.getInt("id"));
+                usuari.setUser(rs.getString("nom_usuari"));
+                usuari.setPass(rs.getString("contrasenya"));
+                usuari.setRol(rs.getString("rol"));
+                usuari.setDataNaixement(rs.getDate("data_naixement"));
+                usuari.setNom(rs.getString("nom"));
+                usuari.setPrimerCognom(rs.getString("primer_cognom"));
+                usuari.setSegonCognom(rs.getString("segon_cognom"));
+                usuari.setEmail(rs.getString("email"));
+                usuari.setDataAlta(rs.getDate("data_alta"));
+                usuari.setDataBaixa(rs.getDate("data_baixa"));
+                usuari.setMulta(rs.getFloat("multa"));
+                usuari.setSuspensio(rs.getBoolean("suspensio"));
+                usuari.setDataFinalSuspensio(rs.getDate("data_final_suspensio"));
+                usuari.setImageData(rs.getBytes("foto"));
+                
+                System.out.println(usuari.toString());
+            }
+            stmt.close();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return usuari;
+    }
+    
+        public boolean existeixUsuari(String nomUsuari, String contrasenya) {
          Connection conn = null;
         PreparedStatement stmt = null;
 
@@ -501,7 +544,7 @@ public void crearUsuari2(UsuariIntern usuari)  {
                     rs.getFloat("multa"),
                     rs.getBoolean("suspensio"),
                     eines.convertirDataString(rs.getString("data_final_suspensio")),               
-                    rs.getByte("foto")
+                    rs.getBytes("foto")
             );
             System.out.println("UsuariIntern : " + usuari.toString());
             Usuari u = new Usuari(usuari); 
@@ -574,7 +617,7 @@ public void crearUsuari2(UsuariIntern usuari)  {
                     rs.getFloat("multa"),
                     rs.getBoolean("suspensio"),
                     eines.convertirDataString(rs.getString("data_final_suspensio")),               
-                    rs.getByte("foto")
+                    rs.getBytes("foto")
             );
             System.out.println("UsuariIntern : " + usuari.toString());
             Usuari u = new Usuari(usuari);          

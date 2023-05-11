@@ -1,13 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package objectes;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
 
 /**
  *
@@ -24,7 +19,6 @@ public class Llibre implements Serializable {
     private String descripcio;
     private String sinopsi;
     private String illustrador;
-    private String rutaPortada;
     private int pagines;
     private String idioma;
     private int exemplar;
@@ -33,7 +27,7 @@ public class Llibre implements Serializable {
     private String traductor;
     private byte[] portada;
 
-    public Llibre(int id, String titol, String autor, String isbn, String editorial, int anyPublicacio, String descripcio, String sinopsi, String illustrador, String rutaPortada, int pagines, String idioma, int exemplar, String nota, String titolOriginal, String traductor) {
+    public Llibre(int id, String titol, String autor, String isbn, String editorial, int anyPublicacio, String descripcio, String sinopsi, String illustrador, int pagines, String idioma, int exemplar, String nota, String titolOriginal, String traductor, byte[] portada) {
         this.id = id;
         this.titol = titol;
         this.autor = autor;
@@ -43,13 +37,13 @@ public class Llibre implements Serializable {
         this.descripcio = descripcio;
         this.sinopsi = sinopsi;
         this.illustrador = illustrador;
-        this.rutaPortada = rutaPortada;
         this.pagines = pagines;
         this.idioma = idioma;
         this.exemplar = exemplar;
         this.nota = nota;
         this.titolOriginal = titolOriginal;
         this.traductor = traductor;
+        this.portada = portada;
     }
     
 
@@ -57,8 +51,6 @@ public class Llibre implements Serializable {
     public Llibre() {
         
     }
-    
-    
 
     public int getId() {
         return id;
@@ -132,14 +124,6 @@ public class Llibre implements Serializable {
         this.illustrador = illustrador;
     }
 
-    public String getRutaPortada() {
-        return rutaPortada;
-    }
-
-    public void setRutaPortada(String rutaPortada) {
-        this.rutaPortada = rutaPortada;
-    }
-
     public int getPagines() {
         return pagines;
     }
@@ -192,15 +176,17 @@ public class Llibre implements Serializable {
         return portada;
     }
 
-    public void setPortada(byte[] b) throws IOException {
+    public void setPortada(byte[] b){
         
-            this.portada = b;
+        this.portada = b;
     }
 
     @Override
     public String toString() {
-        return "Llibre{" + "id=" + id + ", titol=" + titol + ", autor=" + autor + ", isbn=" + isbn + ", editorial=" + editorial + ", anyPublicacio=" + anyPublicacio + ", descripcio=" + descripcio + ", sinopsi=" + sinopsi + ", illustrador=" + illustrador + ", rutaPortada=" + rutaPortada + ", pagines=" + pagines + ", idioma=" + idioma + ", exemplar=" + exemplar + ", nota=" + nota + ", titolOriginal=" + titolOriginal + ", traductor=" + traductor + '}';
+        return "Llibre{" + "id=" + id + ", titol=" + titol + ", autor=" + autor + ", isbn=" + isbn + ", editorial=" + editorial + ", anyPublicacio=" + anyPublicacio + ", descripcio=" + descripcio + ", sinopsi=" + sinopsi + ", illustrador=" + illustrador + ", pagines=" + pagines + ", idioma=" + idioma + ", exemplar=" + exemplar + ", nota=" + nota + ", titolOriginal=" + titolOriginal + ", traductor=" + traductor + ", portada=" + portada + '}';
     }
+
+
     
     
 

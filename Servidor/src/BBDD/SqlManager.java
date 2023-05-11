@@ -48,14 +48,13 @@ public class SqlManager implements Sql{
                                         "descripcio TEXT NOT NULL," +
                                         "sinopsi TEXT NOT NULL," +
                                         "illustrador TEXT," +
-                                        "ruta_portada TEXT," +
                                         "pagines INTEGER NOT NULL," +
                                         "idioma TEXT NOT NULL," +
                                         "exemplar INTEGER NOT NULL," +
                                         "nota TEXT," +
                                         "titol_original TEXT NOT NULL," +
                                         "traductor TEXT," +
-                                        "llista_reserva INTEGER[][]" +
+                                        "portada BYTES " +
                                         ")";
     static final String TAULA_PRESTEC = "CREATE TABLE prestec (" +
                                         "id SERIAL PRIMARY KEY, " +

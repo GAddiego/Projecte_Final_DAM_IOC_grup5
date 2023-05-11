@@ -1,9 +1,11 @@
 package objectes;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
-public class Reserva {
+public class Reserva implements Serializable{
+    private static final long serialVersionUID = 1436768778619850352L;
     private int id;
     private int idUsuari;
     private int idLlibre;

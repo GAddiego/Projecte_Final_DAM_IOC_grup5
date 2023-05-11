@@ -1,12 +1,14 @@
-package objectes;
+ package objectes;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author aleix
  */
-public class Avis {
+public class Avis  implements Serializable{
+    private static final long serialVersionUID = 1436768778619850352L;
     private int id;
     private int id_usuari;
     private String titol;
@@ -15,7 +17,8 @@ public class Avis {
     private boolean llegit;
     private int idCreador;
 
-    public Avis(int idUsuari, String titol, String missatge, Date dataCreacio, boolean llegit, int idCreador) {
+    public Avis(int id, int idUsuari, String titol, String missatge, Date dataCreacio, boolean llegit, int idCreador) {
+        this.id = id;
         this.id_usuari = idUsuari;
         this.titol = titol;
         this.missatge = missatge;
@@ -23,9 +26,11 @@ public class Avis {
         this.llegit = llegit;
         this.idCreador= idCreador;
     }
-    
-    public Avis(int id, int idUsuari, String titol, String missatge, Date dataCreacio, boolean llegit, int idCreador) {
-        this.id = id;
+
+    public Avis() {
+    }
+
+    public Avis(int idUsuari, String titol, String missatge, Date dataCreacio, Boolean llegit, int idCreador) {
         this.id_usuari = idUsuari;
         this.titol = titol;
         this.missatge = missatge;
@@ -89,5 +94,11 @@ public class Avis {
     public void setIdCreador(int idCreador) {
         this.idCreador = idCreador;
     }
+
+    @Override
+    public String toString() {
+        return "Avis{" + "id=" + id + ", id_usuari=" + id_usuari + ", titol=" + titol + ", missatge=" + missatge + ", dataCreacio=" + dataCreacio + ", llegit=" + llegit + ", idCreador=" + idCreador + '}';
+    }
+    
     
 }

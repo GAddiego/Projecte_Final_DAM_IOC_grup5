@@ -19,7 +19,7 @@ public class UsuariIntern {
     private String pass;
     private String rol;
     private String codi;//codi alfanumeric per si es torna a conectar no haver de buscar-lo a la BBDD
-    private java.util.Date dataNaixement;
+    private Date dataNaixement;
     private String nom;
     private String primerCognom;
     private String segonCognom;
@@ -79,8 +79,21 @@ public class UsuariIntern {
         this.ultimaActualitzacio = System.currentTimeMillis();
     }
 
-    public UsuariIntern(int aInt, String string, String string0, Date convertirDataString, String string1, String string2, String string3, String string4, Date convertirDataString0, float aFloat, boolean aBoolean, Date convertirDataString1, byte aByte) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public UsuariIntern(int id, String user, String rol, Date dataNaixement, String nom, String primerCognom, String segonCognom, String email, Date dataAlta, float multa, boolean suspensio, Date dataFinalSuspensio, byte[] imageData) {
+        this.id = id;
+        this.user = user;
+        this.rol = rol;
+        this.dataNaixement = dataNaixement;
+        this.nom = nom;
+        this.primerCognom = primerCognom;
+        this.segonCognom = segonCognom;
+        this.email = email;
+        this.dataAlta = dataAlta;
+        this.multa = multa;
+        this.suspensio = suspensio;
+        this.dataFinalSuspensio = dataFinalSuspensio;
+        this.imageData = imageData;
+        
     }
     
    
@@ -92,11 +105,11 @@ public class UsuariIntern {
         this.id = id;
     }
 
-    public java.util.Date getDataNaixement() {
+    public Date getDataNaixement() {
         return dataNaixement;
     }
 
-    public void setDataNaixement(java.util.Date dataNaixement) {
+    public void setDataNaixement(Date dataNaixement) {
         this.dataNaixement = dataNaixement;
     }   
 
@@ -235,12 +248,14 @@ public class UsuariIntern {
         }
 
     }
-    
-       
+
     @Override
     public String toString() {
-        return "Usuari{" + "data=" + data + ", id=" + id + ", user=" + user + ", pass=" + pass + ", rol=" + rol + ", codi=" + codi + ", dataNaixement=" + dataNaixement + ", nom=" + nom + ", primerCognom=" + primerCognom + ", segonCognom=" + segonCognom + ", email=" + email + ", dataAlta=" + dataAlta + ", dataBaixa=" + dataBaixa + ", multa=" + multa + ", suspensio=" + suspensio + ", dataFinalSuspensio=" + dataFinalSuspensio + ", ultimaActualitzacio=" + ultimaActualitzacio + '}';
+        return "UsuariIntern{id=" + id + ", user=" + user + ", pass=" + pass + ", rol=" + rol + ", codi=" + codi + ", dataNaixement=" + dataNaixement + ", nom=" + nom + ", primerCognom=" + primerCognom + ", segonCognom=" + segonCognom + ", email=" + email + ", dataAlta=" + dataAlta + ", dataBaixa=" + dataBaixa + ", multa=" + multa + ", suspensio=" + suspensio + ", dataFinalSuspensio=" + dataFinalSuspensio + ", ultimaActualitzacio=" + ultimaActualitzacio + ", imageData=" + imageData + '}';
     }
+    
+       
+   
 
 
 

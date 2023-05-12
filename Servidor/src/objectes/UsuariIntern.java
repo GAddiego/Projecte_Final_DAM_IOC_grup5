@@ -32,6 +32,26 @@ public class UsuariIntern {
     private long ultimaActualitzacio;
     private byte[] imageData;
 
+    public UsuariIntern(String user, String pass, String rol, String codi, Date dataNaixement, String nom, String primerCognom, String segonCognom, String email, Date dataAlta, Date dataBaixa, double multa, boolean suspensio, Date dataFinalSuspensio, byte[] imageData) {
+        this.user = user;
+        this.pass = pass;
+        this.rol = rol;
+        this.codi = codi;
+        this.dataNaixement = dataNaixement;
+        this.nom = nom;
+        this.primerCognom = primerCognom;
+        this.segonCognom = segonCognom;
+        this.email = email;
+        this.dataAlta = dataAlta;
+        this.dataBaixa = dataBaixa;
+        this.multa = multa;
+        this.suspensio = suspensio;
+        this.dataFinalSuspensio = dataFinalSuspensio;
+        this.imageData = imageData;
+    }
+
+    
+    
     public UsuariIntern(String user, String pass, String rol, String nom, String primerCognom, String segonCognom, String email) {
         this.user = user;
         this.pass = pass;
@@ -71,11 +91,16 @@ public class UsuariIntern {
         this.user = u.getUser();
         this.pass = u.getPass();
         this.rol = u.getRol();
+        this.dataNaixement = u.getDataNaixement();
         this.nom = u.getNom();
         this.primerCognom = u.getPrimerCognom();
         this.segonCognom = u.getSegonCognom();
         this.email = u.getEmail();
-        this.dataAlta = data;
+        this.dataAlta = u.getDataAlta();
+        this.multa = u.getMulta();
+        this.suspensio = u.isSuspensio();
+        this.dataFinalSuspensio = u.getDataFinalSuspensio();
+        this.imageData = u.getImageData();
         this.ultimaActualitzacio = System.currentTimeMillis();
     }
 

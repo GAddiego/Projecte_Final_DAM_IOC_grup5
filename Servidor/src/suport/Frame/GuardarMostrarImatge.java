@@ -1,4 +1,4 @@
-package suport;
+package suport.Frame;
 
 import BBDD.SqlManager;
 import java.awt.Image;

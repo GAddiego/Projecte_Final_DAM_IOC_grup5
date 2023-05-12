@@ -7,8 +7,6 @@ import BBDD.consultes.SqlLlibres;
 import BBDD.consultes.SqlPrestecs;
 import BBDD.consultes.SqlReserves;
 import BBDD.consultes.SqlUsuariIntern;
-import java.io.File;
-import java.io.FileInputStream;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -100,6 +98,7 @@ public class SqlManager implements Sql{
     public SqlPrestecs prestec = new SqlPrestecs();
     public SqlUsuariIntern uIntern = new SqlUsuariIntern();
     public SqlAvisos avisos = new SqlAvisos();
+    
 
 public void provarConexio(){
     Connection conn = null;

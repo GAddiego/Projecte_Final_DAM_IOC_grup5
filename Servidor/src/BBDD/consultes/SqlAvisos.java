@@ -21,7 +21,7 @@ import objectes.Avis;
 public class SqlAvisos implements Sql {
     final static String CREAR_AVIS = "INSERT INTO avisos (id_usuari, titol, missatge, data_creacio, llegit, id_creador) VALUES (?, ?, ?, ?, ?,?)";
     final static String LLEGIR_AVIS = "UPDATE avisos SET llegit = true WHERE id = ?";
-    final static String LLISTAR_AVISOS_NOUS= "SELECT * FROM avisos WHERE llegit = true AND id_usuari = ?";
+    final static String LLISTAR_AVISOS_NOUS= "SELECT * FROM avisos WHERE llegit = false AND id_usuari = ?";
     final static String LLISTAR_AVISOS_HISTORIC="SELECT * FROM avisos WHERE id_usuari = ? ";
     
     public void crearAvis(Avis avis, int idCreador) throws SQLException {
@@ -114,6 +114,7 @@ public class SqlAvisos implements Sql {
 
         return avisos;
     }
+
     
     
 }

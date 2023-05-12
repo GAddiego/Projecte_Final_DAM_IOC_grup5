@@ -32,7 +32,7 @@ import objectes.UsuariIntern;
  */
 public class SqlUsuariIntern implements Sql{
     static final String VERIFICAR_USUARI = "SELECT tipus FROM usuaris WHERE usuari = ? AND contrasenya = ?";
-    static final String CREAR_USUARI = "INSERT INTO usuaris ( nom_usuari , nom, contrasenya , rol , data_naixement , primer_cognom , segon_cognom, email , data_alta , foto ) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?, ?)";
+    static final String CREAR_USUARI = "INSERT INTO usuaris ( nom_usuari , contrasenya , rol , data_naixement, nom , primer_cognom , segon_cognom, email , data_alta,  multa,  foto ) VALUES ( ?, ?, ?, ?, ?,?, ?,?,?,?,?)";
     static final String RECUPERAR_USUARI = "SELECT id, nom_usuari, contrasenya, rol, nom,  primer_cognom, segon_cognom, email, data_alta, foto FROM usuaris WHERE nom_usuari = ? AND contrasenya = ?";
     static final String RECUPERAR_USUARI_TOT = "SELECT * FROM usuaris WHERE nom_usuari = ? AND contrasenya = ?";
     static final String BORRAR_USUARI = "DELETE FROM usuaris WHERE nom_usuari = ?";
@@ -78,23 +78,27 @@ public class SqlUsuariIntern implements Sql{
     }
 
 public void crearUsuari(UsuariIntern usuari)  {
+    System.out.println(usuari.toString());
     Connection conn = null;
     PreparedStatement pstmt = null;
     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     try {
         conn = DriverManager.getConnection(connexio, user, pasw);
-
+            
         // Preparar la sentencia SQL
         String query = CREAR_USUARI;
             pstmt = conn.prepareStatement(query);
-            pstmt.setString(1, usuari.getUser());
-            pstmt.setString(2, usuari.getNom());
-            pstmt.setString(3, usuari.getPass());
-            pstmt.setString(4, usuari.getRol());
-            pstmt.setString(5, usuari.getPrimerCognom());
-            pstmt.setString(6, usuari.getSegonCognom());
-            pstmt.setString(7, usuari.getEmail());
-            pstmt.setString(8, formatter.format(usuari.getDataAlta()));
+            pstmt.setString(1, usuari.getUser());    
+            pstmt.setString(2, usuari.getPass());
+            pstmt.setString(3, usuari.getRol());
+            pstmt.setDate(4, new java.sql.Date(usuari.getDataNaixement().getTime()));
+            pstmt.setString(5, usuari.getNom());
+            pstmt.setString(6, usuari.getPrimerCognom());
+            pstmt.setString(7, usuari.getSegonCognom());
+            pstmt.setString(8, usuari.getEmail());
+            pstmt.setDate(9, new java.sql.Date(usuari.getDataAlta().getTime()));
+            pstmt.setDouble(10,usuari.getMulta());
+            pstmt.setBytes(11, usuari.getImageData());
 
         // Ejecutar la sentencia SQL
         int filasAfectadas = pstmt.executeUpdate();

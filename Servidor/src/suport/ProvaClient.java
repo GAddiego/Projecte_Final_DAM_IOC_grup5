@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import objectes.Avis;
+import objectes.Eines;
 import objectes.Llibre;
 import objectes.Usuari;
 
@@ -29,14 +29,15 @@ import objectes.Usuari;
  */
 public class ProvaClient {
 
-    static final String HOST="192.168.1.225";
+    static final String HOST="localhost";
     static final int  PORT=12345;
+    
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+        Eines eines = new Eines();
         
         Llibre llibre = new Llibre();
             llibre.setTitol("El código Da Vinci");
@@ -54,7 +55,7 @@ public class ProvaClient {
             llibre.setTraductor("Alejandro Palomas");
         
         Usuari usuari = new Usuari();
-            usuari.setId(1);
+            
             usuari.setUser("johndoe");
             usuari.setPass("micontraseña");
             usuari.setRol("usuario");
@@ -67,6 +68,7 @@ public class ProvaClient {
             usuari.setMulta(0.0);
             usuari.setSuspensio(false);
             usuari.setUltimaActualitzacio(System.currentTimeMillis());
+            usuari.setImageData(eines.convertirABytes("imatges_usuaris/DefaultUser.png"));
 
             
         System.out.println("Hola");
@@ -76,11 +78,19 @@ public class ProvaClient {
         boolean estat = true;
         String adeu;
         boolean sortir = false;
+        Llibre llibreMemoria = new Llibre();
+        Usuari usuariMemoria = new Usuari();
         while(!sortir){        
             
             System.out.println("Benvingut al client");
             System.out.println("el teu codi actual es: "+ array[0]);
             System.out.println("Que vols fer?");
+            if(usuariMemoria != null){
+                System.out.println("tens l'usuari en memòria: " + usuariMemoria.getUser());
+            }
+            if(llibreMemoria != null){
+                System.out.println("el teu llibre actual es: " + llibreMemoria.getTitol());
+            }
             System.out.println();
             System.out.println("Operacions Usuaris:");
             System.out.println("1- Registrar-te");
@@ -98,6 +108,7 @@ public class ProvaClient {
             System.out.println("10- Modificar llibre");
             System.out.println("11- Borrar llibre");
             System.out.println("12- Buscar llibres");
+            System.out.println("30- Veure llibre i portada");
             
             System.out.println();
             System.out.println("Operacions Prestec:");
@@ -106,7 +117,7 @@ public class ProvaClient {
             System.out.println("15- Finalitzar prestec");
             System.out.println("16- Buscar prestecs per usuari");
             System.out.println("17- Buscar prestecs per isbn");
-            System.out.println("30- Veure llibre i portada");
+            
             System.out.println();
             System.out.println("Operacions Reserves:");
             System.out.println("18- Crear reserva");
@@ -143,10 +154,10 @@ public class ProvaClient {
                     array=logout(array);
                     break;
                 case 3:
-                    rebreUsuariAcual(array);
+                    usuariMemoria = rebreUsuariAcual(array);
                     break;
                 case 4:
-                    crearUsuari(array);
+                    crearUsuari(array, usuari);
                     break;
                 case 5:
                     modificarUsuari(array);
@@ -174,15 +185,17 @@ public class ProvaClient {
                     llistarLlibres(array,llistaLlibre);
                     break;
                 case 13:
-                    array=logout(array);
-                    sortir=true;
+                    crearPrestec(array, llibreMemoria, usuari);
                     break;
                  case 14:
                     recuperarAvisosNous(array);
                     break;
-                case 30:   
-                    veureLlibrePortada(array,1);
+                case 30:                    
+                    llibreMemoria = veureLlibrePortada(array,1);
                     break;
+                case 18:
+                    crearReserva(array, llibreMemoria);
+                
                 default:
                     System.out.println("Tria una opció correcte.");
             }
@@ -280,7 +293,7 @@ public class ProvaClient {
         }
     }
 
-    private static void rebreUsuariAcual(String[] array) {
+    private static Usuari rebreUsuariAcual(String[] array) {
         try {
             Socket socket = new Socket(HOST, PORT);
             System.out.println("Conectat al servidor per rebre usuari");
@@ -294,11 +307,13 @@ public class ProvaClient {
             out.close();
             in.close();
             socket.close();
+            return u;
         } catch (IOException ex) {
             Logger.getLogger(ProvaClient.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ProvaClient.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
     }
 
     private static void llistarUsuari(String[] array, String[] llista) {
@@ -327,7 +342,7 @@ public class ProvaClient {
             Logger.getLogger(ProvaClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    private static void crearUsuari(String[] array) { //falta arreglar
+    private static void crearUsuari(String[] array, Usuari usuari) { 
         try {
             Socket socket = new Socket(HOST, PORT);
             System.out.println("Conectat al servidor per crear usuari");
@@ -335,8 +350,8 @@ public class ProvaClient {
             out.writeUTF(array[0]);
             out.writeUTF("crear_usuari");
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            Usuari usuariNou = new Usuari("giboca","gibo123","alumne","Gilabert","Martí","Guixeres","giboca@gmail.com");
-            oos.writeObject(usuariNou);
+            System.out.println(usuari.toString());
+            oos.writeObject(usuari);
             out.close();
             oos.close();
             socket.close();
@@ -526,7 +541,7 @@ public class ProvaClient {
         
             
     }
-     private static void veureLlibrePortada(String[] array, int idLlibre) {
+     private static Llibre veureLlibrePortada(String[] array, int idLlibre) {
 
         try {
             Socket socket = new Socket(HOST, PORT);
@@ -547,13 +562,46 @@ public class ProvaClient {
             frame.add(label);
             frame.pack();
             frame.setVisible(true);
-            
+            return llibre;
 
         } catch (IOException ex) {
             Logger.getLogger(ProvaClient.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ProvaClient.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
     }
+
+    private static void crearReserva(String[] array, Llibre llibre) {
+        try {
+            Socket socket = new Socket(HOST, PORT);
+            System.out.println("Conectat al servidor per crear una reserva");
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());      
+            out.writeUTF(array[0]);
+            out.writeUTF("crear_reserva");
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            oos.writeObject(llibre.getId());
+        } catch (IOException ex) {
+            Logger.getLogger(ProvaClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private static void crearPrestec(String[] array, Llibre llibre, Usuari usuari) {
+        try {
+            Socket socket = new Socket(HOST, PORT);
+            System.out.println("Conectat al servidor per crear una reserva");
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());      
+            out.writeUTF(array[0]);
+            out.writeUTF("crear_prestec");
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            oos.writeObject(llibre);
+            oos.writeObject(usuari);
+            oos.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(ProvaClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
     
 }

@@ -1,6 +1,7 @@
 
-package suport;
+package suport.Frame;
 
+import suport.Frame.UsuariProfileFrame;
 import BBDD.SqlManager;
 import java.awt.Image;
 import java.io.ByteArrayInputStream;

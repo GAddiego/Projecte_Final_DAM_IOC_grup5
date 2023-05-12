@@ -19,23 +19,19 @@ public class Prestec implements Serializable{
         private int idLlibre;
         private java.util.Date dataPrestec;
         private java.util.Date dataRetorn;
-        private java.util.Date fiPrestec;
+        private java.util.Date dataVenciment;
         private boolean prolongacio;
     public Prestec() {
 
     }
 
-    public Prestec(int id, int idUsuari, int idLlibre, java.util.Date dataPrestec, java.util.Date dataRetorn, boolean prolongacio) {
+    public Prestec(int id, int idUsuari, int idLlibre, java.util.Date dataPrestec, java.util.Date dataVenciment, boolean prolongacio) {
         this.id = id;
         this.idUsuari = idUsuari;
         this.idLlibre = idLlibre;
         this.dataPrestec = dataPrestec;
-        this.dataRetorn = dataRetorn;
+        this.dataVenciment = dataVenciment;
         this.prolongacio = prolongacio;
-    }
-
-    public Prestec(List<Prestec> obtenirPrestecsActius) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     public int getId() {
@@ -78,12 +74,12 @@ public class Prestec implements Serializable{
         this.dataRetorn = dataRetorn;
     }
 
-    public java.util.Date getFiPrestec() {
-        return fiPrestec;
+    public java.util.Date getdataVenciment() {
+        return dataVenciment;
     }
 
-    public void setFiPrestec(java.util.Date fiPrestec) {
-        this.fiPrestec = fiPrestec;
+    public void setDataVenciment(java.util.Date dataVenciment) {
+        this.dataVenciment = dataVenciment;
     }
 
     public boolean isProlongacio() {

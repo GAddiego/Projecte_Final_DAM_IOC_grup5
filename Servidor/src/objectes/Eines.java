@@ -63,7 +63,7 @@ public class Eines implements Serializable{
     return codi.toString();
     }
     
-    public static Date convertirDataString(String data) throws ParseException{
+    public Date convertirDataString(String data) throws ParseException{
     Date r;
     
 
@@ -133,14 +133,23 @@ public class Eines implements Serializable{
             String dataAvui = format.format(dataunmes);
             return dataAvui;
     }
-    public String ampliacióRetorn(Date diaRetorn) {
+    public Date ampliacióRetorn(Date diaRetorn) {
             
             Calendar calendari = Calendar.getInstance();
             calendari.setTime(diaRetorn);
             calendari.add(Calendar.DAY_OF_MONTH, 15);
             java.util.Date dataunmes = calendari.getTime();
-            String novaData = format.format(dataunmes);
-            return novaData;
+           
+            return dataunmes;
+    }
+    public Date diaFinalReserva(Date diaRetorn) {
+            
+            Calendar calendari = Calendar.getInstance();
+            calendari.setTime(diaRetorn);
+            calendari.add(Calendar.DAY_OF_MONTH, 15);
+            java.util.Date dataunmes = calendari.getTime();
+           
+            return dataunmes;
     }
     
     public List<String[]> llegirCSV (String ruta) {
@@ -164,6 +173,8 @@ public class Eines implements Serializable{
         return null;
         
     }
+    
+    
 
 
 }

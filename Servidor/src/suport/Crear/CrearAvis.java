@@ -1,4 +1,4 @@
-package suport;
+package suport.Crear;
 
 import BBDD.SqlManager;
 import java.sql.SQLException;

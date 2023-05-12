@@ -1,7 +1,6 @@
 package objectes;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 
 public class Reserva implements Serializable{
@@ -12,12 +11,12 @@ public class Reserva implements Serializable{
     private Date dataReserva;
     private Date dataRecollida;
 
-    public Reserva(int id, int idUsuari, int idLlibre, Timestamp dataReserva, Date dataRecollida) {
+    public Reserva(int id, int idUsuari, int idLlibre, Date dataReserva, Date dataRecollida) {
         this.id = id;
         this.idUsuari = idUsuari;
         this.idLlibre = idLlibre;
-        this.dataReserva = new Date(dataReserva.getTime());
-        this.dataRecollida = dataRecollida != null ? new Date(dataRecollida.getTime()) : null;
+        this.dataReserva = dataReserva;
+        this.dataRecollida = dataRecollida;
     }
 
     public int getId() {

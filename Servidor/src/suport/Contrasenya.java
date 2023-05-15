@@ -22,7 +22,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import objectes.DesxifradorContrasenya;
+import objectes.XifradorContrasenya;
 
 /**
  *
@@ -51,7 +51,7 @@ public class Contrasenya {
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.ENCRYPT_MODE, serverPublicKey);
         byte[] encryptedData = cipher.doFinal(dataToEncrypt);
-        DesxifradorContrasenya dc = new DesxifradorContrasenya();
+        XifradorContrasenya dc = new XifradorContrasenya();
         dc.Desxifradorbyte(encryptedData);
         } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
             Logger.getLogger(Contrasenya.class.getName()).log(Level.SEVERE, null, ex);

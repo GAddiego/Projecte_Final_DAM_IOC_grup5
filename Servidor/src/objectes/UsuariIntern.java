@@ -16,7 +16,7 @@ public class UsuariIntern {
     
     private int id;
     private String user;
-    private String pass;
+    //private String pass;
     private String rol;
     private String codi;//codi alfanumeric per si es torna a conectar no haver de buscar-lo a la BBDD
     private Date dataNaixement;
@@ -31,10 +31,12 @@ public class UsuariIntern {
     private Date dataFinalSuspensio;
     private long ultimaActualitzacio;
     private byte[] imageData;
-
-    public UsuariIntern(String user, String pass, String rol, String codi, Date dataNaixement, String nom, String primerCognom, String segonCognom, String email, Date dataAlta, Date dataBaixa, double multa, boolean suspensio, Date dataFinalSuspensio, byte[] imageData) {
+    private byte[] passX;
+     
+    public UsuariIntern(String user, byte[] passX, String rol, String codi, Date dataNaixement, String nom, String primerCognom, String segonCognom, String email, Date dataAlta, Date dataBaixa, double multa, boolean suspensio, Date dataFinalSuspensio, byte[] imageData) {
         this.user = user;
-        this.pass = pass;
+        //this.pass = pass;
+        this.passX = passX;
         this.rol = rol;
         this.codi = codi;
         this.dataNaixement = dataNaixement;
@@ -52,9 +54,9 @@ public class UsuariIntern {
 
     
     
-    public UsuariIntern(String user, String pass, String rol, String nom, String primerCognom, String segonCognom, String email) {
+    public UsuariIntern(String user, byte[] passX, String rol, String nom, String primerCognom, String segonCognom, String email) {
         this.user = user;
-        this.pass = pass;
+        this.passX = passX;
         this.rol = rol;
         this.nom = nom;
         this.primerCognom = primerCognom;
@@ -89,7 +91,7 @@ public class UsuariIntern {
 
     public UsuariIntern(Usuari u) {
         this.user = u.getUser();
-        this.pass = u.getPass();
+        this.passX = u.getPassX();
         this.rol = u.getRol();
         this.dataNaixement = u.getDataNaixement();
         this.nom = u.getNom();
@@ -162,12 +164,12 @@ public class UsuariIntern {
         this.user = user;
     }
 
-    public String getPass() {
-        return pass;
+    public byte[] getPass() {
+        return passX;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setPass(byte[] passX) {
+        this.passX = passX;
     }
 
     public String getRol() {
@@ -276,7 +278,7 @@ public class UsuariIntern {
 
     @Override
     public String toString() {
-        return "UsuariIntern{id=" + id + ", user=" + user + ", pass=" + pass + ", rol=" + rol + ", codi=" + codi + ", dataNaixement=" + dataNaixement + ", nom=" + nom + ", primerCognom=" + primerCognom + ", segonCognom=" + segonCognom + ", email=" + email + ", dataAlta=" + dataAlta + ", dataBaixa=" + dataBaixa + ", multa=" + multa + ", suspensio=" + suspensio + ", dataFinalSuspensio=" + dataFinalSuspensio + ", ultimaActualitzacio=" + ultimaActualitzacio + ", imageData=" + imageData + '}';
+        return "UsuariIntern{id=" + id + ", user=" + user + ", pass=" + passX + ", rol=" + rol + ", codi=" + codi + ", dataNaixement=" + dataNaixement + ", nom=" + nom + ", primerCognom=" + primerCognom + ", segonCognom=" + segonCognom + ", email=" + email + ", dataAlta=" + dataAlta + ", dataBaixa=" + dataBaixa + ", multa=" + multa + ", suspensio=" + suspensio + ", dataFinalSuspensio=" + dataFinalSuspensio + ", ultimaActualitzacio=" + ultimaActualitzacio + ", imageData=" + imageData + '}';
     }
     
        

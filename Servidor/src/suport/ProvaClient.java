@@ -22,6 +22,7 @@ import objectes.Avis;
 import objectes.Eines;
 import objectes.Llibre;
 import objectes.Usuari;
+import objectes.XifradorContrasenya;
 
 /**
  *
@@ -38,6 +39,7 @@ public class ProvaClient {
      */
     public static void main(String[] args) {
         Eines eines = new Eines();
+        XifradorContrasenya xC = new XifradorContrasenya();
         
         Llibre llibre = new Llibre();
             llibre.setTitol("El código Da Vinci");
@@ -57,7 +59,7 @@ public class ProvaClient {
         Usuari usuari = new Usuari();
             
             usuari.setUser("johndoe");
-            usuari.setPass("micontraseña");
+            usuari.setPassX(xC.XifradorString("Visca"));
             usuari.setRol("usuario");
             usuari.setDataNaixement(new java.util.Date(1990, 5, 11));
             usuari.setNom("John");

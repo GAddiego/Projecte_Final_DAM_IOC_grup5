@@ -31,7 +31,7 @@ public class CrearPrestec {
             System.out.println("ID ui + ID llibre :" + ui.getId() + " + " + llibre.getId());
             List<Reserva> reserves = sql.reserves.llistarReservesLlibre(llibre.getId());
             //System.out.println("Prestec " + sql.prestec.obtenirPrestecLlibre(llibre.getId()).toString());
-            if (sql.prestec.obtenirPrestecLlibre(llibre.getId())!=null){
+            if (sql.prestec.prestecActiuLlibre(llibre.getId())!=null){
                 System.out.println("Ja està prestat");
             }else{              
                 if (reserves.size()>0){

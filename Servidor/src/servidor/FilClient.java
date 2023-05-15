@@ -247,7 +247,6 @@ public class FilClient extends Thread {
             String idUsuari = (String) ois.readObject();
             if(sqlManager.uIntern.existeixNomUsuari(idUsuari)){
                 Usuari u = new Usuari(sqlManager.uIntern.getUsuariNomesUserName(idUsuari));
-                u.setPass("XXXXXXX");
                 oos.writeObject(u);
             }else{
                 Usuari u = new Usuari();

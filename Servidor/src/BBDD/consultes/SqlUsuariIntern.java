@@ -31,16 +31,16 @@ import objectes.UsuariIntern;
  * @author aleix
  */
 public class SqlUsuariIntern implements Sql{
-    static final String VERIFICAR_USUARI = "SELECT tipus FROM usuaris WHERE usuari = ? AND contrasenya = ?";
-    static final String CREAR_USUARI = "INSERT INTO usuaris ( nom_usuari , contrasenya , rol , data_naixement, nom , primer_cognom , segon_cognom, email , data_alta,  multa,  foto ) VALUES ( ?, ?, ?, ?, ?,?, ?,?,?,?,?)";
-    static final String RECUPERAR_USUARI = "SELECT id, nom_usuari, contrasenya, rol, nom,  primer_cognom, segon_cognom, email, data_alta, foto FROM usuaris WHERE nom_usuari = ? AND contrasenya = ?";
-    static final String RECUPERAR_USUARI_TOT = "SELECT * FROM usuaris WHERE nom_usuari = ? AND contrasenya = ?";
+    static final String VERIFICAR_USUARI = "SELECT tipus FROM usuaris WHERE usuari = ? AND pswd = ?";
+    static final String CREAR_USUARI = "INSERT INTO usuaris ( nom_usuari , rol , data_naixement, nom , primer_cognom , segon_cognom, email , data_alta,  multa,  foto, pswd ) VALUES ( ?, ?, ?, ?, ?,?, ?,?,?,?,?)";
+    static final String RECUPERAR_USUARI = "SELECT id, nom_usuari, rol, nom,  primer_cognom, segon_cognom, email, data_alta, foto FROM usuaris WHERE nom_usuari = ? AND pswd = ?";
+    static final String RECUPERAR_USUARI_TOT = "SELECT * FROM usuaris WHERE nom_usuari = ? AND pswd = ?";
     static final String BORRAR_USUARI = "DELETE FROM usuaris WHERE nom_usuari = ?";
-    static final String MODIFICAR_USUARI_OLD =  "UPDATE usuaris SET nom = ?, rol = ?, primer_cognom = ?, segon_cognom = ?, email = ?, data_alta = ?, data_baixa = ?, multa = ?, suspensio = ?, data_final_suspensio = ?, ruta_foto = ? WHERE nom_usuari = ?";
+    static final String MODIFICAR_USUARI_OLD =  "UPDATE usuaris SET nom = ?, rol = ?, primer_cognom = ?, segon_cognom = ?, email = ?, data_alta = ?, data_baixa = ?, multa = ?, suspensio = ?, data_final_suspensio = ?, foto = ?, pswd = ? WHERE nom_usuari = ?";
 
     Eines eines = new Eines();
     
-    public String verificarUsuari(String usuari, String pass) {
+    public String verificarUsuari(String usuari, byte[] pswd ) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -50,7 +50,7 @@ public class SqlUsuariIntern implements Sql{
             conn = DriverManager.getConnection(connexio, user, pasw);
             stmt = conn.prepareStatement(VERIFICAR_USUARI);
             stmt.setString(1, usuari);
-            stmt.setString(2, pass);
+            stmt.setBytes(2, pswd);
             rs = stmt.executeQuery();
 
             if (rs.next()) {
@@ -88,17 +88,17 @@ public void crearUsuari(UsuariIntern usuari)  {
         // Preparar la sentencia SQL
         String query = CREAR_USUARI;
             pstmt = conn.prepareStatement(query);
-            pstmt.setString(1, usuari.getUser());    
-            pstmt.setString(2, usuari.getPass());
-            pstmt.setString(3, usuari.getRol());
-            pstmt.setDate(4, new java.sql.Date(usuari.getDataNaixement().getTime()));
-            pstmt.setString(5, usuari.getNom());
-            pstmt.setString(6, usuari.getPrimerCognom());
-            pstmt.setString(7, usuari.getSegonCognom());
-            pstmt.setString(8, usuari.getEmail());
-            pstmt.setDate(9, new java.sql.Date(usuari.getDataAlta().getTime()));
-            pstmt.setDouble(10,usuari.getMulta());
-            pstmt.setBytes(11, usuari.getImageData());
+            pstmt.setString(1, usuari.getUser());           
+            pstmt.setString(2, usuari.getRol());
+            pstmt.setDate(3, new java.sql.Date(usuari.getDataNaixement().getTime()));
+            pstmt.setString(4, usuari.getNom());
+            pstmt.setString(5, usuari.getPrimerCognom());
+            pstmt.setString(6, usuari.getSegonCognom());
+            pstmt.setString(7, usuari.getEmail());
+            pstmt.setDate(8, new java.sql.Date(usuari.getDataAlta().getTime()));
+            pstmt.setDouble(9,usuari.getMulta());
+            pstmt.setBytes(10, usuari.getImageData());
+            pstmt.setBytes(11, usuari.getPass());
 
         // Ejecutar la sentencia SQL
         int filasAfectadas = pstmt.executeUpdate();
@@ -133,16 +133,17 @@ public void crearUsuariExtens(UsuariIntern usuari)  {
         // Preparar la sentencia SQL
         String query = CREAR_USUARI;
             pstmt = conn.prepareStatement(query);
-            pstmt.setString(1, usuari.getUser());
-            pstmt.setString(2, usuari.getNom());
-            pstmt.setString(3, usuari.getPass());
-            pstmt.setString(4, usuari.getRol());
-            pstmt.setDate(5, new java.sql.Date(usuari.getDataAlta().getTime()));
-            pstmt.setString(6, usuari.getPrimerCognom());
-            pstmt.setString(7, usuari.getSegonCognom());
-            pstmt.setString(8, usuari.getEmail());
-            pstmt.setDate(9, new java.sql.Date(usuari.getDataAlta().getTime()));
+            pstmt.setString(1, usuari.getUser());           
+            pstmt.setString(2, usuari.getRol());
+            pstmt.setDate(3, new java.sql.Date(usuari.getDataNaixement().getTime()));
+            pstmt.setString(4, usuari.getNom());
+            pstmt.setString(5, usuari.getPrimerCognom());
+            pstmt.setString(6, usuari.getSegonCognom());
+            pstmt.setString(7, usuari.getEmail());
+            pstmt.setDate(8, new java.sql.Date(usuari.getDataAlta().getTime()));
+            pstmt.setDouble(9,usuari.getMulta());
             pstmt.setBytes(10, usuari.getImageData());
+            pstmt.setBytes(11, usuari.getPass());
         // Ejecutar la sentencia SQL
         int filasAfectadas = pstmt.executeUpdate();
 
@@ -185,7 +186,7 @@ public void crearUsuariExtens(UsuariIntern usuari)  {
                 usuari = new UsuariIntern();
                 usuari.setId(rs.getInt("id"));
                 usuari.setUser(rs.getString("nom_usuari"));
-                usuari.setPass(rs.getString("contrasenya"));
+                usuari.setPass(rs.getBytes("pswd"));
                 usuari.setRol(rs.getString("rol"));
                 usuari.setDataNaixement(rs.getDate("data_naixement"));
                 usuari.setNom(rs.getString("nom"));
@@ -226,7 +227,7 @@ public void crearUsuariExtens(UsuariIntern usuari)  {
                 usuari = new UsuariIntern();
                 usuari.setId(rs.getInt("id"));
                 usuari.setUser(rs.getString("nom_usuari"));
-                usuari.setPass(rs.getString("contrasenya"));
+                usuari.setPass(rs.getBytes("pswd"));
                 usuari.setRol(rs.getString("rol"));
                 usuari.setDataNaixement(rs.getDate("data_naixement"));
                 usuari.setNom(rs.getString("nom"));
@@ -364,7 +365,7 @@ public void crearUsuariExtens(UsuariIntern usuari)  {
         Boolean primer = true;
         String consulta= "UPDATE usuaris SET ";
     
-        if (usuari.getPass() != null && !usuari.getPass().isEmpty()){
+        if (usuari.getPass() != null && usuari.getPass().length != 0){
             if (!primer){
                 consulta += ", ";
 

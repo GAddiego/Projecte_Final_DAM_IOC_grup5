@@ -14,21 +14,23 @@ import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import suport.Config.Claus;
+import suport.Contrasenya;
 
 /**
  *
  * @author aleix
  */
-public class DesxifradorContrasenya {
+public class XifradorContrasenya {
     
     public String Desxifradorbyte(byte[] encryptedData){
         try {
@@ -48,8 +50,40 @@ public class DesxifradorContrasenya {
             System.out.println(contrasenya);
             return contrasenya;
         } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
-            Logger.getLogger(DesxifradorContrasenya.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(XifradorContrasenya.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
+    
+    public byte[] XifradorString(String contrasenya){
+        byte[] dataToEncrypt = contrasenya.getBytes(StandardCharsets.UTF_8);
+        byte[] publicKeyBytes;
+        try {
+            publicKeyBytes = Files.readAllBytes(Paths.get("public.key"));
+            X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            PublicKey serverPublicKey = keyFactory.generatePublic(publicKeySpec);
+
+        // Cifrar los datos
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.ENCRYPT_MODE, serverPublicKey);
+        byte[] encryptedData = cipher.doFinal(dataToEncrypt);
+        return encryptedData;
+
+        } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
+            Logger.getLogger(Contrasenya.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public boolean ComprovarContrasenya(byte[] client, byte[] bbdd){
+        if (Desxifradorbyte(client)==Desxifradorbyte(bbdd)){
+            return true;
+        }
+
+        return false;
+        
+        
+    }
+       
 }

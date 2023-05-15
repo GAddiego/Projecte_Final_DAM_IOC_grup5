@@ -15,7 +15,7 @@ public class Usuari implements Serializable{
     private static long serialVersionUID = 1436768778619850352L;
     private int id;
     private String user;
-    private String pass;
+    private byte[] passX;
     private String rol;
     private java.util.Date dataNaixement;
     private String nom;
@@ -30,10 +30,10 @@ public class Usuari implements Serializable{
     private long ultimaActualitzacio;
     private byte[] imageData;
 
-    public Usuari(int id, String user, String pass, String rol, Date dataNaixement, String nom, String primerCognom, String segonCognom, String email, Date dataAlta, Date dataBaixa, double multa, boolean suspensio, Date dataFinalSuspensio, long ultimaActualitzacio, byte[] imageData) {
+    public Usuari(int id, String user, byte[] pass, String rol, Date dataNaixement, String nom, String primerCognom, String segonCognom, String email, Date dataAlta, Date dataBaixa, double multa, boolean suspensio, Date dataFinalSuspensio, long ultimaActualitzacio, byte[] imageData) {
         this.id = id;
         this.user = user;
-        this.pass = pass;
+        this.passX = passX;
         this.rol = rol;
         this.dataNaixement = dataNaixement;
         this.nom = nom;
@@ -49,10 +49,10 @@ public class Usuari implements Serializable{
         this.imageData = imageData;
     }
     
-    public Usuari(int id, String user, String pass, String rol, Date dataNaixement, String nom, String primerCognom, String segonCognom, String email, Date dataAlta, Date dataBaixa, double multa, boolean suspensio, Date dataFinalSuspensio, byte[] imageData) {
+    public Usuari(int id, String user, byte[] passX, String rol, Date dataNaixement, String nom, String primerCognom, String segonCognom, String email, Date dataAlta, Date dataBaixa, double multa, boolean suspensio, Date dataFinalSuspensio, byte[] imageData) {
         this.id = id;
         this.user = user;
-        this.pass = pass;
+        this.passX = passX;
         this.rol = rol;
         this.dataNaixement = dataNaixement;
         this.nom = nom;
@@ -72,7 +72,7 @@ public class Usuari implements Serializable{
     public Usuari(UsuariIntern u) {
         this.id = u.getId();
         this.user = u.getUser();
-        this.pass = u.getPass();
+        this.passX = u.getPass();
         this.rol = u.getRol();
         this.dataNaixement = u.getDataNaixement();
         this.nom = u.getNom();
@@ -88,10 +88,10 @@ public class Usuari implements Serializable{
         this.imageData = u.getImageData();
     }
 
-    public Usuari(String user, String pass, String rol, String nom, String primerCognom, String segonCognom, String email) {
+    public Usuari(String user, byte[] passX, String rol, String nom, String primerCognom, String segonCognom, String email) {
         
         this.user = user;
-        this.pass = pass;
+        this.passX = passX;
         this.rol = rol;
         this.nom = nom;
         this.primerCognom = primerCognom;
@@ -125,9 +125,9 @@ public class Usuari implements Serializable{
     public String getUser() {
         return user;
     }
-
-    public String getPass() {
-        return pass;
+    
+    public byte[] getPassX() {
+        return passX;
     }
 
     public String getRol() {
@@ -198,8 +198,8 @@ public class Usuari implements Serializable{
         this.user = user;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setPassX(byte[] pass) {
+        this.passX = passX;
     }
 
     public void setRol(String rol) {
@@ -254,7 +254,7 @@ public class Usuari implements Serializable{
 
     @Override
     public String toString() {
-        return "Usuari{" + "id=" + id + ", user=" + user + ", pass=" + pass + ", rol=" + rol + ", dataNaixement=" + dataNaixement + ", nom=" + nom + ", primerCognom=" + primerCognom + ", segonCognom=" + segonCognom + ", email=" + email + ", dataAlta=" + dataAlta + ", dataBaixa=" + dataBaixa + ", multa=" + multa + ", suspensio=" + suspensio + ", dataFinalSuspensio=" + dataFinalSuspensio + ", ultimaActualitzacio=" + ultimaActualitzacio + ", imageData=" + imageData + '}';
+        return "Usuari{" + "id=" + id + ", user=" + user + ", passX=" + passX + ", rol=" + rol + ", dataNaixement=" + dataNaixement + ", nom=" + nom + ", primerCognom=" + primerCognom + ", segonCognom=" + segonCognom + ", email=" + email + ", dataAlta=" + dataAlta + ", dataBaixa=" + dataBaixa + ", multa=" + multa + ", suspensio=" + suspensio + ", dataFinalSuspensio=" + dataFinalSuspensio + ", ultimaActualitzacio=" + ultimaActualitzacio + ", imageData=" + imageData + '}';
     }
     
  

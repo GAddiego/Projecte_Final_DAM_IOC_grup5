@@ -32,14 +32,14 @@ public class ProvaClient {
 
     static final String HOST="localhost";
     static final int  PORT=12345;
-    
+
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         Eines eines = new Eines();
-        XifradorContrasenya xC = new XifradorContrasenya();
+       XifradorContrasenya xC = new XifradorContrasenya();
         
         Llibre llibre = new Llibre();
             llibre.setTitol("El código Da Vinci");
@@ -380,6 +380,7 @@ public class ProvaClient {
     }
 
     private static void modificarUsuari(String[] array) { //falta arreglar
+        XifradorContrasenya xC = new XifradorContrasenya();
         try {
             Socket socket = new Socket(HOST, PORT);
             System.out.println("Conectat al servidor per modificar usuari");
@@ -387,7 +388,7 @@ public class ProvaClient {
             out.writeUTF(array[0]);
             out.writeUTF("modificar_usuari");
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            Usuari usuariNou = new Usuari("giboca","gibo123","alumne","Gilabert","Martí","Guixeres","giboca@gmail.com");
+            Usuari usuariNou = new Usuari("giboca", xC.XifradorString("contarasenya"),"alumne","Gilabert","Martí","Guixeres","giboca@gmail.com");
             usuariNou.setMulta(1000);
             oos.writeObject(usuariNou);
             out.close();

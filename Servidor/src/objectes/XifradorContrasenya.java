@@ -77,7 +77,8 @@ public class XifradorContrasenya {
     }
     
     public boolean ComprovarContrasenya(byte[] client, byte[] bbdd){
-        if (Desxifradorbyte(client)==Desxifradorbyte(bbdd)){
+        if (Desxifradorbyte(client).equals(Desxifradorbyte(bbdd))){
+            
             return true;
         }
 

@@ -12,6 +12,7 @@ import java.net.Socket;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import objectes.XifradorContrasenya;
 
 
 /**
@@ -60,14 +61,14 @@ public class FilNouClient extends Thread {
         String codi = "";
         UsuariIntern user = new UsuariIntern();
         SqlManager sqlManager = new SqlManager();
-
+        XifradorContrasenya xC = new XifradorContrasenya();
         try {
             System.out.println("Esperant usuari i contrasenya...");
             String usuari = in.readUTF();
             String pass = in.readUTF();
-            boolean existeixUsuari = sqlManager.uIntern.existeixUsuari(usuari, pass);
+            boolean existeixUsuari = sqlManager.uIntern.existeixUsuari(usuari, xC.XifradorString(pass) );
             if (existeixUsuari) {
-                user = sqlManager.uIntern.getUsuari(usuari, pass);
+                user = sqlManager.uIntern.getUsuari(usuari);
                 while (!afegit) {
                     codi = eines.generarCodi();
                     afegit = bf.afegir(codi, user);

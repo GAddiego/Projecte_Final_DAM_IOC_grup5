@@ -25,6 +25,7 @@ import java.util.Date;
 import objectes.Eines;
 import objectes.Usuari;
 import objectes.UsuariIntern;
+import objectes.XifradorContrasenya;
 
 /**
  *
@@ -34,7 +35,7 @@ public class SqlUsuariIntern implements Sql{
     static final String VERIFICAR_USUARI = "SELECT tipus FROM usuaris WHERE usuari = ? AND pswd = ?";
     static final String CREAR_USUARI = "INSERT INTO usuaris ( nom_usuari , rol , data_naixement, nom , primer_cognom , segon_cognom, email , data_alta,  multa,  foto, pswd ) VALUES ( ?, ?, ?, ?, ?,?, ?,?,?,?,?)";
     static final String RECUPERAR_USUARI = "SELECT id, nom_usuari, rol, nom,  primer_cognom, segon_cognom, email, data_alta, foto FROM usuaris WHERE nom_usuari = ? AND pswd = ?";
-    static final String RECUPERAR_USUARI_TOT = "SELECT * FROM usuaris WHERE nom_usuari = ? AND pswd = ?";
+    static final String RECUPERAR_USUARI_TOT = "SELECT * FROM usuaris WHERE nom_usuari = ? ";
     static final String BORRAR_USUARI = "DELETE FROM usuaris WHERE nom_usuari = ?";
     static final String MODIFICAR_USUARI_OLD =  "UPDATE usuaris SET nom = ?, rol = ?, primer_cognom = ?, segon_cognom = ?, email = ?, data_alta = ?, data_baixa = ?, multa = ?, suspensio = ?, data_final_suspensio = ?, foto = ?, pswd = ? WHERE nom_usuari = ?";
 
@@ -167,7 +168,7 @@ public void crearUsuariExtens(UsuariIntern usuari)  {
         }
     }
 }
-    public UsuariIntern getUsuari(String nomUsuari, String pass) throws ParseException {
+    public UsuariIntern getUsuari(String nomUsuari) throws ParseException {
         Connection conn = null;
         PreparedStatement stmt = null;
         UsuariIntern usuari = null;
@@ -178,7 +179,6 @@ public void crearUsuariExtens(UsuariIntern usuari)  {
             String query = RECUPERAR_USUARI_TOT;
             stmt = conn.prepareStatement(query);
             stmt.setString(1, nomUsuari);
-            stmt.setString(2, pass);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
@@ -251,25 +251,31 @@ public void crearUsuariExtens(UsuariIntern usuari)  {
         return usuari;
     }
     
-        public boolean existeixUsuari(String nomUsuari, String contrasenya) {
+        public boolean existeixUsuari(String nomUsuari, byte[] pass) {
          Connection conn = null;
         PreparedStatement stmt = null;
 
         boolean existeix = false;
         try {
             conn = DriverManager.getConnection(connexio, user, pasw);
-
-            String query = "SELECT COUNT(*) FROM usuaris WHERE nom_usuari = ? AND contrasenya = ?";
+            XifradorContrasenya xC = new XifradorContrasenya();
+            //String query = "SELECT COUNT(*) FROM usuaris WHERE nom_usuari = ?";
+            String query = "SELECT * FROM usuaris WHERE nom_usuari = ? LIMIT 1";
             stmt = conn.prepareStatement(query);
             stmt.setString(1, nomUsuari);
-            stmt.setString(2, contrasenya);
             ResultSet rs = stmt.executeQuery();
-
+            
+            
             if (rs.next()) {
-                int count = rs.getInt(1);
-                if (count > 0) {
-                    existeix = true;
-                }
+
+                    byte[] b = (rs.getBytes("pswd"));
+                    System.out.println(xC.ComprovarContrasenya(b,pass));
+                    if(xC.ComprovarContrasenya(b,pass)){
+                        return true;
+                    }else{
+                        return false;
+                    }
+
             }
             stmt.close();
             rs.close();

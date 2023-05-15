@@ -3,15 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/algibo/NetBeansProjects/Servidor/src/objectes/UsuariIntern.java</file>
-            <file>file:/home/algibo/NetBeansProjects/Servidor/src/servidor/Servidor.java</file>
-            <file>file:/home/algibo/NetBeansProjects/Servidor/src/objectes/Configuracio.java</file>
-            <file>file:/home/algibo/NetBeansProjects/Servidor/src/objectes/Eines.java</file>
-            <file>file:/home/algibo/NetBeansProjects/Servidor/src/BBDD/SqlManager.java</file>
-            <file>file:/home/algibo/NetBeansProjects/Servidor/src/objectes/Avis.java</file>
-            <file>file:/home/algibo/NetBeansProjects/Servidor/src/servidor/FilClient.java</file>
-            <file>file:/home/algibo/NetBeansProjects/Servidor/src/servidor/FilNouClient.java</file>
-            <file>file:/home/algibo/NetBeansProjects/Servidor/src/servidor/BufferUsuaris.java</file>
+            <file>file:/C:/Users/aleix/Documents/Projecte/Servidor/src/BBDD/consultes/SqlUsuariIntern.java</file>
+            <file>file:/C:/Users/aleix/Documents/Projecte/Servidor/src/objectes/UsuariIntern.java</file>
+            <file>file:/C:/Users/aleix/Documents/Projecte/Servidor/src/objectes/Usuari.java</file>
+            <file>file:/C:/Users/aleix/Documents/Projecte/Servidor/src/suport/ProvaClient.java</file>
         </group>
     </open-files>
 </project-private>

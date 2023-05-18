@@ -213,6 +213,11 @@ public class FilClient extends Thread {
                             buscarLlibreId();
                         }
                         break;
+                    case "meves_reserves":
+                        if (usuari.getRol().equals("admin") || usuari.getRol().equals("bibliotecaria") || usuari.getRol().equals("usuari")) {
+                            mevesReserves();
+                        }
+                        break;
                 }
                 in.close();
                 out.close();
@@ -342,7 +347,7 @@ public class FilClient extends Thread {
         try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream())) {
             Llibre llibre = (Llibre) ois.readObject();
             sqlManager.llibres.esborrarLlibre(llibre);
-            System.out.println("Borrar llibre: " + llibre.getIsbn() );
+            //System.out.println("Borrar llibre: " + llibre.getIsbn() );
         }catch (IOException | ClassNotFoundException | SQLException ex) {
             Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -352,7 +357,7 @@ public class FilClient extends Thread {
         try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
              ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
             String[] dadesConsulta = (String[]) ois.readObject();
-            System.out.println("Numero de llibres trobats: " + (int) sqlManager.llibres.buscarLlibres(dadesConsulta).size());
+            //System.out.println("Numero de llibres trobats: " + (int) sqlManager.llibres.buscarLlibres(dadesConsulta).size());
             oos.writeObject(sqlManager.llibres.buscarLlibres(dadesConsulta));
         }catch (IOException | ClassNotFoundException | SQLException ex) {
             Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -471,7 +476,7 @@ public class FilClient extends Thread {
     }*/
 
     private void buscarAvisosUsuaris() {
-        try{
+        try{ 
         List <Avis> a  = sqlManager.avisos.llistarNous(usuari.getId());
         String str = a.get(0).toString();
         System.out.println("Numero d'avisos "+a.size());
@@ -489,8 +494,8 @@ public class FilClient extends Thread {
     private void avisLlegit() {
         try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
              ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
-            String avis = (String) ois.readObject();           
-            sqlManager.avisos.marcarllegit(Integer.parseInt(avis));
+            String id_avis = (String) ois.readObject();           
+            sqlManager.avisos.marcarllegit(Integer.parseInt(id_avis));
         }catch (IOException | ClassNotFoundException | SQLException  ex) {
             Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -600,9 +605,9 @@ public class FilClient extends Thread {
     private void finalitzarPrestec() {
         try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
             ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream())) {
-            int idUsuari = (int) ois.readObject();     
+            int idPrestec = (int) ois.readObject();     
             java.util.Date dataRetorn = new java.util.Date();
-            sqlManager.prestec.tancarPrestec(idUsuari, (Date) dataRetorn);
+            sqlManager.prestec.tancarPrestec(idPrestec, (Date) dataRetorn);
         }catch (IOException | ClassNotFoundException    ex) {
             Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -7,6 +7,8 @@ import BBDD.SqlManager;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.ParseException;
@@ -56,40 +58,57 @@ public class FilNouClient extends Thread {
      */
     @Override
     public void run() {
-        Eines eines = new Eines();
-        boolean afegit = false;
-        String codi = "";
-        UsuariIntern user = new UsuariIntern();
-        SqlManager sqlManager = new SqlManager();
-        XifradorContrasenya xC = new XifradorContrasenya();
+        ObjectOutputStream oos = null;
         try {
-            System.out.println("Esperant usuari i contrasenya...");
-            String usuari = in.readUTF();
-            String pass = in.readUTF();
-            boolean existeixUsuari = sqlManager.uIntern.existeixUsuari(usuari, xC.XifradorString(pass) );
-            if (existeixUsuari) {
-                user = sqlManager.uIntern.getUsuari(usuari);
-                while (!afegit) {
-                    codi = eines.generarCodi();
-                    afegit = bf.afegir(codi, user);
-                    if (afegit) {
-                        System.out.println("El codi es: " + codi + " el rol es " + user.getRol());
-                        out.writeBoolean(true);
-                        out.writeUTF(codi);
-                        out.writeUTF(user.getRol());
+            Eines eines = new Eines();
+            oos = new ObjectOutputStream(s.getOutputStream());
+            boolean afegit = false;
+            String codi = "";
+            UsuariIntern user = new UsuariIntern();
+            SqlManager sqlManager = new SqlManager();
+            XifradorContrasenya xC = new XifradorContrasenya();
+            try {
+                System.out.println("Esperant usuari i contrasenya...");
+                oos.write(xC.ClauPublica());
+                String usuari = in.readUTF();
+                ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
+                byte[] pass = (byte[]) ois.readObject();
+                boolean existeixUsuari = sqlManager.uIntern.existeixUsuari(usuari, pass );
+                if (existeixUsuari) {
+                    user = sqlManager.uIntern.getUsuari(usuari);
+                    while (!afegit) {
+                        codi = eines.generarCodi();
+                        afegit = bf.afegir(codi, user);
+                        if (afegit) {
+                            System.out.println("El codi es: " + codi + " el rol es " + user.getRol());
+                            out.writeBoolean(true);
+                            out.writeUTF(codi);
+                            out.writeUTF(user.getRol());
+                        }
                     }
+                    System.out.println("Tancant socket codi " + codi);
+                } else {
+                    out.writeBoolean(false);
+                    System.out.println("Tancant socket de l'usuari " + usuari + " incorrecte ");
                 }
-                System.out.println("Tancant socket codi " + codi);
-            } else {
-                out.writeBoolean(false);
-                System.out.println("Tancant socket de l'usuari " + usuari + " incorrecte ");
+                
+                s.close();
+            } catch (IOException e) {
+                
+            } catch (ParseException ex) {
+                Logger.getLogger(FilNouClient.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(FilNouClient.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            s.close();
-        } catch (IOException e) {
-
-        } catch (ParseException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(FilNouClient.class.getName()).log(Level.SEVERE, null, ex);
+
+        } finally {
+            try {
+                oos.close();
+            } catch (IOException ex) {
+                Logger.getLogger(FilNouClient.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 

@@ -86,5 +86,16 @@ public class XifradorContrasenya {
         
         
     }
-       
+    public byte[] ClauPublica(){
+        byte[] publicKeyBytes;
+        try {
+            publicKeyBytes = Files.readAllBytes(Paths.get("public.key"));
+
+        return publicKeyBytes;
+
+        } catch (IOException ex) {
+            Logger.getLogger(Contrasenya.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 }

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
 package ProvaUnitaria;
 
 import BBDD.SqlManager;
@@ -123,7 +119,7 @@ public class Proves {
     
     @Test
     public void testCrearComentari() {        // Crear un nou comentari per a un llibre
-        Comentari comentari = new Comentari(17, 1, new Date(), "Aquest llibre és genial!");
+        Comentari comentari = new Comentari(17, 1, new Date(), "Aquest llibre està molt be!");
         try {
             sqlManager.comentaris.crearComentari(comentari);
         } catch (SQLException e) {
@@ -211,7 +207,7 @@ public class Proves {
         // Aquí pots escriure una prova per a la funció marcarLlegit()
         try {
             // Defineix l'ID de l'avís a marcar com a llegit per a la prova
-            int idAvis = 8;
+            int idAvis = 15;
 
             // Crida la funció marcarLlegit()
             sqlManager.avisos.marcarllegit(idAvis);
@@ -299,7 +295,7 @@ public class Proves {
         // Defineix l'ID del llibre per a la prova
         int idLlibre = 2;
         int idUsuari = 17;  
-        int idPrestec = 19;
+        int idPrestec = 31;
         // Defineix la data de renovació per a la prova
         Prestec prestecActiu = sqlManager.prestec.prestecActiuLlibreUsuari(idLlibre, idUsuari);
         System.out.println("Data venciment actual: " + prestecActiu.getdataVenciment());
@@ -312,7 +308,7 @@ public class Proves {
     @Test
     public void testTancarPrestec() {
         // Defineix l'ID del préstec i la data de retorn per a la prova
-        int idPrestec = 19;
+        int idPrestec = 31;
         java.sql.Date dataRetorn = new java.sql.Date(System.currentTimeMillis());
         // Crida la funció tancarPrestec()
         sqlManager.prestec.tancarPrestec(idPrestec, dataRetorn);
@@ -322,7 +318,7 @@ public class Proves {
     public void testCrearReserva() {
         // Crea les dades per a la prova
         int idUsuari = 22;
-        int idLlibre = 1;
+        int idLlibre = 10;
         java.util.Date dataReserva = new java.util.Date();
         java.util.Date dataFinalitzacio = null;
         // Crida la funció crearReserva()
@@ -353,7 +349,7 @@ public class Proves {
         // Aquí pots escriure una prova per a la funció finalitzarReserva()
         try {
             // Defineix l'ID de la reserva per a la prova
-            int idReserva = 11;
+            int idReserva = 20;
 
             // Defineix la data de recollida per a la prova
             java.util.Date dataRecollida = new java.util.Date();

@@ -132,6 +132,11 @@ public class FilClient extends Thread {
                             crearPrestec();
                         }
                         break;
+                    case "passar_a_prestec":
+                        if (usuari.getRol().equals("admin") || usuari.getRol().equals("bibliotecaria")) {
+                            passarAprestec();
+                        }
+                        break;
                     case "modificar_prestec":
                         if (usuari.getRol().equals("admin") || usuari.getRol().equals("bibliotecaria")) {
                             ampliarPrestec();
@@ -383,9 +388,7 @@ public class FilClient extends Thread {
             Llibre llibre = (Llibre) ois.readObject();
             Usuari usuari = (Usuari) ois.readObject();
             UsuariIntern ui = sqlManager.uIntern.getUsuari(usuari.getUser());
-            List<Reserva> reserves = sqlManager.reserves.llistarReservesLlibre(llibre.getId());
             System.out.println("Intent de prestec: " + ui.getId() + " " + llibre.getId()  );
-            reserves = sqlManager.reserves.llistarReservesLlibre(llibre.getId());
             if (sqlManager.prestec.prestecActiuLlibre(llibre.getId()).size()>0){
                 System.out.println("ja està prestat");
                 missatge ="Ja està prestat";
@@ -400,7 +403,7 @@ public class FilClient extends Thread {
             ois.close();
             oos.close();
             
-         }   catch (IOException | ClassNotFoundException | SQLException | ParseException ex) {
+         }   catch (IOException | ClassNotFoundException | ParseException ex) {
                 Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
             }
     }
@@ -665,6 +668,26 @@ public class FilClient extends Thread {
             ois.close();
         } catch (IOException | ClassNotFoundException | ParseException ex) {
             Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
-        }    }
+        }    
+    }
+    
+    private void passarAprestec(){
+        try (ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream())) {
+            MissatgesPredefinits mp = new MissatgesPredefinits();
+            Reserva reserva = (Reserva) ois.readObject();
+            System.out.println(reserva.toString());
+            java.util.Date date = new java.util.Date();
+            if (sqlManager.prestec.prestecActiuLlibre(reserva.getIdLlibre()).size()>0){
+                System.out.println("ja està prestat");
+            }else{              
+                    sqlManager.prestec.crearPrestec(reserva.getIdUsuari(), reserva.getIdLlibre(), date, eines.convertirDataString(eines.diaRetorn()), false);
+                    System.out.println("Prestec realitzat fins el dia " + eines.diaRetorn());
+                    mp.enviarAvisLlibrePrestat(reserva.getIdUsuari(), reserva.getIdLlibre(),  eines.convertirDataString(eines.diaRetorn()));
+            }
+            ois.close();
+        } catch (IOException | ClassNotFoundException | ParseException | SQLException ex) {
+            Logger.getLogger(FilClient.class.getName()).log(Level.SEVERE, null, ex);
+        }    
+    }
 
 }

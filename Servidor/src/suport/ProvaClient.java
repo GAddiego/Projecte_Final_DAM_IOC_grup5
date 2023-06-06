@@ -146,6 +146,8 @@ public class ProvaClient {
             System.out.println("19- Finalitzar reserva");
             System.out.println("20- Buscar reserva usuari");
             System.out.println("21- Buscar resserva llibre");
+            System.out.println("34- Passar a prestec");
+            System.out.println("35- Les meves reserves");
             
             System.out.println();
             System.out.println("Operacions Comentaris:");
@@ -265,7 +267,9 @@ public class ProvaClient {
                     String[] llista3 = {"algibo",null,null,null,null,null,null};
                     usuariMemoria=llistarUsuariRetorn(array,llista3);
                     break;
-                
+                case 34:
+                    passarAprestec(array,reservaMemoria);
+                    break;
                 default:
                     System.out.println("Tria una opció correcte.");
             }
@@ -1079,6 +1083,23 @@ public class ProvaClient {
             Usuari usu = rebreAltreUsuariReduit(array, c.getIdUsuari());
             usu.toString();
             System.out.println("Usuari " + usu.getUser() + " diu : " + c.getComentari());
+        }
+    }
+
+    private static void passarAprestec(String[] array, Reserva reservaMemoria) {
+        try {
+            Socket socket = new Socket(HOST, PORT);
+            System.out.println("Conectat al servidor per pasar aprestec ");
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());  
+            out.writeUTF(array[0]);
+            out.writeUTF("passar_a_prestec");
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            oos.writeObject(reservaMemoria);
+            out.close();
+            oos.close();
+            socket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ProvaClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

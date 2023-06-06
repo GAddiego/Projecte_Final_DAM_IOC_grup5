@@ -50,4 +50,23 @@ public class MissatgesPredefinits {
             }
         }
     }
+    
+    public void enviarAvisLlibrePrestat(int idUsuari, int idLlibre, java.util.Date fiPrestec) throws SQLException {
+        Avis avisNou = new Avis();
+        avisNou.setIdCreador(999999);
+        avisNou.setId_usuari(idUsuari);
+        avisNou.setTitol("Prestec realitzat");
+        avisNou.setLlegit(false);
+        avisNou.setMissatge("T'informem que el prestec que tens del llibre " + sqlManager.llibres.buscarLlibreid(idLlibre).getTitol() + " s'acava el dia "
+                + eines.diaFinalReserva(date));
+        avisNou.setIdCreador(idLlibre);
+        avisNou.setDataCreacio(date);
+        sqlManager.avisos.crearAvis(avisNou, idUsuari);
+        List<Reserva> llistarReservesUsuari = sqlManager.reserves.llistarReservesUsuari(idUsuari);
+        for (Reserva r : llistarReservesUsuari){
+            if (r.getIdLlibre() == idLlibre){
+                sqlManager.reserves.finalitzarReserva(idLlibre, eines.diaFinalReserva(date));
+            }
+        }
+    }
 }

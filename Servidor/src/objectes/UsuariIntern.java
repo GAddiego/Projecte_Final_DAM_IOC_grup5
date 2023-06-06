@@ -123,6 +123,25 @@ public class UsuariIntern {
         this.imageData = imageData;
         
     }
+
+    public UsuariIntern(int id, String user, String rol, Date dataNaixement, String nom, 
+            String primerCognom, String segonCognom, String email, Date dataAlta, float multa,
+            boolean suspensio, Date dataFinalSuspensio, byte[] imageData, byte[] passX) {
+        this.id = id;
+        this.user = user;
+        this.rol = rol;
+        this.dataNaixement = dataNaixement;
+        this.nom = nom;
+        this.primerCognom = primerCognom;
+        this.segonCognom = segonCognom;
+        this.email = email;
+        this.dataAlta = dataAlta;
+        this.multa = multa;
+        this.suspensio = suspensio;
+        this.dataFinalSuspensio = dataFinalSuspensio;
+        this.imageData = imageData;
+        this.passX = passX;
+    }
     
    
     public int getId() {

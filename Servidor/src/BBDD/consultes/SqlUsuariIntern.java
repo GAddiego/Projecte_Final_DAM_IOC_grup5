@@ -479,7 +479,7 @@ public class SqlUsuariIntern implements Sql{
             }else{
                 primer = false;
             }
-            consulta += " contrasenya = '" + usuari.getPass() + "'";
+            consulta += " pswd = ? ";
 
         }
 
@@ -586,12 +586,21 @@ public class SqlUsuariIntern implements Sql{
             }else{
                 primer = false;
             }
-            consulta += " foto = '" + usuari.getImageData()+ "'";
+            consulta += " foto = ? ";
         }
+            
+       
 
         consulta += " WHERE nom_usuari = '" + usuari.getUser() + "'";
             System.out.println(consulta);
+            
             stmt = conn.prepareStatement(consulta);
+            stmt.setBytes(1, usuari.getPass());
+             if (usuari.getImageData() != null){
+                 stmt.setBytes(2, usuari.getImageData());
+             }
+            
+            
             stmt.executeUpdate();
             
         }   catch (SQLException e) {
@@ -663,7 +672,8 @@ public class SqlUsuariIntern implements Sql{
                     rs.getFloat("multa"),
                     rs.getBoolean("suspensio"),
                     eines.convertirDataString(rs.getString("data_final_suspensio")),               
-                    rs.getBytes("foto")
+                    rs.getBytes("foto"),
+                    rs.getBytes("pswd")
             );
             System.out.println("UsuariIntern : " + usuari.toString());
             Usuari u = new Usuari(usuari); 

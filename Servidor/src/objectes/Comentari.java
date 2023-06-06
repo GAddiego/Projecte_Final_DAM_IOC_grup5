@@ -72,6 +72,11 @@ public class Comentari implements Serializable {
     public String getComentari() {
         return comentari;
     }
+
+    @Override
+    public String toString() {
+        return "Comentari{" + "id=" + id + ", idUsuari=" + idUsuari + ", idLlibre=" + idLlibre + ", dataCreacio=" + dataCreacio + ", comentari=" + comentari + '}';
+    }
     
     
 }

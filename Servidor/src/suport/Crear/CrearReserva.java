@@ -24,7 +24,7 @@ public class CrearReserva {
         Eines eines = new Eines();
         Date date = new Date();
         try {
-            UsuariIntern ui = sql.uIntern.getUsuari("algibo", "pass1");
+            UsuariIntern ui = sql.uIntern.getUsuari("algibo");
             Llibre llibre = sql.llibres.buscarLlibreid(1);
             System.out.println("ID ui + ID llibre :" + ui.getId() + " + " + llibre.getId());
             sql.reserves.crearReserva(ui.getId(), llibre.getId(), date, null);

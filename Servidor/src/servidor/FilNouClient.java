@@ -39,7 +39,7 @@ public class FilNouClient extends Thread {
      * @param s      Socket de la connexió del client.
      * @param in     DataInputStream per llegir les dades enviades pel client.
      * @param out    DataOutputStream per enviar dades al client.
-     * @param bf      BufferUsuaris on afegir el codi i l'usuari generat.
+     * @param bf     BufferUsuaris on afegir el codi i l'usuari generat.
      */
     
     public FilNouClient(ServerSocket sv, Socket s, DataInputStream in, DataOutputStream out, BufferUsuaris bf) {
@@ -50,7 +50,7 @@ public class FilNouClient extends Thread {
         this.out = out;
     }
     
-        /**
+     /**
      * Mètode que s'executa quan es comença a executar el fil. 
      * Llegeix l'usuari i contrasenya enviats pel client, valida-los amb la base de dades,
      * genera un codi i l'afegeix al buffer d'usuaris. A continuació, envia el codi i el rol
@@ -58,58 +58,69 @@ public class FilNouClient extends Thread {
      */
     @Override
     public void run() {
-        ObjectOutputStream oos = null;
-        try {
-            Eines eines = new Eines();
-            oos = new ObjectOutputStream(s.getOutputStream());
-            boolean afegit = false;
-            String codi = "";
-            UsuariIntern user = new UsuariIntern();
-            SqlManager sqlManager = new SqlManager();
+        byte[] pass = null;
+        Eines eines = new Eines();
+        boolean afegit = false;
+        String codi = "";
+        UsuariIntern user = new UsuariIntern();
+        SqlManager sqlManager = new SqlManager();
+        try (  
+         ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream())){
+            
             XifradorContrasenya xC = new XifradorContrasenya();
-            try {
-                System.out.println("Esperant usuari i contrasenya...");
-                oos.write(xC.ClauPublica());
-                String usuari = in.readUTF();
-                ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
-                byte[] pass = (byte[]) ois.readObject();
-                boolean existeixUsuari = sqlManager.uIntern.existeixUsuari(usuari, pass );
-                if (existeixUsuari) {
-                    user = sqlManager.uIntern.getUsuari(usuari);
-                    while (!afegit) {
-                        codi = eines.generarCodi();
-                        afegit = bf.afegir(codi, user);
-                        if (afegit) {
-                            System.out.println("El codi es: " + codi + " el rol es " + user.getRol());
-                            out.writeBoolean(true);
-                            out.writeUTF(codi);
-                            out.writeUTF(user.getRol());
-                        }
+            System.out.println("envia la clau publica...");
+            oos.writeObject(xC.ClauPublica());
+            oos.flush();
+            ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
+            System.out.println("fins qui tot be");
+            String usuari = (String) ois.readObject();
+            System.out.println("Usuari rebut " + usuari);
+            
+            pass = (byte[]) ois.readObject(); 
+            System.out.println("Pass rebut " + pass.length);
+            
+            boolean existeixUsuari = sqlManager.uIntern.existeixUsuari(usuari, pass );
+            if (existeixUsuari) {
+                user = sqlManager.uIntern.getUsuari(usuari);
+                while (!afegit) {
+                    codi = eines.generarCodi();
+                    afegit = bf.afegir(codi, user);
+                    if (afegit) {
+                        System.out.println("El codi es: " + codi + " el rol es " + user.getRol());
+                        out.writeBoolean(true);
+                        out.writeUTF(codi);
+                        out.writeUTF(user.getRol());
                     }
-                    System.out.println("Tancant socket codi " + codi);
-                } else {
-                    out.writeBoolean(false);
-                    System.out.println("Tancant socket de l'usuari " + usuari + " incorrecte ");
                 }
-                
-                s.close();
-            } catch (IOException e) {
-                
-            } catch (ParseException ex) {
-                Logger.getLogger(FilNouClient.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(FilNouClient.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("Tancant socket codi " + codi);
+            } else {
+                out.writeBoolean(false);
+                System.out.println("Tancant socket de l'usuari " + usuari + " incorrecte ");
             }
+            
+            s.close();
+        } catch (IOException e) {
+            
+        } catch (ParseException | ClassNotFoundException ex) {
+            Logger.getLogger(FilNouClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+     /**
+     * Mètode que envia la clau pública a través de sockets.
+     */
+    public void enviarClau(){
+        
+        XifradorContrasenya xC = new XifradorContrasenya();
+        try (ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream())) {
+            System.out.println("envia la clau publica...");
+            oos.writeObject(xC.ClauPublica());
+            oos.flush();
+            
         } catch (IOException ex) {
             Logger.getLogger(FilNouClient.class.getName()).log(Level.SEVERE, null, ex);
-
-        } finally {
-            try {
-                oos.close();
-            } catch (IOException ex) {
-                Logger.getLogger(FilNouClient.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
+                
+
     }
 
 }

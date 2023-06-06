@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Classe que conté eines diverses per a la gestió de fitxers, dates i altres funcionalitats útils.
  *
  * @author Aleix
  */
@@ -50,7 +51,11 @@ public class Eines implements Serializable{
     }
 
 
- 
+    /**
+     * Genera un codi aleatori de 8 caràcters.
+     * 
+     * @return El codi generat.
+     */
     public static String generarCodi() {
     String alfabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
     StringBuilder codi = new StringBuilder();
@@ -63,6 +68,13 @@ public class Eines implements Serializable{
     return codi.toString();
     }
     
+    /**
+     * Converteix una data representada com a cadena de caràcters a un objecte de tipus Date.
+     * 
+     * @param data La data en format de cadena de caràcters (yyyy-MM-dd).
+     * @return L'objecte de tipus Date corresponent a la data especificada.
+     * @throws ParseException Si hi ha un error en analitzar la data.
+     */
     public Date convertirDataString(String data) throws ParseException{
     Date r;
     
@@ -76,6 +88,13 @@ public class Eines implements Serializable{
     return r;
     }
     
+    /**
+     * Converteix un objecte de tipus Date a una cadena de caràcters que representa la data en el format yyyy-MM-dd.
+     * 
+     * @param data L'objecte de tipus Date a convertir.
+     * @return La cadena de caràcters que representa la data en el format especificat.
+     * @throws ParseException Si hi ha un error en formatejar la data.
+     */
     public String convertirStringData(Date data) throws ParseException{
         String retorn; 
         
@@ -89,6 +108,12 @@ public class Eines implements Serializable{
     return retorn;
     }
     
+     /**
+     * Comprova l'existència d'una ruta d'arxiu.
+     * 
+     * @param ruta La ruta de l'arxiu a comprovar.
+     * @return Retorna true si la ruta d'arxiu existeix, false altrament.
+     */
     public Boolean comprovarRuta(String ruta){
         File file = new File(ruta);
         if (!file.exists()) {
@@ -99,6 +124,12 @@ public class Eines implements Serializable{
         }
     }
     
+    /**
+     * Comprova l'existència d'una ruta d'arxiu.
+     * 
+     * @param ruta La ruta de l'arxiu a comprovar.
+     * @return Retorna true si la ruta d'arxiu existeix, false altrament.
+     */
     public byte[] convertirABytes(String ruta)  {
         try {
             return Files.readAllBytes(Paths.get(ruta));
@@ -108,6 +139,12 @@ public class Eines implements Serializable{
         return null;
     }
     
+    /**
+     * Comprova si un objecte és null i el substitueix per un objecte de data fixe.
+     * 
+     * @param obj L'objecte a comprovar.
+     * @return L'objecte de data fixe si l'objecte original és de tipus Date, null altrament.
+     */
     public Object nullCkeckObject(Object obj){
 
         if(obj instanceof java.util.Date ){
@@ -118,12 +155,22 @@ public class Eines implements Serializable{
         return null;
     }
     
+    /**
+     * Obté la data d'avui en format de cadena de caràcters (yyyy-MM-dd).
+     * 
+     * @return La data d'avui.
+     */
     public String diaAvui() {
         Date data = new Date();
         String dataAvui = format.format(data);
         return dataAvui;
     }
     
+    /**
+     * Obté la data d'un mes a partir de la data actual en format de cadena de caràcters (yyyy-MM-dd).
+     * 
+     * @return La data d'un mes a partir de la data actual.
+     */
     public String diaRetorn() {
             Date data = new Date();
             Calendar calendari = Calendar.getInstance();
@@ -133,6 +180,13 @@ public class Eines implements Serializable{
             String dataAvui = format.format(dataunmes);
             return dataAvui;
     }
+    
+    /**
+     * Amplia la data de retorn afegint 15 dies a partir de la data especificada.
+     * 
+     * @param diaRetorn La data de retorn inicial.
+     * @return La data de retorn ampliada.
+     */
     public Date ampliacióRetorn(Date diaRetorn) {
             
             Calendar calendari = Calendar.getInstance();
@@ -142,6 +196,13 @@ public class Eines implements Serializable{
            
             return dataunmes;
     }
+    
+    /**
+     * Obté la data final de la reserva a partir de la data de retorn, afegint 15 dies.
+     * 
+     * @param diaRetorn La data de retorn.
+     * @return La data final de la reserva.
+     */
     public Date diaFinalReserva(Date diaRetorn) {
             
             Calendar calendari = Calendar.getInstance();
@@ -152,6 +213,12 @@ public class Eines implements Serializable{
             return dataunmes;
     }
     
+    /**
+     * Llegeix les dades d'un fitxer CSV i les retorna com una llista de vectors de cadenes de caràcters.
+     * 
+     * @param ruta La ruta del fitxer CSV a llegir.
+     * @return La llista de vectors de cadenes de caràcters que representen les dades llegides del fitxer CSV.
+     */
     public List<String[]> llegirCSV (String ruta) {
         try {
             File archivo = new File(ruta);

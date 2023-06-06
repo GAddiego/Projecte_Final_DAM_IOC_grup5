@@ -90,6 +90,7 @@ public class UsuariIntern {
 
 
     public UsuariIntern(Usuari u) {
+        this.id = u.getId();
         this.user = u.getUser();
         this.passX = u.getPassX();
         this.rol = u.getRol();

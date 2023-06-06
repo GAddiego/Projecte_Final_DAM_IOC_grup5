@@ -47,7 +47,7 @@ public class GuardarMostrarImatge {
             
             
             //MOSTRAR IMATGE
-            UsuariIntern usuari2 = sqlManager.uIntern.getUsuari("algibo", "pass1");
+            UsuariIntern usuari2 = sqlManager.uIntern.getUsuari("algibo");
             
             
             //if (eines.comprovarRuta(ruta)){

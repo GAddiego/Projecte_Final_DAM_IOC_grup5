@@ -25,7 +25,10 @@ public class FilEliminador extends Thread {
         this.bf = bf;
     }
     
-
+/**
+ * Mètode que s'executa quan es comença a executar el fil. 
+ * @author Aleix
+ */
     @Override
     public void run() {
         while(true){

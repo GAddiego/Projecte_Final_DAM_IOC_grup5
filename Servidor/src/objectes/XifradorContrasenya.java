@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package objectes;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -27,11 +22,21 @@ import javax.crypto.NoSuchPaddingException;
 import suport.Contrasenya;
 
 /**
- *
- * @author aleix
+ * Classe que proporciona funcionalitats per xifrar i desxifrar contrasenyes utilitzant l'algorisme RSA.
+ * També permet comprovar si dues contrasenyes desxifrades coincideixen.
+ * Es basa en l'ús de claus públiques i privades.
+ * 
+ * @author Aleix
  */
 public class XifradorContrasenya {
     
+    
+    /**
+     * Desxifra un array de bytes utilitzant la clau privada emmagatzemada al servidor.
+     *
+     * @param encryptedData els dades xifrades a desxifrar
+     * @return la contrasenya desxifrada en forma de String
+     */
     public String Desxifradorbyte(byte[] encryptedData){
         try {
             
@@ -55,6 +60,12 @@ public class XifradorContrasenya {
         return null;
     }
     
+    /**
+     * Xifra una contrasenya en forma de String utilitzant la clau pública emmagatzemada al servidor.
+     *
+     * @param contrasenya la contrasenya a xifrar
+     * @return els dades xifrades en forma d'array de bytes
+     */
     public byte[] XifradorString(String contrasenya){
         byte[] dataToEncrypt = contrasenya.getBytes(StandardCharsets.UTF_8);
         byte[] publicKeyBytes;
@@ -64,11 +75,11 @@ public class XifradorContrasenya {
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             PublicKey serverPublicKey = keyFactory.generatePublic(publicKeySpec);
 
-        // Cifrar los datos
-        Cipher cipher = Cipher.getInstance("RSA");
-        cipher.init(Cipher.ENCRYPT_MODE, serverPublicKey);
-        byte[] encryptedData = cipher.doFinal(dataToEncrypt);
-        return encryptedData;
+            // Cifrar los datos
+            Cipher cipher = Cipher.getInstance("RSA");
+            cipher.init(Cipher.ENCRYPT_MODE, serverPublicKey);
+            byte[] encryptedData = cipher.doFinal(dataToEncrypt);
+            return encryptedData;
 
         } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
             Logger.getLogger(Contrasenya.class.getName()).log(Level.SEVERE, null, ex);
@@ -76,6 +87,34 @@ public class XifradorContrasenya {
         return null;
     }
     
+    /**
+     * Xifra una contrasenya en forma de String utilitzant la clau pública proporcionada i emmagatzemada al servidor.
+     *
+     * @param serverPublicKey la clau pública amb la qual s'ha de xifrar la contrasenya
+     * @param contrassenya la contrasenya a xifrar
+     * @return els dades xifrades en forma d'array de bytes
+     */
+    public byte[] XifradorString(PublicKey serverPublicKey, String contrassenya){
+        byte[] dataToEncrypt = contrassenya.getBytes(StandardCharsets.UTF_8);
+        try {
+            // Cifrar los datos
+            Cipher cipher = Cipher.getInstance("RSA");
+            cipher.init(Cipher.ENCRYPT_MODE, serverPublicKey);
+            byte[] encryptedData = cipher.doFinal(dataToEncrypt);
+            return encryptedData;
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
+            Logger.getLogger(XifradorContrasenya.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    /**
+     * Comprova si dues contrasenyes xifrades coincideixen desxifrant-les i comparant-les.
+     *
+     * @param client la contrasenya xifrada a comparar
+     * @param bbdd la contrasenya xifrada emmagatzemada a la base de dades
+     * @return true si les contrasenyes coincideixen, false en cas contrari
+     */
     public boolean ComprovarContrasenya(byte[] client, byte[] bbdd){
         if (Desxifradorbyte(client).equals(Desxifradorbyte(bbdd))){
             
@@ -86,15 +125,23 @@ public class XifradorContrasenya {
         
         
     }
-    public byte[] ClauPublica(){
-        byte[] publicKeyBytes;
+    
+    /**
+     * Retorna la clau pública emmagatzemada al servidor.
+     *
+     * @return la clau pública del servidor
+     */
+    public PublicKey ClauPublica(){
         try {
+            byte[] publicKeyBytes;
+            
             publicKeyBytes = Files.readAllBytes(Paths.get("public.key"));
-
-        return publicKeyBytes;
-
-        } catch (IOException ex) {
-            Logger.getLogger(Contrasenya.class.getName()).log(Level.SEVERE, null, ex);
+            X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            PublicKey serverPublicKey = keyFactory.generatePublic(publicKeySpec);
+            return serverPublicKey;
+        } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException ex) {
+            Logger.getLogger(XifradorContrasenya.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }

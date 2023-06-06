@@ -11,6 +11,10 @@ public class Reserva implements Serializable{
     private Date dataReserva;
     private Date dataRecollida;
 
+    public Reserva(){
+        
+    }
+    
     public Reserva(int id, int idUsuari, int idLlibre, Date dataReserva, Date dataRecollida) {
         this.id = id;
         this.idUsuari = idUsuari;
@@ -42,4 +46,11 @@ public class Reserva implements Serializable{
     public void setDataRecollida(Date dataRecollida) {
         this.dataRecollida = dataRecollida;
     }
+
+    @Override
+    public String toString() {
+        return "Reserva{" + "id=" + id + ", idUsuari=" + idUsuari + ", idLlibre=" + idLlibre + ", dataReserva=" + dataReserva + ", dataRecollida=" + dataRecollida + '}';
+    }
+   
+    
 }

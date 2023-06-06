@@ -27,7 +27,7 @@ public class MostrarImatge {
             int opcio = 2;
             
             if (opcio == 1){
-                UsuariIntern usuari = sqlManager.uIntern.getUsuari("algibo", "pass1");
+                UsuariIntern usuari = sqlManager.uIntern.getUsuari("algibo");
                 String ruta= "imatges_usuaris/DefaultUser.png";
                 //usuari.setImageData(ruta);
                 Usuari u = new Usuari(usuari);
@@ -39,7 +39,7 @@ public class MostrarImatge {
                 //String ruta= "imatges_usuaris/DefaultUser1.png";
                 //usuari.setImageData(eines.convertirABytes(ruta));
                 //sqlManager.uIntern.modificarFoto(usuari);
-                UsuariIntern usuari2 = sqlManager.uIntern.getUsuari("pepito", "pass2");
+                UsuariIntern usuari2 = sqlManager.uIntern.getUsuari("pepito");
                 //if (eines.comprovarRuta(ruta)){
                     // Crear InputStream a partir del array de bytes
                     System.out.println(usuari2.getImageData());

@@ -28,34 +28,47 @@ import objectes.UsuariIntern;
 import objectes.XifradorContrasenya;
 
 /**
+ * Classe que implementa l'interfície Sql i proporciona mètodes per gestionar els usuaris interns a través de consultes SQL.
  *
  * @author aleix
  */
 public class SqlUsuariIntern implements Sql{
-    static final String VERIFICAR_USUARI = "SELECT tipus FROM usuaris WHERE usuari = ? AND pswd = ?";
+    static final String VERIFICAR_USUARI = "SELECT rol , pswd FROM usuaris WHERE nom_usuari = ?";
     static final String CREAR_USUARI = "INSERT INTO usuaris ( nom_usuari , rol , data_naixement, nom , primer_cognom , segon_cognom, email , data_alta,  multa,  foto, pswd ) VALUES ( ?, ?, ?, ?, ?,?, ?,?,?,?,?)";
     static final String RECUPERAR_USUARI = "SELECT id, nom_usuari, rol, nom,  primer_cognom, segon_cognom, email, data_alta, foto FROM usuaris WHERE nom_usuari = ? AND pswd = ?";
     static final String RECUPERAR_USUARI_TOT = "SELECT * FROM usuaris WHERE nom_usuari = ? ";
+    static final String RECUPERAR_USUARI_TOT_ID = "SELECT * FROM usuaris WHERE id = ? ";
     static final String BORRAR_USUARI = "DELETE FROM usuaris WHERE nom_usuari = ?";
     static final String MODIFICAR_USUARI_OLD =  "UPDATE usuaris SET nom = ?, rol = ?, primer_cognom = ?, segon_cognom = ?, email = ?, data_alta = ?, data_baixa = ?, multa = ?, suspensio = ?, data_final_suspensio = ?, foto = ?, pswd = ? WHERE nom_usuari = ?";
 
     Eines eines = new Eines();
     
-    public String verificarUsuari(String usuari, byte[] pswd ) {
+    /**
+     * Verifica les credencials d'un usuari intern.
+     *
+     * @param usuari el nom d'usuari de l'usuari intern
+     * @param pass   la contrasenya de l'usuari intern
+     * @return el tipus d'usuari si les credencials són correctes, o null si no coincideixen
+     */
+    public String verificarUsuari(String usuari, byte[] pass ) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         String tipusUsuari = null;
-
+        byte[] pswd = null;
         try {
             conn = DriverManager.getConnection(connexio, user, pasw);
             stmt = conn.prepareStatement(VERIFICAR_USUARI);
             stmt.setString(1, usuari);
-            stmt.setBytes(2, pswd);
             rs = stmt.executeQuery();
 
             if (rs.next()) {
-                tipusUsuari = rs.getString("tipus");
+                tipusUsuari = rs.getString("rol");
+                 pswd = rs.getBytes("pswd");
+            }
+            XifradorContrasenya xC = new XifradorContrasenya();
+            if(xC.ComprovarContrasenya(pass, pswd)){
+                return tipusUsuari;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -75,99 +88,117 @@ public class SqlUsuariIntern implements Sql{
             }
         }
 
-        return tipusUsuari;
+        return null;
     }
-
-public void crearUsuari(UsuariIntern usuari)  {
-    System.out.println(usuari.toString());
-    Connection conn = null;
-    PreparedStatement pstmt = null;
-    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-    try {
-        conn = DriverManager.getConnection(connexio, user, pasw);
-            
-        // Preparar la sentencia SQL
-        String query = CREAR_USUARI;
-            pstmt = conn.prepareStatement(query);
-            pstmt.setString(1, usuari.getUser());           
-            pstmt.setString(2, usuari.getRol());
-            pstmt.setDate(3, new java.sql.Date(usuari.getDataNaixement().getTime()));
-            pstmt.setString(4, usuari.getNom());
-            pstmt.setString(5, usuari.getPrimerCognom());
-            pstmt.setString(6, usuari.getSegonCognom());
-            pstmt.setString(7, usuari.getEmail());
-            pstmt.setDate(8, new java.sql.Date(usuari.getDataAlta().getTime()));
-            pstmt.setDouble(9,usuari.getMulta());
-            pstmt.setBytes(10, usuari.getImageData());
-            pstmt.setBytes(11, usuari.getPass());
-
-        // Ejecutar la sentencia SQL
-        int filasAfectadas = pstmt.executeUpdate();
-
-        if (filasAfectadas > 0) {
-            System.out.println("Usuari creat correctament.");
-        } else {
-            System.out.println("No s'ha pogut crear l'usuari.");
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    } finally {
+    
+    /**
+     * Crea un nou usuari intern.
+     *
+     * @param usuari l'usuari intern a crear
+     */
+    public void crearUsuari(UsuariIntern usuari)  {
+        System.out.println(usuari.toString());
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            if (pstmt != null) {
-                pstmt.close();
-            }
-            if (conn != null) {
-                conn.close();
+            conn = DriverManager.getConnection(connexio, user, pasw);
+
+            // Preparar la sentencia SQL
+            String query = CREAR_USUARI;
+                pstmt = conn.prepareStatement(query);
+                pstmt.setString(1, usuari.getUser());           
+                pstmt.setString(2, usuari.getRol());
+                pstmt.setDate(3, new java.sql.Date(usuari.getDataNaixement().getTime()));
+                pstmt.setString(4, usuari.getNom());
+                pstmt.setString(5, usuari.getPrimerCognom());
+                pstmt.setString(6, usuari.getSegonCognom());
+                pstmt.setString(7, usuari.getEmail());
+                pstmt.setDate(8, new java.sql.Date(usuari.getDataAlta().getTime()));
+                pstmt.setDouble(9,usuari.getMulta());
+                pstmt.setBytes(10, usuari.getImageData());
+                pstmt.setBytes(11, usuari.getPass());
+
+            // Ejecutar la sentencia SQL
+            int filasAfectadas = pstmt.executeUpdate();
+
+            if (filasAfectadas > 0) {
+                System.out.println("Usuari creat correctament.");
+            } else {
+                System.out.println("No s'ha pogut crear l'usuari.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
-}
-public void crearUsuariExtens(UsuariIntern usuari)  {
-   Connection conn = null;
-    PreparedStatement pstmt = null;
-    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-    try {
-        conn = DriverManager.getConnection(connexio, user, pasw);
-
-        // Preparar la sentencia SQL
-        String query = CREAR_USUARI;
-            pstmt = conn.prepareStatement(query);
-            pstmt.setString(1, usuari.getUser());           
-            pstmt.setString(2, usuari.getRol());
-            pstmt.setDate(3, new java.sql.Date(usuari.getDataNaixement().getTime()));
-            pstmt.setString(4, usuari.getNom());
-            pstmt.setString(5, usuari.getPrimerCognom());
-            pstmt.setString(6, usuari.getSegonCognom());
-            pstmt.setString(7, usuari.getEmail());
-            pstmt.setDate(8, new java.sql.Date(usuari.getDataAlta().getTime()));
-            pstmt.setDouble(9,usuari.getMulta());
-            pstmt.setBytes(10, usuari.getImageData());
-            pstmt.setBytes(11, usuari.getPass());
-        // Ejecutar la sentencia SQL
-        int filasAfectadas = pstmt.executeUpdate();
-
-        if (filasAfectadas > 0) {
-            System.out.println("Usuari creat correctament.");
-        } else {
-            System.out.println("No s'ha pogut crear l'usuari.");
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    } finally {
+    
+    /**
+     * Crea un nou usuari intern.
+     *
+     * @param usuari l'usuari intern a crear
+     */
+    public void crearUsuariExtens(UsuariIntern usuari)  {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            if (pstmt != null) {
-                pstmt.close();
-            }
-            if (conn != null) {
-                conn.close();
+            conn = DriverManager.getConnection(connexio, user, pasw);
+
+            // Preparar la sentencia SQL
+            String query = CREAR_USUARI;
+                pstmt = conn.prepareStatement(query);
+                pstmt.setString(1, usuari.getUser());           
+                pstmt.setString(2, usuari.getRol());
+                pstmt.setDate(3, new java.sql.Date(usuari.getDataNaixement().getTime()));
+                pstmt.setString(4, usuari.getNom());
+                pstmt.setString(5, usuari.getPrimerCognom());
+                pstmt.setString(6, usuari.getSegonCognom());
+                pstmt.setString(7, usuari.getEmail());
+                pstmt.setDate(8, new java.sql.Date(usuari.getDataAlta().getTime()));
+                pstmt.setDouble(9,usuari.getMulta());
+                pstmt.setBytes(10, usuari.getImageData());
+                pstmt.setBytes(11, usuari.getPass());
+            // Ejecutar la sentencia SQL
+            int filasAfectadas = pstmt.executeUpdate();
+
+            if (filasAfectadas > 0) {
+                System.out.println("Usuari creat correctament.");
+            } else {
+                System.out.println("No s'ha pogut crear l'usuari.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
-}
+    
+    /**
+     * Obté un usuari intern pel seu nom d'usuari.
+     *
+     * @param nomUsuari el nom d'usuari de l'usuari intern a obtenir
+     * @return l'usuari intern corresponent al nom d'usuari especificat, o null si no es troba cap usuari
+     */
     public UsuariIntern getUsuari(String nomUsuari) throws ParseException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -209,7 +240,14 @@ public void crearUsuariExtens(UsuariIntern usuari)  {
         }
         return usuari;
     }
-     public UsuariIntern getUsuariNomesUserName(String nomUsuari) throws ParseException {
+    
+    /**
+     * Obté un usuari intern pel seu nom d'usuari (només el nom d'usuari).
+     *
+     * @param nomUsuari el nom d'usuari de l'usuari intern a obtenir
+     * @return l'usuari intern corresponent al nom d'usuari especificat, o null si no es troba cap usuari
+     */
+    public UsuariIntern getUsuariNomesUserName(String nomUsuari) throws ParseException {
         Connection conn = null;
         PreparedStatement stmt = null;
         UsuariIntern usuari = null;
@@ -250,8 +288,54 @@ public void crearUsuariExtens(UsuariIntern usuari)  {
         }
         return usuari;
     }
+    /**
+     * Obté un usuari intern pel seu nom d'usuari (només el nom d'usuari).
+     *
+     * @param nomUsuari el nom d'usuari de l'usuari intern a obtenir
+     * @return l'usuari intern corresponent al nom d'usuari especificat, o null si no es troba cap usuari
+     */
     
-        public boolean existeixUsuari(String nomUsuari, byte[] pass) {
+    public UsuariIntern getUsuariRetornaReduit(int idUsuari) throws ParseException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        UsuariIntern usuari = null;
+        try {
+            conn = DriverManager.getConnection(connexio, user, pasw);
+
+            String query = RECUPERAR_USUARI_TOT_ID;
+            stmt = conn.prepareStatement(query);
+            stmt.setInt(1, idUsuari);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                
+                usuari = new UsuariIntern();
+                usuari.setUser(rs.getString("nom_usuari"));
+                usuari.setRol(rs.getString("rol"));
+                usuari.setNom(rs.getString("nom"));
+                usuari.setPrimerCognom(rs.getString("primer_cognom"));
+                usuari.setSegonCognom(rs.getString("segon_cognom"));
+                usuari.setEmail(rs.getString("email"));
+                usuari.setImageData(rs.getBytes("foto"));
+                
+                System.out.println(usuari.toString());
+            }
+            stmt.close();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return usuari;
+    }
+    
+    /**
+    * Comprova si un usuari amb el nom d'usuari i contrasenya proporcionats existeix.
+    *
+    * @param nomUsuari el nom d'usuari de l'usuari
+    * @param pass      la contrasenya de l'usuari
+    * @return true si l'usuari existeix i la contrasenya és correcta, false altrament
+    */
+    public boolean existeixUsuari(String nomUsuari, byte[] pass) {
          Connection conn = null;
         PreparedStatement stmt = null;
 
@@ -285,6 +369,12 @@ public void crearUsuariExtens(UsuariIntern usuari)  {
         return existeix;
     }
     
+    /**
+    * Comprova si existeix un usuari amb el nom d'usuari especificat.
+    *
+    * @param nomUsuari el nom d'usuari a comprovar
+    * @return true si l'usuari existeix, false altrament
+    */
     public boolean existeixNomUsuari(String nomUsuari) {
          Connection conn = null;
         PreparedStatement stmt = null;
@@ -312,6 +402,11 @@ public void crearUsuariExtens(UsuariIntern usuari)  {
         return existeix;
     }
 
+    /**
+     * Elimina un usuari amb el nom d'usuari especificat.
+     *
+     * @param nomUsuari el nom d'usuari de l'usuari a eliminar
+     */
     public  void eliminarUsuari(String nomUsuari) {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -330,6 +425,7 @@ public void crearUsuariExtens(UsuariIntern usuari)  {
         }
     }
     
+    /* borrar
     public void modificarUsuariOld(UsuariIntern usuari) {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -360,8 +456,13 @@ public void crearUsuariExtens(UsuariIntern usuari)  {
             Logger.getLogger(SqlManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    */
     
-    
+    /**
+    * Modifica les dades d'un usuari especificat.
+    *
+    * @param usuari l'usuari amb les dades modificades
+    */
     public void modificarUsuari(UsuariIntern usuari){
     Connection conn = null;
     PreparedStatement stmt = null;
@@ -502,7 +603,14 @@ public void crearUsuariExtens(UsuariIntern usuari)  {
 
     
     
-    
+    /**
+    * Busca usuaris amb els filtres especificats.
+    *
+    * @param args un array de cadenes amb els valors dels filtres
+    * @return una llista d'usuaris que coincideixen amb els filtres
+    * @throws SQLException    si hi ha un error en la consulta SQL
+    * @throws ParseException  si hi ha un error en analitzar una data
+    */
     public List<Usuari> buscarUsuaris(String args[]) throws SQLException, ParseException {
         
         List<Usuari> usuaris = new ArrayList<>();
@@ -572,7 +680,7 @@ public void crearUsuariExtens(UsuariIntern usuari)  {
         
         return usuaris;
     }
-    
+    /* borrar
     public List<Usuari> buscarUsuarisFoto(String args[]) throws SQLException, ParseException {
         
         List<Usuari> usuaris = new ArrayList<>();
@@ -644,7 +752,13 @@ public void crearUsuariExtens(UsuariIntern usuari)  {
         }
         
         return usuaris;
-    }
+    }*/
+    
+    /**
+    * Modifica la foto d'un usuari a la base de dades.
+    *
+    * @param usuari L'usuari intern amb la nova imatge de perfil i l'ID de l'usuari a modificar.
+    */
     public void modificarFoto(UsuariIntern usuari){
     
     // Inicializar variables de conexión

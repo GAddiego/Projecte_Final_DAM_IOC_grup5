@@ -21,17 +21,19 @@ public class Prestec implements Serializable{
         private java.util.Date dataRetorn;
         private java.util.Date dataVenciment;
         private boolean prolongacio;
+        
     public Prestec() {
 
     }
 
-    public Prestec(int id, int idUsuari, int idLlibre, java.util.Date dataPrestec, java.util.Date dataVenciment, boolean prolongacio) {
+    public Prestec(int id, int idUsuari, int idLlibre, java.util.Date dataPrestec, java.util.Date dataRetorn, boolean prolongacio, java.util.Date dataVenciment) {
         this.id = id;
         this.idUsuari = idUsuari;
         this.idLlibre = idLlibre;
         this.dataPrestec = dataPrestec;
-        this.dataVenciment = dataVenciment;
+        this.dataRetorn = dataRetorn;
         this.prolongacio = prolongacio;
+        this.dataVenciment = dataVenciment;
     }
 
     public int getId() {
@@ -89,5 +91,12 @@ public class Prestec implements Serializable{
     public void setProlongacio(boolean prolongacio) {
         this.prolongacio = prolongacio;
     }
+
+    @Override
+    public String toString() {
+        return "Prestec{" + "id=" + id + ", idUsuari=" + idUsuari + ", idLlibre=" + idLlibre + ", dataPrestec=" + dataPrestec + ", dataRetorn=" + dataRetorn + ", dataVenciment=" + dataVenciment + ", prolongacio=" + prolongacio + '}';
+    }
+    
+    
     
 }

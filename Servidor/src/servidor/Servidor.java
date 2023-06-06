@@ -11,13 +11,34 @@ import java.util.logging.Logger;
 import objectes.Eines;
 
 /**
- *
+ * Classe que implementa el servidor del sistema.
+ * Gestiona les connexions dels clients i executa els fils per atendre les peticions.
+ * 
+ * El servidor utilitza un codi d'entrada per identificar els clients coneguts.
+ * Accepta connexions de nous clients i connexions de clients coneguts.
+ * 
+ * Per cada client, crea un fil per atendre les seves peticions.
+ * També executa un fil d'eliminació per gestionar els clients inactius.
+ * 
+ * El servidor utilitza una connexió a una base de dades per comprovar la validesa dels usuaris.
+ * 
+ * 
  * @author algibo
  */
 public class Servidor {
 
+    /**
+     * Codi d'entrada per identificar els clients coneguts.
+     */
     static String CODI_ENTRADA = "00000000";
     
+     /**
+     * Punt d'entrada principal del servidor.
+     * Crea i inicialitza els recursos necessaris, com ara connexions de sockets i gestor de base de dades.
+     * Accepta connexions dels clients i executa els fils per atendre les peticions.
+     * 
+     * @param args els arguments de línia de comandes (no s'utilitzen en aquest cas)
+     */
     public static void main(String[] args) {
         Eines eines = new Eines();
         SqlManager sqlManager = new SqlManager();

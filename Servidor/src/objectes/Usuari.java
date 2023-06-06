@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package objectes;
 
 import java.io.Serializable;
@@ -30,7 +26,7 @@ public class Usuari implements Serializable{
     private long ultimaActualitzacio;
     private byte[] imageData;
 
-    public Usuari(int id, String user, byte[] pass, String rol, Date dataNaixement, String nom, String primerCognom, String segonCognom, String email, Date dataAlta, Date dataBaixa, double multa, boolean suspensio, Date dataFinalSuspensio, long ultimaActualitzacio, byte[] imageData) {
+    public Usuari(int id, String user, byte[] passX, String rol, Date dataNaixement, String nom, String primerCognom, String segonCognom, String email, Date dataAlta, Date dataBaixa, double multa, boolean suspensio, Date dataFinalSuspensio, long ultimaActualitzacio, byte[] imageData) {
         this.id = id;
         this.user = user;
         this.passX = passX;
@@ -118,6 +114,10 @@ public class Usuari implements Serializable{
         return serialVersionUID;
     }
 
+    public Usuari(int id, String user, String rol, Date dataNaixement, String nom, String primerCognom, String segonCognom, String email, Date dataAlta, Date dataBaixa, double multa, boolean suspensio, Date dataFinalSuspensio, long ultimaActualitzacio, byte[] imageData) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     public int getId() {
         return id;
     }
@@ -199,7 +199,7 @@ public class Usuari implements Serializable{
     }
 
     public void setPassX(byte[] pass) {
-        this.passX = passX;
+        this.passX = pass;
     }
 
     public void setRol(String rol) {

@@ -5,7 +5,6 @@ import static BBDD.Sql.connexio;
 import static BBDD.Sql.pasw;
 import static BBDD.Sql.user;
 import BBDD.SqlManager;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -22,16 +21,21 @@ import objectes.Llibre;
 import objectes.UsuariIntern;
 
 /**
+ * Classe que implementa les operacions de consulta SQL relacionades amb els llibres.
  *
  * @author aleix
  */
 public class SqlLlibres implements Sql{
     static final String CREAR_LLIBRE = "INSERT INTO llibres (titol, autor, isbn, editorial, any_publicacio, descripcio, sinopsi, illustrador, pagines, idioma, exemplar, nota, titol_original, traductor, imatge) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     static final String BORRAR_LLIBRE = "DELETE FROM llibres WHERE isbn=?"  ;
-    static final String MODIFICAR_LLIBRE = "UPDATE llibres SET titol=?, autor=?, editorial=?, any_publicacio=?, descripcio=?, sinopsi=?, illustrador=?, pagines=?, idioma=?, exemplar=?, nota=?, titol_original=?, traductor=?, imatge = ? WHERE isbn=?" ;
+    static final String MODIFICAR_LLIBRE = "UPDATE llibres SET titol = ?, autor = ?,editorial = ?,any_publicacio=?,descripcio=?,sinopsi=?,illustrador=?,pagines=?,idioma=?,exemplar=?,nota=?,titol_original=?,traductor=?,imatge=? WHERE isbn=?" ;
     static final String BUSCAR_LLIBRE_ID =  "SELECT * FROM llibres WHERE id = ?";
     static final String MODIFICAR_LLIBRE_IMATGE = "UPDATE llibres SET imatge = ? WHERE id = ?";
-    // Mètode per crear un registre de llibre
+    
+    /**
+     * Mètode per crear un registre de llibre.
+     * @param llibre L'objecte Llibre que s'ha de crear.
+     */
     public void crearLlibre(Llibre llibre) {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -43,7 +47,7 @@ public class SqlLlibres implements Sql{
             // Preparar la consulta SQL
             String query = CREAR_LLIBRE;
             stmt = conn.prepareStatement(query);
-
+            
             // Establir els valors dels paràmetres de la consulta
             stmt.setString(1, llibre.getTitol());
             stmt.setString(2, llibre.getAutor());
@@ -53,7 +57,7 @@ public class SqlLlibres implements Sql{
             stmt.setString(6, llibre.getDescripcio());
             stmt.setString(7, llibre.getSinopsi());
             stmt.setString(8, llibre.getIllustrador());
-            stmt.setInt(90, llibre.getPagines());
+            stmt.setInt(9, llibre.getPagines());
             stmt.setString(10, llibre.getIdioma());
             stmt.setInt(11, llibre.getExemplar());
             stmt.setString(12, llibre.getNota());
@@ -85,6 +89,11 @@ public class SqlLlibres implements Sql{
         }
     }
     
+    /**
+     * Mètode per modificar un registre de llibre.
+     * @param llibre L'objecte Llibre que s'ha de modificar.
+     * @throws SQLException Si es produeix un error durant l'execució de la consulta SQL.
+     */
     public void modificarLlibre(Llibre llibre) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -111,8 +120,9 @@ public class SqlLlibres implements Sql{
             stmt.setString(11, llibre.getNota());
             stmt.setString(12, llibre.getTitolOriginal());
             stmt.setString(13, llibre.getTraductor());
-            stmt.setString(14, llibre.getIsbn());
-            stmt.setBytes(15,  llibre.getPortada());
+            stmt.setBytes(14,  llibre.getPortada());
+            stmt.setString(15, llibre.getIsbn());
+            
             // Executar la consulta
             stmt.executeUpdate();
         } finally {
@@ -125,7 +135,12 @@ public class SqlLlibres implements Sql{
             }
         }
     }
- public void modificarLlibreImatge(Llibre llibre) {
+    
+    /**
+    * Mètode per modificar la imatge d'un llibre.
+    * @param llibre L'objecte Llibre que conté la nova imatge.
+    */
+    public void modificarLlibreImatge(Llibre llibre) {
         Connection conn = null;
         PreparedStatement stmt = null;
 
@@ -162,7 +177,12 @@ public class SqlLlibres implements Sql{
             }
         }
     }
-    // Mètode per esborrar un registre de llibre
+    
+    /**
+    * Mètode per esborrar un registre de llibre.
+    * @param llibre L'objecte Llibre que s'ha d'esborrar.
+    * @throws SQLException Si es produeix un error durant l'execució de la consulta SQL.
+    */
     public void esborrarLlibre(Llibre llibre) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -191,6 +211,12 @@ public class SqlLlibres implements Sql{
         }
     }
     
+    /**
+    * Mètode per buscar llibres basat en diversos criteris de cerca.
+    * @param args Un array de strings que conté els criteris de cerca.
+    * @return Una llista de llibres que coincideixen amb els criteris de cerca.
+    * @throws SQLException Si es produeix un error durant l'execució de la consulta SQL.
+    */
     public List<Llibre> buscarLlibres(String args[]) throws SQLException {
         
         List<Llibre> llibres = new ArrayList<>();
@@ -271,7 +297,7 @@ public class SqlLlibres implements Sql{
                     rs.getString("nota"),
                     rs.getString("titol_original"),
                     rs.getString("traductor"),
-                    rs.getBytes("portada")
+                    rs.getBytes("imatge")
                 );
                 llibres.add(llibre);
                 System.out.println("Llibre : " + llibre.toString());
@@ -291,6 +317,11 @@ public class SqlLlibres implements Sql{
         return llibres;
     }
     
+    /**
+    * Mètode per buscar un llibre per ID.
+    * @param id L'ID del llibre a cercar.
+    * @return L'objecte Llibre corresponent a l'ID especificat, o null si no es troba cap coincidència.
+    */
     public Llibre buscarLlibreid(int id){
         Connection conn = null;
         PreparedStatement stmt = null;

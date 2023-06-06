@@ -167,7 +167,7 @@ public class CrearUsuariFrame extends JFrame implements ActionListener {
                 }
             }
             // Creem l'usuari amb les dades proporcionades
-            Usuari usuari = new Usuari(id, user, pass, rol, dataNaixement, nom, primerCognom, segonCognom, email, dataAlta, dataBaixa, multa, suspensio, dataFinalSuspensio, ultimaActualitzacio, imageData);
+            Usuari usuari = new Usuari(id, user, rol, dataNaixement, nom, primerCognom, segonCognom, email, dataAlta, dataBaixa, multa, suspensio, dataFinalSuspensio, ultimaActualitzacio, imageData);
             // Afegim l'usuari a la base de dades
 
                 // Aquí aniria el codi per afegir l'usuari a la base de dades

@@ -2,7 +2,7 @@
 package BBDD;
 
 import objectes.Configuracio;
-import objectes.Eines;
+
 
 /**
  *

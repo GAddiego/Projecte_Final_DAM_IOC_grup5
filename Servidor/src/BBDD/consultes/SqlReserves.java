@@ -15,7 +15,8 @@ import java.util.logging.Logger;
 import objectes.Reserva;
 
 /**
- *
+ * Aquesta classe implementa l'interfície Sql i proporciona mètodes per gestionar
+ * les operacions relacionades amb les reserves de llibres.
  * @author aleix
  */
 public class SqlReserves implements Sql {
@@ -23,20 +24,32 @@ public class SqlReserves implements Sql {
     static final String FINALITZAR_RESERVA = "UPDATE reserves SET data_fi_reserva= ? WHERE id = ?";
     static final String LLISTAR_RESERVES_USUARIS = "SELECT * FROM reserves WHERE id_usuari = ? ORDER BY data_reserva";
     static final String LLISTAR_RESERVES_LLIBRE_ACTIVES = "SELECT * FROM reserves WHERE id_llibre = ? AND data_fi_reserva IS NULL ORDER BY data_reserva ASC, id ASC";
-    /* public void crearReserva(int idUsuari, int idLlibre, String dataReserva, String expiracioData) throws SQLException {
-   
+    static final String ELIMINAR_RESERVA = "DELETE FROM reserves WHERE id = ?";
+    
+    /**
+     * Eliminar una reserva donada.
+     *
+     * @param idReserva    ID de la reserva a finalitzar
+     * @throws SQLException si es produeix un error en la connexió a la base de dades
+     */
+    public void eliminarReserva(int idReserva) throws SQLException{
         Connection conn = DriverManager.getConnection(connexio, user, pasw);  
-        String query = CREAR_RESERVA;
-        
-        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setInt(1, idUsuari);
-            pstmt.setInt(2, idLlibre);
-            pstmt.setString(3, dataReserva);
-            pstmt.setString(4, expiracioData);
-            pstmt.executeUpdate();
-        };
-    }*/
+        String query = ELIMINAR_RESERVA;
 
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, idReserva);
+            pstmt.executeUpdate();
+        }
+        System.out.println("Reserva eliminada");
+    }
+    /**
+     * Finalitza una reserva donada, actualitzant la data de recollida.
+     *
+     * @param idReserva    ID de la reserva a finalitzar
+     * @param dataRecollida Data de recollida de la reserva
+     * @throws SQLException si es produeix un error en la connexió a la base de dades
+     */
+    
     public void finalitzarReserva(int idReserva, java.util.Date dataRecollida) throws SQLException {
         
         Connection conn = DriverManager.getConnection(connexio, user, pasw);  
@@ -50,6 +63,13 @@ public class SqlReserves implements Sql {
         System.out.println("Reserva finalitzada");
     }
 
+    /**
+     * Retorna una llista de totes les reserves d'un usuari específic.
+     *
+     * @param idUsuari ID de l'usuari
+     * @return llista de reserves de l'usuari
+     * @throws SQLException si es produeix un error en la connexió a la base de dades
+     */
     public List<Reserva> llistarReservesUsuari(int idUsuari) throws SQLException {
         
         Connection conn = DriverManager.getConnection(connexio, user, pasw);
@@ -79,6 +99,14 @@ public class SqlReserves implements Sql {
         return reserves;
     }
     
+    
+    /**
+     * Retorna una llista de totes les reserves actives d'un llibre específic.
+     *
+     * @param idLlibre ID del llibre
+     * @return llista de reserves actives del llibre
+     * @throws SQLException si es produeix un error en la connexió a la base de dades
+     */
     public List<Reserva> llistarReservesLlibre(int idLlibre) throws SQLException {
 
         Connection conn = DriverManager.getConnection(connexio, user, pasw);  
@@ -108,6 +136,15 @@ public class SqlReserves implements Sql {
         return reserves;
     }
 
+    /**
+     * Crea una nova reserva de llibre.
+     *
+     * @param idUsuari           ID de l'usuari que realitza la reserva
+     * @param idLlibre           ID del llibre reservat
+     * @param dataReserva        Data de la reserva
+     * @param dataFinalitzacio   Data de finalització de la reserva (opcional, pot ser null)
+     * @throws SQLException si es produeix un error en la connexió a la base de dades
+     */
     public void crearReserva(int idUsuari, int idLlibre, java.util.Date date,java.util.Date dataFinalitzacio) {
      
             try {

@@ -1,18 +1,24 @@
+package UI;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package UI;
 
+
+import UI.*;
 import clientescriptori.Connection;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import objectes.Llibre;
 
 /**
  *
  * @author Gonzalo
  */
-public class BuscaLlibre extends javax.swing.JPanel {
+public class AdministraLlibre extends javax.swing.JPanel {
 
     /**
      * Creates new form BuscaLlibre
@@ -20,7 +26,7 @@ public class BuscaLlibre extends javax.swing.JPanel {
     Connection connexio;
     LoginScreen loginScreen;
     
-    public BuscaLlibre() {
+    public AdministraLlibre() {
         initComponents();
     }
 
@@ -54,6 +60,7 @@ public class BuscaLlibre extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jTextFieldISBN = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        jButtonCrear = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(204, 255, 255));
         setMaximumSize(new java.awt.Dimension(1000, 1000));
@@ -91,9 +98,17 @@ public class BuscaLlibre extends javax.swing.JPanel {
         jLabelIlustrador.setText("Ilustrador/a:");
 
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
-        jLabel1.setText("Trobar llibres:");
+        jLabel1.setText("Administrar llibres:");
 
         jLabel2.setText("ISBN:");
+
+        jButtonCrear.setBackground(new java.awt.Color(102, 255, 0));
+        jButtonCrear.setText("Crear");
+        jButtonCrear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCrearActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -136,11 +151,13 @@ public class BuscaLlibre extends javax.swing.JPanel {
                                     .addComponent(jTextFieldISBN, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addComponent(jButtonEsborrar))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addComponent(jButtonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jButtonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButtonCrear)
+                                    .addComponent(jButtonEsborrar))))
                         .addGap(200, 200, 200))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -167,14 +184,19 @@ public class BuscaLlibre extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldISBN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelEditorial)
-                    .addComponent(jTextFieldEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelIdioma)
-                    .addComponent(jTextFieldIdioma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelEditorial)
+                            .addComponent(jTextFieldEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelIdioma)
+                            .addComponent(jTextFieldIdioma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(jButtonCrear)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelAny)
@@ -195,7 +217,7 @@ public class BuscaLlibre extends javax.swing.JPanel {
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
         List<Llibre> listaLlibres = connexio.buscaLlibres(creaArrayStringLlibre());
         System.out.println("lista libros cantidad: " + listaLlibres.size());
-        loginScreen.showBookList(listaLlibres);
+        loginScreen.showBookListAdmin(listaLlibres);
         
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
@@ -210,9 +232,18 @@ public class BuscaLlibre extends javax.swing.JPanel {
         jTextFieldIlustrador.setText("");
     }//GEN-LAST:event_jButtonEsborrarActionPerformed
 
+    private void jButtonCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCrearActionPerformed
+        try {
+            connexio.creaLlibre(creaArrayStringLlibre());
+        } catch (IOException ex) {
+            Logger.getLogger(AdministraLlibre.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButtonCrearActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBuscar;
+    private javax.swing.JButton jButtonCrear;
     private javax.swing.JButton jButtonEsborrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -244,8 +275,6 @@ public class BuscaLlibre extends javax.swing.JPanel {
     }
     
     private String[] creaArrayStringLlibre(){
-        String id = "";
-        if(jTextFieldId.getText() != null) id=jTextFieldId.getText();
         String nom = "";
         if(jTextFieldNom.getText() != null) nom=jTextFieldNom.getText();
         String autor = "";

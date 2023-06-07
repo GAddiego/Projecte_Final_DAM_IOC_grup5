@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import objectes.Usuari;
 
 /**
@@ -57,7 +59,7 @@ public class BuscaUsuari extends javax.swing.JPanel {
         jButtonBuscar = new javax.swing.JButton();
         jButtonEsborrarTot = new javax.swing.JButton();
         jComboBoxRol = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        jButtonCrearUsuari = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(204, 255, 255));
 
@@ -98,18 +100,18 @@ public class BuscaUsuari extends javax.swing.JPanel {
             }
         });
 
-        jComboBoxRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Usuari", "Bibliotecari", "Admin" }));
+        jComboBoxRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "alumne", "bibliotecaria", "admin" }));
         jComboBoxRol.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBoxRolActionPerformed(evt);
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(102, 255, 0));
-        jButton1.setText("Crear usuari nou");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonCrearUsuari.setBackground(new java.awt.Color(102, 255, 0));
+        jButtonCrearUsuari.setText("Crear usuari nou");
+        jButtonCrearUsuari.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonCrearUsuariActionPerformed(evt);
             }
         });
 
@@ -157,7 +159,7 @@ public class BuscaUsuari extends javax.swing.JPanel {
                 .addGap(26, 26, 26)
                 .addComponent(jButtonEsborrarTot)
                 .addGap(31, 31, 31)
-                .addComponent(jButton1)
+                .addComponent(jButtonCrearUsuari)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addComponent(jButtonBuscar)
                 .addGap(43, 43, 43))
@@ -199,7 +201,7 @@ public class BuscaUsuari extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonBuscar)
                     .addComponent(jButtonEsborrarTot)
-                    .addComponent(jButton1))
+                    .addComponent(jButtonCrearUsuari))
                 .addGap(30, 30, 30))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -234,7 +236,7 @@ public class BuscaUsuari extends javax.swing.JPanel {
         }
 
         try {
-            usuaris = (ArrayList<Usuari>) connexio.buscarUsuaris(arrayUsuari);
+            usuaris = (ArrayList<Usuari>) Connection.buscarUsuaris(arrayUsuari);
         } catch (IOException ex) {
             Logger.getLogger(BuscaUsuari.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -249,36 +251,45 @@ public class BuscaUsuari extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldPrimerCognomActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonCrearUsuariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCrearUsuariActionPerformed
         if (!jTextFieldUsuari.getText().isEmpty()) {
-            
+
             try {
                 //comprovem que l'usuari no existeixi a la bbdd
                 String[] arrayNouUsuari = {jTextFieldUsuari.getText(), null, null, null, null, null, null};
-                
+
                 List<Usuari> llista = connexio.buscarUsuaris(arrayNouUsuari);
-                if(llista.size()==0){
-                Usuari u = new Usuari(
-                        jTextFieldUsuari.getText(),
-                        "password1",
-                        (String) jComboBoxRol.getSelectedItem(),
-                        jTextFieldNom.getText(),
-                        jTextFieldPrimerCognom.getText(),
-                        jTextFieldSegonCognom.getText(),
-                        jTextFieldEmail.getText()
-                );
-                connexio.crearUsuari(u);
+                boolean existeix = false;
+                for(Usuari u : llista){
+                    if(u.getNom().equals(arrayNouUsuari[0])) existeix=true;
+                }
+                if (!existeix) {
+                    Usuari u = new Usuari(
+                            jTextFieldUsuari.getText(),
+                            "",
+                            (String) jComboBoxRol.getSelectedItem(),
+                            jTextFieldNom.getText(),
+                            jTextFieldPrimerCognom.getText(),
+                            jTextFieldSegonCognom.getText(),
+                            jTextFieldEmail.getText()
+                    );
+
+                    IntrodueixNouPass introdueixNouPass = new IntrodueixNouPass(this, u);
+                    introdueixNouPass.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    introdueixNouPass.setVisible(true);
+                }else{
+                    JOptionPane.showMessageDialog(loginScreen, "L'usuari ja existeix.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (IOException ex) {
                 Logger.getLogger(BuscaUsuari.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonCrearUsuariActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonBuscar;
+    private javax.swing.JButton jButtonCrearUsuari;
     private javax.swing.JButton jButtonEsborrarTot;
     private javax.swing.JComboBox<String> jComboBoxRol;
     private javax.swing.JLabel jLabelDataNaixement;

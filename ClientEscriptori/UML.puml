@@ -1,0 +1,249 @@
+@startuml
+annotation java.lang.Override
+annotation java.lang.SuppressWarnings
+class UI.BuscaLlibre
+class UI.BuscaUsuari
+class UI.CanviaPass
+class UI.LlistaLlibres
+class UI.LlistaUsuaris
+class UI.LoginScreen
+class UI.PerfilUsuari
+class clientescriptori.Connection
+class java.awt.BorderLayout
+class java.awt.Component
+class java.awt.Dimension
+class java.awt.Image
+class java.awt.Toolkit
+class java.awt.event.ActionEvent
+class java.awt.image.BufferedImage
+class java.io.ByteArrayInputStream
+class java.io.ByteArrayOutputStream
+class java.io.DataInputStream
+class java.io.DataOutput
+class java.io.DataOutputStream
+class java.io.File
+class java.io.FileNotFoundException
+class java.io.FileOutputStream
+class java.io.IOException
+class java.io.ObjectInputStream
+class java.io.ObjectOutputStream
+class java.net.Socket
+class java.nio.charset.StandardCharsets
+class java.nio.file.Files
+class java.nio.file.Paths
+class java.security.InvalidKeyException
+class java.security.KeyFactory
+class java.security.NoSuchAlgorithmException
+class java.security.PrivateKey
+class java.security.PublicKey
+class java.security.spec.InvalidKeySpecException
+class java.security.spec.PKCS8EncodedKeySpec
+class java.security.spec.X509EncodedKeySpec
+class java.sql.SQLException
+class java.text.ParseException
+class java.text.SimpleDateFormat
+class java.time.LocalDate
+class java.util.ArrayList
+class java.util.Calendar
+class java.util.Date
+class java.util.List
+class java.util.Optional
+class java.util.Random
+class java.util.Scanner
+class java.util.logging.Level
+class java.util.logging.Logger
+class javax.crypto.BadPaddingException
+class javax.crypto.Cipher
+class javax.crypto.IllegalBlockSizeException
+class javax.crypto.NoSuchPaddingException
+class javax.imageio.ImageIO
+class javax.swing.ImageIcon
+class javax.swing.JFileChooser
+class javax.swing.JFrame
+class javax.swing.JOptionPane
+class javax.swing.JPanel
+class javax.swing.JPasswordField
+class javax.swing.JScrollPane
+class javax.swing.JTextField
+class javax.swing.SwingConstants
+class javax.swing.filechooser.FileNameExtensionFilter
+class javax.swing.table.AbstractTableModel
+class javax.swing.table.DefaultTableCellRenderer
+class javax.swing.table.DefaultTableModel
+class objectes.Eines
+class objectes.Llibre
+class objectes.Usuari
+class objectes.UsuariIntern
+class objectes.XifradorContrasenya
+class suport.Contrasenya
+class suport.LlibreTableModel
+class utils.Utils
+interface java.io.Serializable
+UI.BuscaLlibre ..> java.lang.SuppressWarnings
+UI.BuscaLlibre ..> clientescriptori.Connection
+UI.BuscaLlibre ..> java.util.List
+UI.BuscaLlibre --|> javax.swing.JPanel
+UI.BuscaLlibre ..> objectes.Llibre
+UI.BuscaUsuari ..> java.lang.SuppressWarnings
+UI.BuscaUsuari ..> clientescriptori.Connection
+UI.BuscaUsuari ..> java.io.IOException
+UI.BuscaUsuari ..> java.time.LocalDate
+UI.BuscaUsuari ..> java.util.ArrayList
+UI.BuscaUsuari ..> java.util.Date
+UI.BuscaUsuari ..> java.util.List
+UI.BuscaUsuari ..> java.util.logging.Level
+UI.BuscaUsuari ..> java.util.logging.Logger
+UI.BuscaUsuari --|> javax.swing.JPanel
+UI.BuscaUsuari ..> objectes.Usuari
+UI.CanviaPass ..> java.lang.SuppressWarnings
+UI.CanviaPass ..> UI.LoginScreen
+UI.CanviaPass --|> javax.swing.JFrame
+UI.CanviaPass ..> javax.swing.JOptionPane
+UI.CanviaPass ..> utils.Utils
+UI.LlistaLlibres ..> java.lang.SuppressWarnings
+UI.LlistaLlibres ..> java.util.List
+UI.LlistaLlibres --|> javax.swing.JPanel
+UI.LlistaLlibres ..> javax.swing.JScrollPane
+UI.LlistaLlibres ..> javax.swing.table.DefaultTableModel
+UI.LlistaLlibres ..> objectes.Llibre
+UI.LlistaLlibres ..> suport.LlibreTableModel
+UI.LlistaUsuaris ..> java.lang.SuppressWarnings
+UI.LlistaUsuaris ..> java.awt.BorderLayout
+UI.LlistaUsuaris ..> java.io.IOException
+UI.LlistaUsuaris ..> java.util.ArrayList
+UI.LlistaUsuaris ..> java.util.List
+UI.LlistaUsuaris ..> java.util.logging.Level
+UI.LlistaUsuaris ..> java.util.logging.Logger
+UI.LlistaUsuaris --|> javax.swing.JPanel
+UI.LlistaUsuaris ..> javax.swing.JScrollPane
+UI.LlistaUsuaris ..> javax.swing.table.DefaultTableModel
+UI.LlistaUsuaris ..> objectes.Usuari
+UI.PerfilUsuari ..> java.lang.SuppressWarnings
+UI.PerfilUsuari ..> clientescriptori.Connection
+UI.PerfilUsuari ..> java.awt.Component
+UI.PerfilUsuari ..> java.awt.Dimension
+UI.PerfilUsuari ..> java.awt.Image
+UI.PerfilUsuari ..> java.awt.event.ActionEvent
+UI.PerfilUsuari ..> java.awt.image.BufferedImage
+UI.PerfilUsuari ..> java.io.File
+UI.PerfilUsuari ..> java.io.IOException
+UI.PerfilUsuari ..> java.text.ParseException
+UI.PerfilUsuari ..> java.text.SimpleDateFormat
+UI.PerfilUsuari ..> java.util.Date
+UI.PerfilUsuari ..> java.util.logging.Level
+UI.PerfilUsuari ..> java.util.logging.Logger
+UI.PerfilUsuari ..> javax.imageio.ImageIO
+UI.PerfilUsuari ..> javax.swing.ImageIcon
+UI.PerfilUsuari ..> javax.swing.JFileChooser
+UI.PerfilUsuari ..> javax.swing.JFrame
+UI.PerfilUsuari ..> javax.swing.JOptionPane
+UI.PerfilUsuari --|> javax.swing.JPanel
+UI.PerfilUsuari ..> javax.swing.JPasswordField
+UI.PerfilUsuari ..> javax.swing.JTextField
+UI.PerfilUsuari ..> javax.swing.filechooser.FileNameExtensionFilter
+UI.PerfilUsuari ..> objectes.Usuari
+UI.PerfilUsuari ..> utils.Utils
+clientescriptori.Connection ..> java.io.DataInputStream
+clientescriptori.Connection ..> java.io.DataOutput
+clientescriptori.Connection ..> java.io.DataOutputStream
+clientescriptori.Connection ..> java.io.IOException
+clientescriptori.Connection ..> java.io.ObjectInputStream
+clientescriptori.Connection ..> java.io.ObjectOutputStream
+clientescriptori.Connection ..> java.net.Socket
+clientescriptori.Connection ..> java.security.PublicKey
+clientescriptori.Connection ..> java.sql.SQLException
+clientescriptori.Connection ..> java.util.ArrayList
+clientescriptori.Connection ..> java.util.List
+clientescriptori.Connection ..> java.util.logging.Level
+clientescriptori.Connection ..> java.util.logging.Logger
+clientescriptori.Connection ..> javax.swing.JOptionPane
+clientescriptori.Connection ..> javax.swing.JPanel
+clientescriptori.Connection ..> objectes.Llibre
+clientescriptori.Connection ..> objectes.Usuari
+clientescriptori.Connection ..> objectes.XifradorContrasenya
+clientescriptori.Connection ..> java.io.Serializable
+objectes.Eines ..> java.io.File
+objectes.Eines ..> java.io.FileNotFoundException
+objectes.Eines ..> java.io.IOException
+objectes.Eines ..> java.nio.file.Files
+objectes.Eines ..> java.nio.file.Paths
+objectes.Eines ..> java.text.ParseException
+objectes.Eines ..> java.text.SimpleDateFormat
+objectes.Eines ..> java.util.ArrayList
+objectes.Eines ..> java.util.Calendar
+objectes.Eines ..> java.util.Date
+objectes.Eines ..> java.util.List
+objectes.Eines ..> java.util.Random
+objectes.Eines ..> java.util.Scanner
+objectes.Eines ..> java.util.logging.Level
+objectes.Eines ..> java.util.logging.Logger
+objectes.Eines --|> java.io.Serializable
+objectes.Llibre ..> java.lang.Override
+objectes.Llibre ..> java.io.IOException
+objectes.Llibre --|> java.io.Serializable
+objectes.Usuari ..> java.lang.Override
+objectes.Usuari ..> java.util.Date
+objectes.Usuari --|> java.io.Serializable
+objectes.UsuariIntern ..> java.lang.Override
+objectes.UsuariIntern ..> java.io.IOException
+objectes.UsuariIntern ..> java.nio.file.Files
+objectes.UsuariIntern ..> java.nio.file.Paths
+objectes.UsuariIntern ..> java.util.Date
+objectes.XifradorContrasenya ..> java.io.FileNotFoundException
+objectes.XifradorContrasenya ..> java.io.FileOutputStream
+objectes.XifradorContrasenya ..> java.io.IOException
+objectes.XifradorContrasenya ..> java.nio.charset.StandardCharsets
+objectes.XifradorContrasenya ..> java.nio.file.Files
+objectes.XifradorContrasenya ..> java.nio.file.Paths
+objectes.XifradorContrasenya ..> java.security.InvalidKeyException
+objectes.XifradorContrasenya ..> java.security.KeyFactory
+objectes.XifradorContrasenya ..> java.security.NoSuchAlgorithmException
+objectes.XifradorContrasenya ..> java.security.PrivateKey
+objectes.XifradorContrasenya ..> java.security.PublicKey
+objectes.XifradorContrasenya ..> java.security.spec.InvalidKeySpecException
+objectes.XifradorContrasenya ..> java.security.spec.PKCS8EncodedKeySpec
+objectes.XifradorContrasenya ..> java.security.spec.X509EncodedKeySpec
+objectes.XifradorContrasenya ..> java.util.logging.Level
+objectes.XifradorContrasenya ..> java.util.logging.Logger
+objectes.XifradorContrasenya ..> javax.crypto.BadPaddingException
+objectes.XifradorContrasenya ..> javax.crypto.Cipher
+objectes.XifradorContrasenya ..> javax.crypto.IllegalBlockSizeException
+objectes.XifradorContrasenya ..> javax.crypto.NoSuchPaddingException
+objectes.XifradorContrasenya ..> suport.Contrasenya
+suport.Contrasenya ..> java.io.IOException
+suport.Contrasenya ..> java.nio.charset.StandardCharsets
+suport.Contrasenya ..> java.nio.file.Files
+suport.Contrasenya ..> java.nio.file.Paths
+suport.Contrasenya ..> java.security.InvalidKeyException
+suport.Contrasenya ..> java.security.KeyFactory
+suport.Contrasenya ..> java.security.NoSuchAlgorithmException
+suport.Contrasenya ..> java.security.PrivateKey
+suport.Contrasenya ..> java.security.PublicKey
+suport.Contrasenya ..> java.security.spec.InvalidKeySpecException
+suport.Contrasenya ..> java.security.spec.PKCS8EncodedKeySpec
+suport.Contrasenya ..> java.security.spec.X509EncodedKeySpec
+suport.Contrasenya ..> java.util.logging.Level
+suport.Contrasenya ..> java.util.logging.Logger
+suport.Contrasenya ..> javax.crypto.BadPaddingException
+suport.Contrasenya ..> javax.crypto.Cipher
+suport.Contrasenya ..> javax.crypto.IllegalBlockSizeException
+suport.Contrasenya ..> javax.crypto.NoSuchPaddingException
+suport.Contrasenya ..> objectes.XifradorContrasenya
+suport.LlibreTableModel ..> java.lang.Override
+suport.LlibreTableModel ..> java.util.List
+suport.LlibreTableModel ..> javax.swing.SwingConstants
+suport.LlibreTableModel --|> javax.swing.table.AbstractTableModel
+suport.LlibreTableModel ..> javax.swing.table.DefaultTableCellRenderer
+suport.LlibreTableModel ..> objectes.Llibre
+utils.Utils ..> java.awt.Image
+utils.Utils ..> java.awt.Toolkit
+utils.Utils ..> java.awt.image.BufferedImage
+utils.Utils ..> java.io.ByteArrayInputStream
+utils.Utils ..> java.io.ByteArrayOutputStream
+utils.Utils ..> java.io.File
+utils.Utils ..> java.io.IOException
+utils.Utils ..> java.util.Optional
+utils.Utils ..> javax.imageio.ImageIO
+utils.Utils ..> javax.swing.ImageIcon
+utils.Utils ..> javax.swing.JPasswordField
+@enduml

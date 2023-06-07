@@ -5,11 +5,14 @@
 package UI;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 import objectes.Usuari;
@@ -24,26 +27,50 @@ public class LlistaUsuaris extends javax.swing.JPanel {
      * Creates new form LlistaUsuaris
      */
     ArrayList<Usuari> userList;
-    DefaultTableModel dtmUsuaris = new DefaultTableModel();
+    DefaultTableModel dtmUsuaris = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            //all cells false
+            return false;
+        }
+    };
     LoginScreen loginScreen;
 
     public LlistaUsuaris(ArrayList<Usuari> userList, LoginScreen loginScreen) {
         initComponents();
         this.loginScreen = loginScreen;
         this.userList = userList;
-        
 
         setModelo();
         setDatos();
+        
+        //afegim el listener que desplega el menú per seleccionar un llibre
+        jTable1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2) {
+                    int fila = jTable1.getSelectedRow();
+
+                    System.out.println("fila seleccionada: " + fila);
+                    
+                    Usuari usuari = userList.get(fila);
+                    InfoUsuari infoUsuari = new InfoUsuari(usuari);
+                    
+//                    infoUsuari.setConnection(connection);
+                    infoUsuari.setVisible(true);
+                }
+            }
+        });
+        
     }
 
     //Establim el format de la taula
     private void setModelo() {
-        String[] cabecera = {"User", "Rol", "Data naixement", "Nom", "Primer cognom", "Segon cognom", "Email"};
+        String[] cabecera = {"ID", "User", "Rol", "Data naixement", "Nom", "Primer cognom", "Segon cognom", "Email"};
         dtmUsuaris.setColumnIdentifiers(cabecera);
-        
+
         jTable1.setModel(dtmUsuaris);
-        
+
     }
 
     //Métode per afegir la llista d'usuaris trobats a la taula.
@@ -51,12 +78,17 @@ public class LlistaUsuaris extends javax.swing.JPanel {
         Object[] datos = new Object[dtmUsuaris.getColumnCount()];
         for (Usuari user : userList) {
             datos[0] = user.getId();
-            datos[1] = user.getRol();
-            datos[2] = user.getData().toString();
-            datos[3] = user.getNom();
-            datos[4] = user.getPrimerCognom();
-            datos[5] = user.getSegonCognom();
-            datos[6] = user.getEmail();
+            datos[1] = user.getUser();
+            datos[2] = user.getRol();
+            if (user.getDataNaixement() != null) {
+                datos[3] = user.getDataNaixement().toString();
+            } else {
+                datos[3] = null;
+            }
+            datos[4] = user.getNom();
+            datos[5] = user.getPrimerCognom();
+            datos[6] = user.getSegonCognom();
+            datos[7] = user.getEmail();
 
             //afegim la fila al default table model
             dtmUsuaris.addRow(datos);
@@ -78,7 +110,7 @@ public class LlistaUsuaris extends javax.swing.JPanel {
         jButtonTornarEnrere = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        jButtonEliminarUsuari = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(204, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -112,36 +144,39 @@ public class LlistaUsuaris extends javax.swing.JPanel {
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 400, 240));
 
-        jButton1.setBackground(new java.awt.Color(255, 0, 51));
-        jButton1.setText("Eliminar usuari");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonEliminarUsuari.setBackground(new java.awt.Color(255, 0, 51));
+        jButtonEliminarUsuari.setText("Eliminar usuari");
+        jButtonEliminarUsuari.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonEliminarUsuariActionPerformed(evt);
             }
         });
-        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(255, 290, 150, -1));
+        add(jButtonEliminarUsuari, new org.netbeans.lib.awtextra.AbsoluteConstraints(255, 290, 150, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonTornarEnrereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTornarEnrereActionPerformed
         loginScreen.showSearchUser();
     }//GEN-LAST:event_jButtonTornarEnrereActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonEliminarUsuariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarUsuariActionPerformed
         int row = jTable1.getSelectedRow();
-        
-        
-        int value = (int) jTable1.getValueAt(row, 0);
-        try {
-            System.out.println("esborrant: " + value);
-            loginScreen.getConnexio().esborrarUsuari(Integer.toString(value));
-        } catch (IOException ex) {
-            Logger.getLogger(LlistaUsuaris.class.getName()).log(Level.SEVERE, null, ex);
+        String userId = (String) jTable1.getValueAt(row, 1);
+
+        int confirmaEliminar = JOptionPane.showConfirmDialog(this, "Desitja eliminar l'usuari " + userId + "?");
+        if (confirmaEliminar == JOptionPane.OK_OPTION) {
+            try {
+                System.out.println("esborrant: " + userId);
+                loginScreen.getConnexio().esborrarUsuari(userId);
+            } catch (IOException ex) {
+                Logger.getLogger(LlistaUsuaris.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+
+    }//GEN-LAST:event_jButtonEliminarUsuariActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonEliminarUsuari;
     private javax.swing.JButton jButtonTornarEnrere;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;

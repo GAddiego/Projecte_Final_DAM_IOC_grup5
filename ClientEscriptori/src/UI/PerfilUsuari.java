@@ -8,14 +8,28 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 import clientescriptori.Connection;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import objectes.Usuari;
+import utils.Utils;
 
 /**
  *
@@ -25,6 +39,9 @@ public class PerfilUsuari extends javax.swing.JPanel {
 
     private Usuari usuari;
     private Connection connexio;
+    private ImageIcon fotoPerfilIcon;
+    private Image fotoPerfil;
+
     /**
      * Creates new form PerfilUsuari
      */
@@ -32,8 +49,29 @@ public class PerfilUsuari extends javax.swing.JPanel {
         initComponents();
     }
 
-    public void setUsuari(Usuari user) {
+    public void setUsuari(Usuari user) throws IOException {
         this.usuari = user;
+        System.out.println("cargando imagen del usuario...");
+        try {
+
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(usuari.getImageData());
+
+            // Crear objecte Image a partir del InputStream
+            Image imagen = ImageIO.read(inputStream);
+            ImageIcon imageIcon = new ImageIcon(imagen);
+            setImageIcon(escalarImagen(jPanelImagen, imageIcon));
+            
+        } catch (Exception e) {
+            System.out.println("error: " + e);
+            System.out.println(usuari.getImageData());
+        }
+//        if (usuari.getImageData() != null) {
+//            try {
+//                setImageIcon(Utils.convertirBytesAImagen(usuari.getImageData()));
+//            } catch (Exception e) {
+//                System.out.println("error: " + e + " imposible cargar foto perfil");
+//            }
+//        }
     }
 
     /**
@@ -48,12 +86,6 @@ public class PerfilUsuari extends javax.swing.JPanel {
         jCheckBox1 = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
         jTextFieldNomUsuari = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jPasswordFieldNova = new javax.swing.JPasswordField();
-        jLabel3 = new javax.swing.JLabel();
-        jPasswordFieldNovaConf = new javax.swing.JPasswordField();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jTextFieldId = new javax.swing.JTextField();
         jTextFielCognoms = new javax.swing.JTextField();
@@ -65,6 +97,10 @@ public class PerfilUsuari extends javax.swing.JPanel {
         jButtonDesferCanvis = new javax.swing.JButton();
         jButtonGuardarCanvis = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
+        jButtonActualitzaContrassenya = new javax.swing.JButton();
+        jPanelImagen = new javax.swing.JPanel();
+        jLabelFotoPerfil = new javax.swing.JLabel();
+        jButtonEditarImatge = new javax.swing.JButton();
 
         jCheckBox1.setText("jCheckBox1");
 
@@ -75,68 +111,52 @@ public class PerfilUsuari extends javax.swing.JPanel {
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel1.setText("Id d'usuari:");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, -1, -1));
-        add(jTextFieldNomUsuari, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 190, 250, -1));
-
-        jLabel2.setText("Contrassenya:");
-        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, -1, -1));
-
-        jPasswordField1.setEditable(false);
-        jPasswordField1.setText("jPasswordField1");
-        add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 80, 145, -1));
-
-        jPasswordFieldNova.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordFieldNovaActionPerformed(evt);
-            }
-        });
-        add(jPasswordFieldNova, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 110, 140, -1));
-
-        jLabel3.setText("Nova contrassenya:");
-        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 110, -1, -1));
-        add(jPasswordFieldNovaConf, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 140, 140, -1));
-
-        jLabel4.setText("Confirmar:");
-        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 140, -1, -1));
+        jLabel1.setText("ID d'usuari:");
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, -1, -1));
+        add(jTextFieldNomUsuari, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 180, 250, -1));
 
         jLabel5.setText("Nom:");
-        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, -1, -1));
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, -1));
 
         jTextFieldId.setEditable(false);
-        add(jTextFieldId, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 40, 140, -1));
+        add(jTextFieldId, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, 140, -1));
 
         jTextFielCognoms.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFielCognomsActionPerformed(evt);
             }
         });
-        add(jTextFielCognoms, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 220, 230, -1));
+        add(jTextFielCognoms, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 210, 230, -1));
 
         jLabel6.setText("Cognoms:");
-        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, -1, -1));
+        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, -1, -1));
 
         jLabel7.setText("Data naixement:");
-        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, -1, -1));
+        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, -1, -1));
 
         jTextFielIdDataNaixement.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFielIdDataNaixementActionPerformed(evt);
             }
         });
-        add(jTextFielIdDataNaixement, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 250, 200, -1));
+        add(jTextFielIdDataNaixement, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 240, 200, -1));
 
         jLabel8.setText("Email:");
-        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, -1, -1));
+        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, -1, -1));
 
         jTextFielIdEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFielIdEmailActionPerformed(evt);
             }
         });
-        add(jTextFielIdEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 280, 250, -1));
+        add(jTextFielIdEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 270, 250, -1));
 
         jButtonDesferCanvis.setText("Desfer canvis");
+        jButtonDesferCanvis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDesferCanvisActionPerformed(evt);
+            }
+        });
         add(jButtonDesferCanvis, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 320, -1, -1));
 
         jButtonGuardarCanvis.setText("Guardar canvis");
@@ -150,6 +170,30 @@ public class PerfilUsuari extends javax.swing.JPanel {
         jLabel9.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
         jLabel9.setText("El meu perfil:");
         add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
+        jButtonActualitzaContrassenya.setText("Canviar contrassenya");
+        jButtonActualitzaContrassenya.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonActualitzaContrassenyaActionPerformed(evt);
+            }
+        });
+        add(jButtonActualitzaContrassenya, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, 160, -1));
+
+        jPanelImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabelFotoPerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/default_user.jpg"))); // NOI18N
+        jLabelFotoPerfil.setToolTipText("");
+        jPanelImagen.add(jLabelFotoPerfil);
+
+        add(jPanelImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 10, 120, 120));
+
+        jButtonEditarImatge.setText("Editar imatge");
+        jButtonEditarImatge.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditarImatgeActionPerformed(evt);
+            }
+        });
+        add(jButtonEditarImatge, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 140, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
     private void jTextFielIdUsuari1ActionPerformed(java.awt.event.ActionEvent evt) {
 
@@ -166,41 +210,84 @@ public class PerfilUsuari extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFielIdEmailActionPerformed
 
-    private void jPasswordFieldNovaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordFieldNovaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordFieldNovaActionPerformed
-
     private void jButtonGuardarCanvisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarCanvisActionPerformed
 
-        String newPass = obtenirContrassenya(jPasswordFieldNova);
-        String newPassConf = obtenirContrassenya(jPasswordFieldNovaConf);
-        if (newPass.equals(newPassConf)) {
-            usuari.setPass(newPass);
-            usuari.setNom(jTextFieldNomUsuari.getText());
-            String cognoms = jTextFielCognoms.getText();
-            String[] arrayCognoms = cognoms.split(" ");
-            if (arrayCognoms.length > 0) {
-                usuari.setPrimerCognom(arrayCognoms[0]);
-            }
-            if (arrayCognoms.length > 1) {
-                usuari.setSegonCognom(arrayCognoms[1]);
-            }
+        usuari.setNom(jTextFieldNomUsuari.getText());
+        String cognoms = jTextFielCognoms.getText();
+        String[] arrayCognoms = cognoms.split(" ");
+
+        if (arrayCognoms.length > 0) {
+            usuari.setPrimerCognom(arrayCognoms[0]);
+        }
+        if (arrayCognoms.length > 1) {
+            usuari.setSegonCognom(arrayCognoms[1]);
+        }
+        try {
+            usuari.setDataNaixement(convertirDataString(jTextFielIdDataNaixement.getText()));
+        } catch (ParseException ex) {
+            Logger.getLogger(PerfilUsuari.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        usuari.setEmail(jTextFielIdEmail.getText());
+        System.out.println(usuari.toString());
+        JOptionPane.showMessageDialog(jCheckBox1, "Informació actualitzada amb éxit");
+        //System.out.println("Informació no actualitzada, falta petició al servidor per canviar informació personal (només poden admins i bibliotecaris)");
+        Connection.modificarUsuari(usuari);
+    }//GEN-LAST:event_jButtonGuardarCanvisActionPerformed
+
+    private void jButtonActualitzaContrassenyaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualitzaContrassenyaActionPerformed
+
+        CanviaPass canviaPass = new CanviaPass();
+        canviaPass.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        canviaPass.setVisible(true);
+
+
+    }//GEN-LAST:event_jButtonActualitzaContrassenyaActionPerformed
+
+    //botó que desfà els canvis sense guardar fets a les dades de l'usuari
+    private void jButtonDesferCanvisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDesferCanvisActionPerformed
+        jTextFieldNomUsuari.setText(usuari.getNom());
+        jTextFielCognoms.setText(usuari.getPrimerCognom() + " " + usuari.getSegonCognom());
+        if (usuari.getDataNaixement() != null) {
+            jTextFielIdDataNaixement.setText(usuari.getDataNaixement().toString());
+        } else {
+            jTextFielIdDataNaixement.setText(null); //falta implementar calendari per seleccionar data
+        }
+        jTextFielIdEmail.setText(usuari.getEmail());
+    }//GEN-LAST:event_jButtonDesferCanvisActionPerformed
+
+    private void jButtonEditarImatgeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarImatgeActionPerformed
+        //obrim el menu per buscar arxius:
+        JFileChooser selectorArxius = new JFileChooser();
+        selectorArxius.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de imagen",
+                "jpg", "jpeg", "png", "gif");
+        selectorArxius.addChoosableFileFilter(filtro);
+        selectorArxius.setFileFilter(filtro);
+
+        int result = selectorArxius.showOpenDialog(this);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File imatge = selectorArxius.getSelectedFile();
+            fotoPerfilIcon = new ImageIcon(imatge.getPath());
             try {
-                usuari.setDataNaixement(convertirDataString(jTextFielIdDataNaixement.getText()));
-            } catch (ParseException ex) {
+                fotoPerfil = ImageIO.read(imatge);
+            } catch (IOException ex) {
                 Logger.getLogger(PerfilUsuari.class.getName()).log(Level.SEVERE, null, ex);
             }
-            usuari.setEmail(jTextFielIdEmail.getText());
-            
-            JOptionPane.showMessageDialog(jCheckBox1, "Informació actualitzada amb éxit");
-            System.out.println("Informació no actualitzada, falta petició al servidor per canviar informació personal (només poden admins i bibliotecaris)");
-            
-        } else {
-            JOptionPane.showMessageDialog(jCheckBox1, "La nova contrassenya introduïda no és correcta.", "Error", JOptionPane.ERROR_MESSAGE);
+
+            jLabelFotoPerfil.setIcon(escalarImagen(jPanelImagen, fotoPerfilIcon));
+            BufferedImage bi = new BufferedImage(fotoPerfilIcon.getIconWidth(), fotoPerfilIcon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
+            fotoPerfilIcon.paintIcon(null, bi.getGraphics(), 0, 0);
+            try {
+                byte[] fotoPerfilBytes = Utils.convertirImagenABytes(bi);
+                usuari.setImageData(fotoPerfilBytes);
+                Connection.modificarUsuari(usuari);
+            } catch (IOException ex) {
+                Logger.getLogger(PerfilUsuari.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
         }
-
-    }//GEN-LAST:event_jButtonGuardarCanvisActionPerformed
+    }//GEN-LAST:event_jButtonEditarImatgeActionPerformed
 
     public void setIdTextField(String id) {
         jTextFieldId.setText(id);
@@ -230,24 +317,12 @@ public class PerfilUsuari extends javax.swing.JPanel {
 
     }
 
-    private String obtenirContrassenya(JPasswordField jpf) {
-
-        char[] contrassenyaChar = jpf.getPassword();
-        StringBuilder contrassenyaSB = new StringBuilder();
-        for (char c : contrassenyaChar) {
-            contrassenyaSB.append(c);
-        }
-        String contrassenya = contrassenyaSB.toString();
-
-        return contrassenya;
-    }
-
     public static Date convertirDataString(String data) throws ParseException {
         Date r;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         java.util.Date dataConvertida = null;
 
-        if (data == null) {
+        if (data == null || data.equals("")) {
             r = null;
         } else {
             r = dateFormat.parse(data);
@@ -256,28 +331,54 @@ public class PerfilUsuari extends javax.swing.JPanel {
         return r;
     }
 
+    public ImageIcon escalarImagen(JPanel panel, ImageIcon imageIcon) {
+        //Obtenim el tamany del panell
+        int panelWidth = panel.getWidth();
+        int panelHeight = panel.getHeight();
+
+        //Obtenim el tamany de l'imageIcon
+        int imageWidth = imageIcon.getIconWidth();
+        int imageHeight = imageIcon.getIconHeight();
+
+        //calculem l'escala necessària per que l'imatge s'ajusti
+        double escala = Math.min((double) panelWidth / imageWidth, (double) panelHeight / imageHeight);
+        Image imatgeEscalada = imageIcon.getImage().getScaledInstance((int) (imageWidth * escala),
+                (int) (imageHeight * escala), Image.SCALE_SMOOTH);
+
+        ImageIcon imageIconEscalat = new ImageIcon(imatgeEscalada);
+
+        return imageIconEscalat;
+    }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonActualitzaContrassenya;
     private javax.swing.JButton jButtonDesferCanvis;
+    private javax.swing.JButton jButtonEditarImatge;
     private javax.swing.JButton jButtonGuardarCanvis;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JPasswordField jPasswordFieldNova;
-    private javax.swing.JPasswordField jPasswordFieldNovaConf;
+    private javax.swing.JLabel jLabelFotoPerfil;
+    private javax.swing.JPanel jPanelImagen;
     private javax.swing.JTextField jTextFielCognoms;
     private javax.swing.JTextField jTextFielIdDataNaixement;
     private javax.swing.JTextField jTextFielIdEmail;
     private javax.swing.JTextField jTextFieldId;
     private javax.swing.JTextField jTextFieldNomUsuari;
     // End of variables declaration//GEN-END:variables
+
+    public void setImageIcon(ImageIcon imageIcon) {
+
+        this.fotoPerfilIcon = imageIcon;
+        jLabelFotoPerfil.setIcon(escalarImagen(jPanelImagen, fotoPerfilIcon));
+        BufferedImage bi = new BufferedImage(fotoPerfilIcon.getIconWidth(), fotoPerfilIcon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
+        fotoPerfilIcon.paintIcon(null, bi.getGraphics(), 0, 0);
+    }
 
     public void setConnection(Connection connexio) {
         this.connexio = connexio;

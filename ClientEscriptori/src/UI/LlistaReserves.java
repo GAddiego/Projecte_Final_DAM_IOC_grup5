@@ -15,50 +15,38 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 import objectes.Llibre;
+import objectes.Reserva;
 import suport.LlibreTableModel;
+import suport.ReservaTableModel;
 
 /**
  *
  * @author Gonzalo
  */
-public class LlistaLlibres extends javax.swing.JPanel {
+public class LlistaReserves extends javax.swing.JPanel {
 
     private LoginScreen loginScreen;
     private Connection connection;
+    private List<Reserva> listaReserves;
 
     /**
      * Creates new form LlistaLlibres
      */
-    public LlistaLlibres() {
+    public LlistaReserves() {
         initComponents();
         connection = loginScreen.getConnexio();
     }
 
-    public LlistaLlibres(LoginScreen loginScreen, List<Llibre> listaLlibres) {
+    public LlistaReserves(LoginScreen loginScreen, List<Reserva> listaReserves) {
         this.loginScreen = loginScreen;
         initComponents();
+        this.listaReserves = listaReserves;
         connection = loginScreen.getConnexio();
 
-        LlibreTableModel modelo = new LlibreTableModel(listaLlibres);
+        ReservaTableModel modelo = new ReservaTableModel(listaReserves);
+        
         jTable1.setModel(modelo);
 
-        //afegim el listener que desplega el menú per seleccionar un llibre
-        jTable1.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2) {
-                    int fila = jTable1.getSelectedRow();
-
-                    System.out.println("fila seleccionada: " + fila);
-                    System.out.println(listaLlibres.get(fila).toString());
-
-                    Llibre llibre = listaLlibres.get(fila);
-                    InfoLlibre infoLlibre = new InfoLlibre(llibre);
-                    infoLlibre.setConnection(connection);
-                    infoLlibre.setVisible(true);
-                }
-            }
-        });
     }
 
     /**
@@ -70,22 +58,14 @@ public class LlistaLlibres extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButtonTornarEnrere = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(204, 255, 255));
 
-        jButtonTornarEnrere.setText("Tornar enrere");
-        jButtonTornarEnrere.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonTornarEnrereActionPerformed(evt);
-            }
-        });
-
         jLabel1.setFont(new java.awt.Font("Segoe UI Emoji", 1, 14)); // NOI18N
-        jLabel1.setText("Llibres trobats:");
+        jLabel1.setText("Reserves:");
 
         jTable1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -136,9 +116,6 @@ public class LlistaLlibres extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jButtonTornarEnrere))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(164, Short.MAX_VALUE))
         );
@@ -149,15 +126,9 @@ public class LlistaLlibres extends javax.swing.JPanel {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonTornarEnrere)
-                .addGap(72, 72, 72))
+                .addGap(100, 100, 100))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButtonTornarEnrereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTornarEnrereActionPerformed
-        loginScreen.showSearchBook();
-    }//GEN-LAST:event_jButtonTornarEnrereActionPerformed
 
     public void setConnection(Connection connection) {
         this.connection = connection;
@@ -165,7 +136,6 @@ public class LlistaLlibres extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonTornarEnrere;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

@@ -21,25 +21,27 @@ import suport.LlibreTableModel;
  *
  * @author Gonzalo
  */
-public class LlistaLlibres extends javax.swing.JPanel {
+public class LlistaLlibresAdmin extends javax.swing.JPanel {
 
     private LoginScreen loginScreen;
     private Connection connection;
+    private List<Llibre> listaLlibres;
+    private LlibreTableModel modelo;
 
     /**
      * Creates new form LlistaLlibres
      */
-    public LlistaLlibres() {
+    public LlistaLlibresAdmin() {
         initComponents();
         connection = loginScreen.getConnexio();
     }
 
-    public LlistaLlibres(LoginScreen loginScreen, List<Llibre> listaLlibres) {
+    public LlistaLlibresAdmin(LoginScreen loginScreen, List<Llibre> listaLlibres) {
         this.loginScreen = loginScreen;
         initComponents();
         connection = loginScreen.getConnexio();
-
-        LlibreTableModel modelo = new LlibreTableModel(listaLlibres);
+        this.listaLlibres = listaLlibres;
+        modelo = new LlibreTableModel(listaLlibres);
         jTable1.setModel(modelo);
 
         //afegim el listener que desplega el menú per seleccionar un llibre
@@ -70,12 +72,21 @@ public class LlistaLlibres extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButtonEsborrarLlibre = new javax.swing.JButton();
         jButtonTornarEnrere = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(204, 255, 255));
+
+        jButtonEsborrarLlibre.setBackground(new java.awt.Color(255, 0, 0));
+        jButtonEsborrarLlibre.setText("Esborrar llibre");
+        jButtonEsborrarLlibre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEsborrarLlibreActionPerformed(evt);
+            }
+        });
 
         jButtonTornarEnrere.setText("Tornar enrere");
         jButtonTornarEnrere.addActionListener(new java.awt.event.ActionListener() {
@@ -136,11 +147,14 @@ public class LlistaLlibres extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jButtonTornarEnrere))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(164, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(6, 6, 6)
+                            .addComponent(jButtonTornarEnrere)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButtonEsborrarLlibre, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(192, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,14 +164,32 @@ public class LlistaLlibres extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonTornarEnrere)
-                .addGap(72, 72, 72))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonTornarEnrere)
+                    .addComponent(jButtonEsborrarLlibre, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(64, 64, 64))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonTornarEnrereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTornarEnrereActionPerformed
-        loginScreen.showSearchBook();
+        loginScreen.showSearchBookAdmin();
     }//GEN-LAST:event_jButtonTornarEnrereActionPerformed
+
+    private void jButtonEsborrarLlibreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEsborrarLlibreActionPerformed
+        int row = jTable1.getSelectedRow();
+        Llibre llibre = listaLlibres.get(row);
+
+        int confirmaEliminar = JOptionPane.showConfirmDialog(this, "Desitja eliminar el llibre " + llibre.getTitol() + "?");
+        if (confirmaEliminar == JOptionPane.OK_OPTION) {
+            try {
+                System.out.println("esborrant: " + llibre.getTitol());
+                loginScreen.getConnexio().esborrarLlibre(llibre);
+                    modelo.fireTableRowsDeleted(row, row); // Notifica a la tabla que se eliminará la fila
+            } catch (IOException ex) {
+                Logger.getLogger(LlistaUsuaris.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jButtonEsborrarLlibreActionPerformed
 
     public void setConnection(Connection connection) {
         this.connection = connection;
@@ -165,6 +197,7 @@ public class LlistaLlibres extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonEsborrarLlibre;
     private javax.swing.JButton jButtonTornarEnrere;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
